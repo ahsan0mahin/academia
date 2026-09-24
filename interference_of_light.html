@@ -1,0 +1,1754 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@300;400;500;600;700;800&display=swap');
+    
+    body {
+      font-family: 'Noto Sans Bengali', sans-serif;
+      scroll-behavior: smooth;
+    }
+    
+    .wave-canvas { width: 100%; height: 200px; }
+    .math-box {
+      background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(168,85,247,0.08));
+      border-left: 4px solid rgb(99,102,241);
+      padding: 16px 20px;
+      border-radius: 0 12px 12px 0;
+      margin: 12px 0;
+      font-size: 1.05em;
+    }
+    .highlight-box {
+      background: linear-gradient(135deg, rgba(234,179,8,0.1), rgba(249,115,22,0.08));
+      border-left: 4px solid rgb(234,179,8);
+      padding: 14px 18px;
+      border-radius: 0 12px 12px 0;
+      margin: 12px 0;
+    }
+    .tip-box {
+      background: linear-gradient(135deg, rgba(34,197,94,0.08), rgba(16,185,129,0.08));
+      border-left: 4px solid rgb(34,197,94);
+      padding: 14px 18px;
+      border-radius: 0 12px 12px 0;
+      margin: 12px 0;
+    }
+    .exam-box {
+      background: linear-gradient(135deg, rgba(239,68,68,0.08), rgba(244,63,94,0.08));
+      border-left: 4px solid rgb(239,68,68);
+      padding: 14px 18px;
+      border-radius: 0 12px 12px 0;
+      margin: 12px 0;
+    }
+    .section-title {
+      background: linear-gradient(90deg, #6366f1, #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-btn {
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .nav-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(99,102,241,0.3);
+    }
+    .nav-btn.active {
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      color: white;
+    }
+    .card {
+      transition: all 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+    .fade-in {
+      animation: fadeIn 0.5s ease-in;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .pulse-glow {
+      animation: pulseGlow 2s infinite;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 5px rgba(99,102,241,0.3); }
+      50% { box-shadow: 0 0 20px rgba(99,102,241,0.6); }
+    }
+    canvas { border-radius: 12px; }
+    .katex-display { margin: 8px 0; }
+    .step-number {
+      width: 32px; height: 32px;
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      color: white; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 14px; flex-shrink: 0;
+    }
+    .problem-card {
+      border: 1px solid rgba(99,102,241,0.2);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .problem-header {
+      background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(168,85,247,0.1));
+      padding: 12px 16px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .problem-body {
+      padding: 16px;
+      display: none;
+    }
+    .problem-card.open .problem-body {
+      display: block;
+    }
+    .toc-item {
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .toc-item:hover {
+      background: rgba(99,102,241,0.1);
+    }
+  </style>
+</head>
+<body class="bg-[var(--background)] text-[var(--foreground)] antialiased">
+
+  <!-- Hero Section -->
+  <div class="max-w-4xl mx-auto px-4 py-8">
+    <div class="text-center mb-8">
+      <div class="inline-block px-4 py-1 rounded-full text-sm font-medium mb-4" style="background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(168,85,247,0.15)); color: #6366f1;">
+        🌊 ভৌত আলোকবিজ্ঞান · অধ্যায় ৭
+      </div>
+      <h1 class="text-4xl md:text-5xl font-extrabold mb-3">
+        <span class="section-title">আলোর ব্যতিচার</span>
+      </h1>
+      <p class="text-lg" style="color: var(--muted-foreground);">Interference of Light — সম্পূর্ণ বিশদ আলোচনা, গাণিতিক প্রমাণ ও HSC পরীক্ষার প্রস্তুতি</p>
+    </div>
+
+    <!-- Navigation -->
+    <div class="flex flex-wrap gap-2 justify-center mb-10" id="nav">
+      <button class="nav-btn active px-4 py-2 rounded-full text-sm font-medium border border-[var(--border)]" onclick="showSection('concepts')">🔬 মূল ধারণা</button>
+      <button class="nav-btn px-4 py-2 rounded-full text-sm font-medium border border-[var(--border)]" onclick="showSection('simulation')">🎨 সিমুলেশন</button>
+      <button class="nav-btn px-4 py-2 rounded-full text-sm font-medium border border-[var(--border)]" onclick="showSection('math')">📐 গণিত</button>
+      <button class="nav-btn px-4 py-2 rounded-full text-sm font-medium border border-[var(--border)]" onclick="showSection('problems')">✏️ সমস্যা ও সমাধান</button>
+      <button class="nav-btn px-4 py-2 rounded-full text-sm font-medium border border-[var(--border)]" onclick="showSection('hsc')">🎓 HSC টিপস</button>
+    </div>
+
+    <!-- ==================== SECTION 1: CONCEPTS ==================== -->
+    <div id="concepts" class="section fade-in">
+      
+      <!-- Part 1: Coherent Sources -->
+      <div class="card bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-6">
+        <h2 class="text-2xl font-bold mb-4">🔗 সুসঙ্গত উৎস (Coherent Sources)</h2>
+        
+        <p class="mb-4 leading-relaxed text-base">
+          তোমার মনে প্রশ্ন আসতে পারে — ব্যতিচার কেন যেকোনো দুটি বাল্ব জ্বালালেই দেখা যায় না? এর উত্তর হলো <strong>সুসঙ্গততা</strong>।
+        </p>
+
+        <div class="highlight-box mb-4">
+          <strong>🔑 সংজ্ঞা:</strong> দুটি উৎস থেকে সমদশায় বা কোনো নির্দিষ্ট দশা পার্থক্যে একই তরঙ্গদৈর্ঘ্যের দুটি আলোক তরঙ্গ নির্গত হলে তাদের <strong>সুসঙ্গত উৎস</strong> (Coherent Sources) বলে।
+        </div>
+
+        <h3 class="text-lg font-semibold mb-3 mt-5">💡 কেন দুটি আলাদা বাল্ব সুসঙ্গত নয়?</h3>
+        <p class="mb-3 leading-relaxed">
+          একটি বাল্বের ফিলামেন্টে কোটি কোটি পরমাণু আছে। প্রতিটি পরমাণু <strong>স্বতঃস্ফূর্তভাবে</strong> (spontaneously) আলোক তরঙ্গ নির্গত করে। একটি পরমাণু কখন আলো বের করবে, সেটা অন্য পরমাণুর সাথে কোনো সম্পর্ক রাখে না। তাই:
+        </p>
+        <ul class="list-disc list-inside space-y-2 mb-4 ml-4">
+          <li>বাল্ব-A এর পরমাণু থেকে বের হওয়া তরঙ্গের <strong>দশা</strong> (phase) প্রতি মুহূর্তে এলোমেলোভাবে বদলাচ্ছে</li>
+          <li>বাল্ব-B এর পরমাণুগুলোও একই রকম — কিন্তু <strong>ভিন্নভাবে</strong> এলোমেলো</li>
+          <li>ফলে দুটি বাল্বের মধ্যে কোনো <strong>স্থির দশা সম্পর্ক</strong> (constant phase relationship) থাকে না</li>
+          <li>ব্যতিচার প্যাটার্ন এত দ্রুত বদলায় যে চোখ সেটা ধরতে পারে না — আমরা শুধু সমান আলো দেখি</li>
+        </ul>
+
+        <div class="tip-box">
+          <strong>🧠 সহজ উপমা:</strong> ধরো দুজন গায়ক একই গান গাইছে। যদি তারা একসাথে শুরু করে এবং একই তালে গায়, তাহলে তাদের স্বর মিলবে (সুসঙ্গত)। কিন্তু যদি একজন নিজের মনে গায় এবং অন্যজনও নিজের মনে গায় — তাহলে সুর মিলবে না (অসুসঙ্গত)।
+        </div>
+
+        <h3 class="text-lg font-semibold mb-3 mt-5">🛠️ সুসঙ্গত উৎস কীভাবে তৈরি করা হয়?</h3>
+        <p class="mb-3 leading-relaxed">
+          একটি উৎস থেকে নির্গত আলোকে <strong>দুটি ভাগে বিভক্ত</strong> করা হয়। যেহেতু দুটি ভাগই একই মূল উৎস থেকে এসেছে, তাই তাদের মধ্যে সবসময় একটি নির্দিষ্ট দশা সম্পর্ক থাকে।
+        </p>
+        <div class="flex flex-col md:flex-row gap-4 mb-4">
+          <div class="flex-1 bg-[var(--content)] border border-[var(--border)] rounded-xl p-4">
+            <div class="text-center text-2xl mb-2">〰️ ➡️ 🔲 ➡️ 〰️〰️</div>
+            <p class="text-sm text-center"><strong>পদ্ধতি:</strong> একটি আলোক রশ্মিকে দুটি সরু চিরের (slit) মধ্য দিয়ে পাঠানো হয়। প্রতিটি চির একটি নতুন উৎসের মতো কাজ করে — কিন্তু উভয়ই মূল উৎসের সাথে সুসঙ্গত!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Part 2: What is Interference? -->
+      <div class="card bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-6">
+        <h2 class="text-2xl font-bold mb-4">🌊 আলোর ব্যতিচার কী?</h2>
+        
+        <div class="highlight-box mb-4">
+          <strong>🔑 সংজ্ঞা:</strong> কোনো স্থানে দুই বা ততোধিক সুসঙ্গত আলোক তরঙ্গের <strong>উপরিপাতনের</strong> (superposition) ফলে আলোর তীব্রতার পর্যায়ক্রমিক পরিবর্তনের ঘটনাকে <strong>আলোর ব্যতিচার</strong> বলে।
+        </div>
+
+        <p class="mb-4 leading-relaxed">
+          সহজ কথায়: দুটি তরঙ্গ যখন একই জায়গায় মিলিত হয়, তখন কোথাও আলো <strong>উজ্জ্বলতর</strong> হয়, আবার কোথাও <strong>অন্ধকার</strong> হয়ে যায়। এই উজ্জ্বল-অন্ধকার প্যাটার্নই হলো ব্যতিচার।
+        </p>
+
+        <!-- Interactive Wave Demo -->
+        <div class="bg-[var(--content)] border border-[var(--border)] rounded-xl p-4 mb-4">
+          <div class="flex justify-between items-center mb-3">
+            <h4 class="font-semibold">🎬 তরঙ্গের উপরিপাতন দেখো:</h4>
+            <div class="flex gap-2">
+              <button onclick="setInterferenceType('constructive')" id="btn-con" class="px-3 py-1 rounded-lg text-xs font-medium" style="background: rgba(34,197,94,0.2); color: #16a34a;">গঠনমূলক</button>
+              <button onclick="setInterferenceType('destructive')" id="btn-des" class="px-3 py-1 rounded-lg text-xs font-medium" style="background: rgba(239,68,68,0.2); color: #ef4444;">ধ্বংসাত্মক</button>
+            </div>
+          </div>
+          <canvas id="waveCanvas" width="700" height="220" style="width:100%; background: rgba(0,0,0,0.03); border-radius: 12px;"></canvas>
+          <div class="flex justify-between mt-2 text-xs" style="color: var(--muted-foreground);">
+            <span>🔵 তরঙ্গ ১ &nbsp; 🔴 তরঙ্গ ২ &nbsp; 🟢 লব্ধি তরঙ্গ</span>
+            <span id="interference-label" class="font-semibold" style="color: #16a34a;">✨ গঠনমূলক ব্যতিচার</span>
+          </div>
+        </div>
+
+        <!-- Constructive vs Destructive -->
+        <div class="grid md:grid-cols-2 gap-4 mb-4">
+          <div class="border border-[var(--border)] rounded-xl p-4" style="background: rgba(34,197,94,0.05);">
+            <h4 class="font-bold text-lg mb-2" style="color: #16a34a;">✅ গঠনমূলক ব্যতিচার</h4>
+            <p class="text-sm mb-2">(Constructive Interference)</p>
+            <ul class="text-sm space-y-1 list-disc list-inside">
+              <li>দুটি তরঙ্গ <strong>একই দশায়</strong> মিলিত হয়</li>
+              <li>চূড়া + চূড়া = বড় চূড়া 🔝</li>
+              <li>লব্ধি বিস্তার = বিস্তারের <strong>সমষ্টি</strong></li>
+              <li>তীব্রতা <strong>বৃদ্ধি</strong> পায় → <strong>উজ্জ্বল ডোরা</strong></li>
+              <li>পথ পার্থক্য = nλ (পূর্ণ তরঙ্গদৈর্ঘ্যের গুণিতক)</li>
+            </ul>
+          </div>
+          <div class="border border-[var(--border)] rounded-xl p-4" style="background: rgba(239,68,68,0.05);">
+            <h4 class="font-bold text-lg mb-2" style="color: #ef4444;">❌ ধ্বংসাত্মক ব্যতিচার</h4>
+            <p class="text-sm mb-2">(Destructive Interference)</p>
+            <ul class="text-sm space-y-1 list-disc list-inside">
+              <li>দুটি তরঙ্গ <strong>বিপরীত দশায়</strong> মিলিত হয়</li>
+              <li>চূড়া + খাদ = শূন্য ⚡</li>
+              <li>লব্ধি বিস্তার = বিস্তারের <strong>বিয়োগফল</strong></li>
+              <li>তীব্রতা <strong>হ্রাস</strong> পায় → <strong>অন্ধকার ডোরা</strong></li>
+              <li>পথ পার্থক্য = (n+½)λ (অর্ধ তরঙ্গদৈর্ঘ্যের বিজোড় গুণিতক)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tip-box">
+          <strong>🌊 তীব্রতা ∝ বিস্তার²:</strong> মনে রাখো, আলোর তীব্রতা (I) বিস্তারের (a) বর্গের সমানুপাতিক। অর্থাৎ I ∝ a²। তাই বিস্তার দ্বিগুণ হলে তীব্রতা <strong>চারগুণ</strong> হয়!
+        </div>
+      </div>
+
+      <!-- Part 3: Conditions for Interference -->
+      <div class="card bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-6">
+        <h2 class="text-2xl font-bold mb-4">📋 ব্যতিচারের শর্তাবলী</h2>
+        
+        <div class="space-y-4">
+          <div class="flex gap-4 items-start">
+            <div class="step-number">১</div>
+            <div>
+              <strong>সুসঙ্গত উৎস:</strong> আলোর উৎস দুটি অবশ্যই সুসঙ্গত হতে হবে। অর্থাৎ তাদের মধ্যে নির্দিষ্ট দশা সম্পর্ক বজায় থাকতে হবে। এটাই সবচেয়ে গুরুত্বপূর্ণ শর্ত!
+            </div>
+          </div>
+          <div class="flex gap-4 items-start">
+            <div class="step-number">২</div>
+            <div>
+              <strong>সমান বিস্তার:</strong> দুটি তরঙ্গের বিস্তার সমান বা প্রায় সমান হতে হবে। বিস্তার অসমান হলে পুরোপুরি অন্ধকার ডোরা পাওয়া যায় না — কিছুটা আলো থেকে যায়।
+            </div>
+          </div>
+          <div class="flex gap-4 items-start">
+            <div class="step-number">৩</div>
+            <div>
+              <strong>নৈকট্য:</strong> উৎসগুলো খুব কাছাকাছি অবস্থিত হতে হবে। দূরত্ব বেশি হলে ডোরাগুলো এত কাছাকাছি হবে যে আলাদা করা যাবে না।
+            </div>
+          </div>
+          <div class="flex gap-4 items-start">
+            <div class="step-number">৪</div>
+            <div>
+              <strong>সূক্ষ্ম উৎস:</strong> উৎসগুলো খুব সূক্ষ্ম (narrow) হতে হবে। চিরের প্রস্থ আলোর তরঙ্গদৈর্ঘ্যের ক্রমের (~10⁻⁷ m) হতে হবে।
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Part 4: Young's Double Slit -->
+      <div class="card bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-6">
+        <h2 class="text-2xl font-bold mb-4">🔬 ইয়ং-এর দ্বি-চির পরীক্ষা (Young's Double-Slit Experiment)</h2>
+        
+        <div class="highlight-box mb-4">
+          <strong>📅 ইতিহাস:</strong> ১৮০১ সালে ব্রিটিশ বিজ্ঞানী <strong>থমাস ইয়ং</strong> এই যুগান্তকারী পরীক্ষাটি করেন। এটি আলোর তরঙ্গ প্রকৃতির প্রথম পরীক্ষামূলক প্রমাণ এবং পদার্থবিজ্ঞানের ইতিহাসে অন্যতম সুন্দর পরীক্ষা!
+        </div>
+
+        <h3 class="text-lg font-semibold mb-3">🔧 পরীক্ষার ব্যবস্থা:</h3>
+        
+        <!-- Experiment Diagram -->
+        <div class="bg-[var(--content)] border border-[var(--border)] rounded-xl p-4 mb-4">
+          <canvas id="experimentCanvas" width="700" height="300" style="width:100%; background: rgba(0,0,0,0.03); border-radius: 12px;"></canvas>
+        </div>
+
+        <div class="space-y-3 mb-4">
+          <div class="flex gap-3 items-start">
+            <span class="text-xl">1️⃣</span>
+            <p>একটি একবর্ণী (monochromatic) আলোক উৎস থেকে আলো প্রথম চির <strong>S</strong>-এর মধ্য দিয়ে যায়। S একটি গোলীয় তরঙ্গমুখ তৈরি করে।</p>
+          </div>
+          <div class="flex gap-3 items-start">
+            <span class="text-xl">2️⃣</span>
+            <p>এই তরঙ্গমুখ পরস্পরের কাছাকাছি দুটি চির <strong>S₁</strong> ও <strong>S₂</strong>-তে পৌঁছায়। যেহেতু S থেকে S₁ ও S₂-এর দূরত্ব সমান, তাই তরঙ্গ একই দশায় পৌঁছায়।</p>
+          </div>
+          <div class="flex gap-3 items-start">
+            <span class="text-xl">3️⃣</span>
+            <p>হাইগেনসের নীতি অনুসারে, S₁ ও S₂ এখন <strong>দুটি সুসঙ্গত গৌণ উৎস</strong> হিসেবে কাজ করে এবং নতুন গোলীয় তরঙ্গ নির্গত করে।</p>
+          </div>
+          <div class="flex gap-3 items-start">
+            <span class="text-xl">4️⃣</span>
+            <p>পর্দার উপর এই দুটি তরঙ্গ <strong>উপরিপাতিত</strong> হয়ে পর্যায়ক্রমে <strong>উজ্জ্বল ও অন্ধকার ডোরা</strong> (fringe) সৃষ্টি করে!</p>
+          </div>
+        </div>
+
+        <div class="tip-box">
+          <strong>💡 মজার বিষয়:</strong> S₁ বা S₂ — যেকোনো একটি চির বন্ধ করলে ব্যতিচার ডোরা <strong>অদৃশ্য</strong> হয়ে যায়! কারণ ব্যতিচারের জন্য দুটি সুসঙ্গত তরঙ্গের উপরিপাতন অপরিহার্য।
+        </div>
+      </div>
+
+      <!-- Fringe pattern -->
+      <div class="card bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-6">
+        <h2 class="text-2xl font-bold mb-4">🎨 ব্যতিচার ঝালর (Interference Fringes)</h2>
+        
+        <p class="mb-4 leading-relaxed">
+          পর্দার উপর যে আলোকিত ও অন্ধকার রেখাগুলো দেখা যায় তাদেরকে <strong>ব্যতিচার ঝালর</strong> বলে। একবর্ণী আলো ব্যবহার করলে:
+        </p>
+
+        <!-- Fringe Pattern Visualization -->
+        <div class="bg-[var(--content)] border border-[var(--border)] rounded-xl p-4 mb-4">
+          <canvas id="fringeCanvas" width="700" height="150" style="width:100%; border-radius: 12px;"></canvas>
+          <div class="mt-3 flex flex-col gap-2">
+            <div class="flex items-center gap-3">
+              <label class="text-sm font-medium w-32">চিরের দূরত্ব (a):</label>
+              <input type="range" id="slitSep" min="1" max="10" value="4" step="0.5" oninput="drawFringes()" class="flex-1">
+              <span id="slitSepVal" class="text-sm w-16">4.0</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <label class="text-sm font-medium w-32">পর্দার দূরত্ব (D):</label>
+              <input type="range" id="screenDist" min="1" max="10" value="5" step="0.5" oninput="drawFringes()" class="flex-1">
+              <span id="screenDistVal" class="text-sm w-16">5.0</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <label class="text-sm font-medium w-32">তরঙ্গদৈর্ঘ্য (λ):</label>
+              <input type="range" id="wavelength" min="1" max="10" value="5" step="0.5" oninput="drawFringes()" class="flex-1">
+              <span id="wavelengthVal" class="text-sm w-16">5.0</span>
+            </div>
+          </div>
+          <p class="text-xs mt-2" style="color: var(--muted-foreground);">⬆️ স্লাইডার নাড়াও এবং দেখো কীভাবে ডোরার প্রস্থ বদলায়!</p>
+        </div>
+
+        <div class="math-box">
+          <strong>ডোরার ব্যবধান সূত্র:</strong><br>
+          <span style="font-size: 1.2em;">Δx = λD/a</span><br>
+          <span class="text-sm">যেখানে λ = তরঙ্গদৈর্ঘ্য, D = পর্দার দূরত্ব, a = চিরের ব্যবধান</span>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-3 mt-4">
+          <div class="border border-[var(--border)] rounded-lg p-3 text-center">
+            <div class="text-2xl mb-1">📏</div>
+            <p class="text-sm"><strong>D বাড়ালে:</strong><br>ডোরা প্রস্থ বাড়ে</p>
+          </div>
+          <div class="border border-[var(--border)] rounded-lg p-3 text-center">
+            <div class="text-2xl mb-1">↔️</div>
+            <p class="text-sm"><strong>a কমালে:</strong><br>ডোরা প্রস্থ বাড়ে</p>
+          </div>
+          <div class="border border-[var(--border)] rounded-lg p-3 text-center">
+            <div class="text-2xl mb-1">🌈</div>
+            <p class="text-sm"><strong>λ বাড়ালে:</strong><br>ডোরা প্রস্থ বাড়ে</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SECTION 2: SIMULATION ==================== -->
+    <div id="simulation" class="section fade-in" style="display:none;">
+      <div class="card bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-6">
+        <h2 class="text-2xl font-bold mb-4">🎨 ইন্টারেক্টিভ দ্বি-চির সিমুলেশন</h2>
+        <p class="mb-4" style="color: var(--muted-foreground);">দুটি চির থেকে তরঙ্গ কীভাবে ছড়িয়ে পড়ে এবং ব্যতিচার প্যাটার্ন তৈরি করে তা দেখো:</p>
+        
+        <canvas id="simCanvas" width="700" height="450" style="width:100%; background: #0a0a2e; border-radius: 12px;"></canvas>
+        
+        <div class="mt-4 grid grid-cols-2 gap-3">
+          <div class="flex items-center gap-3">
+            <label class="text-sm font-medium">তরঙ্গদৈর্ঘ্য:</label>
+            <input type="range" id="simWavelength" min="15" max="40" value="25" step="1" oninput="updateSim()" class="flex-1">
+          </div>
+          <div class="flex items-center gap-3">
+            <label class="text-sm font-medium">চিরের দূরত্ব:</label>
+            <input type="range" id="simSlitDist" min="30" max="120" value="60" step="5" oninput="updateSim()" class="flex-1">
+          </div>
+        </div>
+        <div class="flex gap-3 mt-3">
+          <button onclick="toggleSim()" id="simToggle" class="px-4 py-2 rounded-lg text-sm font-medium" style="background: linear-gradient(135deg, #6366f1, #a855f7); color: white;">▶️ চালু করো</button>
+          <button onclick="resetSim()" class="px-4 py-2 rounded-lg text-sm font-medium border border-[var(--border)]">🔄 রিসেট</button>
+        </div>
+      </div>
+
+      <!-- Intensity Pattern -->
+      <div class="card bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-6">
+        <h2 class="text-2xl font-bold mb-4">📊 তীব্রতা বিতরণ (Intensity Distribution)</h2>
+        <p class="mb-3" style="color: var(--muted-foreground);">পর্দার উপর তীব্রতা কীভাবে পরিবর্তিত হয় তা এই গ্রাফে দেখো:</p>
+        <canvas id="intensityCanvas" width="700" height="200" style="width:100%; background: rgba(0,0,0,0.03); border-radius: 12px;"></canvas>
+        <div class="mt-2 flex justify-between text-xs" style="color: var(--muted-foreground);">
+          <span>← n = -3</span>
+          <span>কেন্দ্র (n=0)</span>
+          <span>n = 3 →</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SECTION 3: MATH ==================== -->
+    <div id="math" class="section fade-in" style="display:none;">
+      
+      <!-- Derivation 1: Phase-Path Relation -->
+      <div class="card bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-6">
+        <h2 class="text-2xl font-bold mb-4">📐 দশা পার্থক্য ও পথ পার্থক্যের সম্পর্ক</h2>
+        <p class="mb-4 leading-relaxed">এটি ব্যতিচারের <strong>সবচেয়ে গুরুত্বপূর্ণ গাণিতিক সম্পর্ক</strong>। ধাপে ধাপে বুঝি:</p>
+        
+        <div class="space-y-4">
+          <div class="flex gap-4 items-start">
+            <div class="step-number">১</div>
+            <div>
+              <strong>ধরি:</strong> S₁ ও S₂ দুটি সুসঙ্গত উৎস থেকে λ তরঙ্গদৈর্ঘ্যের একবর্ণী আলো P বিন্দুতে পৌঁছায়।<br>
+              S₁P = x₁ এবং S₂P = x₂
+            </div>
+          </div>
+          
+          <div class="flex gap-4 items-start">
+            <div class="step-number">২</div>
+            <div>
+              <strong>তরঙ্গ সমীকরণ লিখি:</strong>
+              <div class="math-box mt-2">
+                y₁ = a sin[(2π/λ)(ct − x₁)]<br>
+                y₂ = a sin[(2π/λ)(ct − x₂)]
+              </div>
+              যেখানে a = বিস্তার, c = আলোর বেগ, t = সময়
+            </div>
+          </div>
+
+          <div class="flex gap-4 items-start">
+            <div class="step-number">৩</div>
+            <div>
+              <strong>দশাকোণ বের করি:</strong><br>
+              তরঙ্গ ১ এর দশা = (2π/λ)(ct − x₁)<br>
+              তরঙ্গ ২ এর দশা = (2π/λ)(ct − x₂)
+            </div>
+          </div>
+
+          <div class="flex gap-4 items-start">
+            <div class="step-number">৪</div>
+            <div>
+              <strong>দশা পার্থক্য বের করি:</strong>
+              <div class="math-box mt-2">
+                δ = (2π/λ)(ct − x₁) − (2π/λ)(ct − x₂)<br>
+                &nbsp; = (2π/λ)(ct − x₁ − ct + x₂)<br>
+                &nbsp; = (2π/λ)(x₂ − x₁)<br><br>
+                <strong style="font-size:1.15em; color: #6366f1;">∴ δ = (2π/λ) × পথ পার্থক্য</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="highlight-box mt-4">
+          <strong>⭐ মূল সূত্র (সমীকরণ 7.7):</strong><br>
+          <span style="font-size: 1.3em; font-weight: 700;">দশা পার্থক্য = (2π/λ) × পথ পার্থক্য</span><br><br>
+          এই সম্পর্কটি মনে রাখো! এটা বলছে:<br>
+          • পথ পার্থক্য λ হলে → দশা পার্থক্য = 2π (এক পূর্ণ চক্র) → <strong>একই দশায়!</strong><br>
+          • পথ পার্থক্য λ/2 হলে → দশা পার্থক্য = π (আধা চক্র) → <strong>বিপরীত দশায়!</strong>
+        </div>
+      </div>
+
+      <!-- Derivation 2: Constructive Condition -->
+      <div class="card bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-6">
+        <h2 class="text-2xl font-bold mb-4" style="color: #16a34a;">✅ গঠনমূলক ব্যতিচারের শর্ত নির্ণয়</h2>
+        
+        <p class="mb-3">উজ্জ্বল ডোরা পেতে হলে দুটি তরঙ্গকে <strong>একই দশায়</strong> মিলিত হতে হবে।</p>
+        
+        <div class="math-box">
+          <strong>শর্ত:</strong> দশা পার্থক্য δ = 2nπ<br>
+          যেখানে n = 0, 1, 2, 3 ...<br><br>
+          
+          এখন, δ = (2π/λ) × পথ পার্থক্য<br>
+          ∴ 2nπ = (2π/λ) × (PS₂ − PS₁)<br>
+          ∴ <strong style="font-size: 1.2em;">পথ পার্থক্য = nλ</strong> &nbsp; ...(7.9)<br>
+          যেখানে n = 0, 1, 2, 3 ...
+        </div>
+
+        <div class="mt-4 space-y-2">
+          <p>🔹 n = 0 → পথ পার্থক্য = 0 → <strong>কেন্দ্রীয় উজ্জ্বল ডোরা</strong> (Central Maximum)</p>
+          <p>🔹 n = 1 → পথ পার্থক্য = λ → প্রথম উজ্জ্বল ডোরা</p>
+          <p>🔹 n = 2 → পথ পার্থক্য = 2λ → দ্বিতীয় উজ্জ্বল ডোরা</p>
+          <p>🔹 n = 3 → পথ পার্থক্য = 3λ → তৃতীয় উজ্জ্বল ডোরা</p>
+        </div>
+      </div>
+
+      <!-- Derivation 3: Destructive Condition -->
+      <div class="card bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-6">
+        <h2 class="text-2xl font-bold mb-4" style="color: #ef4444;">❌ ধ্বংসাত্মক ব্যতিচারের শর্ত নির্ণয়</h2>
+        
+        <p class="mb-3">অন্ধকার ডোরা পেতে হলে দুটি তরঙ্গকে <strong>বিপরীত দশায়</strong> মিলিত হতে হবে।</p>
+        
+        <div class="math-box">
+          <strong>শর্ত:</strong> দশা পার্থক্য δ = (2n+1)π<br>
+          যেখানে n = 0, 1, 2, 3 ...<br><br>
+          
+          এখন, (2π/λ) × পথ পার্থক্য = (2n+1)π<br>
+          ∴ <strong style="font-size: 1.2em;">পথ পার্থক্য = (2n+1)(λ/2) = (n + ½)λ</strong> &nbsp; ...(7.10)<br>
+          যেখানে n = 0, 1, 2, 3 ...
+        </div>
+
+        <div class="mt-4 space-y-2">
+          <p>🔸 n = 0 → পথ পার্থক্য = λ/2 → প্রথম অন্ধকার ডোরা</p>
+          <p>🔸 n = 1 → পথ পার্থক্য = 3λ/2 → দ্বিতীয় অন্ধকার ডোরা</p>
+          <p>🔸 n = 2 → পথ পার্থক্য = 5λ/2 → তৃতীয় অন্ধকার ডোরা</p>
+        </div>
+
+        <div class="tip-box mt-4">
+          <strong>⚠️ বইয়ের সাথে পার্থক্য:</strong> তোমার বইতে ধ্বংসাত্মকের জন্য n = 1, 2, 3 ধরা হয়েছে এবং প্রথম অন্ধকারের পথপার্থক্য 3λ/2 দেখানো হয়েছে। তবে অনেক রেফারেন্স বইতে n = 0, 1, 2 ধরা হয় এবং প্রথম অন্ধকারের পথপার্থক্য λ/2। HSC-তে <strong>বইয়ের convention অনুসরণ করো</strong>, কিন্তু বুঝে রাখো উভয়ই সঠিক — শুধু n-এর মান ভিন্নভাবে গোনা হচ্ছে।
+        </div>
+      </div>
+
+      <!-- Derivation 4: Fringe Width -->
+      <div class="card bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-6">
+        <h2 class="text-2xl font-bold mb-4">📏 ডোরার ব্যবধান নির্ণয় (Fringe Width Derivation)</h2>
+        
+        <p class="mb-4">এটি HSC পরীক্ষায় <strong>সবচেয়ে বেশি আসা</strong> প্রমাণগুলোর একটি। বিস্তারিত দেখি:</p>
+
+        <!-- Geometry Diagram -->
+        <div class="bg-[var(--content)] border border-[var(--border)] rounded-xl p-4 mb-4">
+          <canvas id="geometryCanvas" width="700" height="280" style="width:100%; background: rgba(0,0,0,0.03); border-radius: 12px;"></canvas>
+        </div>
+        
+        <div class="space-y-4">
+          <div class="flex gap-4 items-start">
+            <div class="step-number">১</div>
+            <div>
+              <strong>জ্যামিতিক সেটআপ:</strong><br>
+              • S₁S₂ = a (দুটি চিরের মধ্যবর্তী দূরত্ব)<br>
+              • পর্দার দূরত্ব = D (চির থেকে পর্দা)<br>
+              • O = কেন্দ্রীয় চরম (Central maximum)<br>
+              • P = O থেকে n-তম উজ্জ্বল ডোরার অবস্থান<br>
+              • OP = xₙ
+            </div>
+          </div>
+
+          <div class="flex gap-4 items-start">
+            <div class="step-number">২</div>
+            <div>
+              <strong>পথ পার্থক্য নির্ণয়:</strong><br>
+              S₁ থেকে S₂P-এর উপর B লম্ব আঁকি যেন S₁P = BP<br>
+              <div class="math-box mt-2">
+                পথ পার্থক্য = PS₂ − PS₁ = PS₂ − PB = S₂B<br><br>
+                △S₁BS₂ ত্রিভুজে:<br>
+                sin θ = S₂B / S₁S₂<br>
+                ∴ S₂B = a sin θ<br><br>
+                <strong>∴ পথ পার্থক্য = a sin θ</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex gap-4 items-start">
+            <div class="step-number">৩</div>
+            <div>
+              <strong>গঠনমূলক ব্যতিচারের শর্ত প্রয়োগ:</strong><br>
+              <div class="math-box mt-2">
+                a sin θ = nλ &nbsp; ...(7.11)<br><br>
+                θ খুব ছোট হওয়ায়: sin θ ≈ tan θ = xₙ/D<br><br>
+                ∴ a(xₙ/D) = nλ<br>
+                <strong style="font-size: 1.15em;">∴ xₙ = nλD/a</strong> &nbsp; ...(7.12)
+              </div>
+            </div>
+          </div>
+
+          <div class="flex gap-4 items-start">
+            <div class="step-number">৪</div>
+            <div>
+              <strong>ডোরার ব্যবধান নির্ণয়:</strong><br>
+              <div class="math-box mt-2">
+                n-তম ডোরার দূরত্ব: xₙ = nλD/a<br>
+                (n−1)-তম ডোরার দূরত্ব: x_{n−1} = (n−1)λD/a<br><br>
+                
+                ব্যবধান Δx = xₙ − x_{n−1}<br>
+                = nλD/a − (n−1)λD/a<br>
+                = (λD/a)[n − (n−1)]<br>
+                = (λD/a)(1)<br><br>
+                <strong style="font-size: 1.3em; color: #6366f1;">∴ Δx = λD/a</strong> &nbsp; ...(7.14)
+              </div>
+            </div>
+          </div>
+
+          <div class="flex gap-4 items-start">
+            <div class="step-number">৫</div>
+            <div>
+              <strong>ডোরা প্রস্থ:</strong><br>
+              <div class="math-box mt-2">
+                ডোরা প্রস্থ = ব্যবধানের অর্ধেক<br>
+                <strong style="font-size: 1.2em;">x = λD/(2a)</strong> &nbsp; ...(7.15)
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="highlight-box mt-4">
+          <strong>🎯 গুরুত্বপূর্ণ পর্যবেক্ষণ:</strong><br>
+          ① Δx-এ n নেই! তাই সব উজ্জ্বল ডোরার ব্যবধান <strong>সমান</strong>। একইভাবে সব অন্ধকার ডোরার ব্যবধানও সমান।<br>
+          ② λ বাড়লে ডোরা চওড়া হয় (লাল আলোর ডোরা বেগুনির চেয়ে চওড়া)<br>
+          ③ a কমলে ডোরা চওড়া হয়<br>
+          ④ D বাড়লে ডোরা চওড়া হয়
+        </div>
+      </div>
+
+      <!-- Intensity Formula (Advanced) -->
+      <div class="card bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-6">
+        <h2 class="text-2xl font-bold mb-4">⚡ তীব্রতার সূত্র (বইয়ের বাইরে — গুরুত্বপূর্ণ!)</h2>
+        
+        <p class="mb-3">বইতে সরাসরি দেওয়া নেই, কিন্তু HSC ম্যাথে কাজে লাগে:</p>
+
+        <div class="math-box">
+          <strong>সমান বিস্তারের দুটি তরঙ্গের ক্ষেত্রে:</strong><br><br>
+          
+          যদি প্রতিটি তরঙ্গের তীব্রতা = I₀ হয়,<br>
+          তাহলে লব্ধি তীব্রতা:<br><br>
+          <strong style="font-size: 1.2em;">I = 4I₀ cos²(δ/2)</strong><br><br>
+          যেখানে δ = দশা পার্থক্য = (2π/λ) × পথ পার্থক্য
+        </div>
+
+        <div class="mt-4 space-y-2">
+          <p>📌 <strong>সর্বোচ্চ তীব্রতা (I_max):</strong> যখন cos²(δ/2) = 1, অর্থাৎ δ = 0, 2π, 4π...<br>
+          → I_max = 4I₀ (প্রতিটি তরঙ্গের তীব্রতার <strong>৪ গুণ</strong>!)</p>
+          <p>📌 <strong>সর্বনিম্ন তীব্রতা (I_min):</strong> যখন cos²(δ/2) = 0, অর্থাৎ δ = π, 3π...<br>
+          → I_min = 0</p>
+        </div>
+
+        <div class="math-box mt-4">
+          <strong>অসমান বিস্তারের ক্ষেত্রে (a₁ ≠ a₂):</strong><br><br>
+          I_max = (a₁ + a₂)² = (√I₁ + √I₂)²<br>
+          I_min = (a₁ − a₂)² = (√I₁ − √I₂)²<br><br>
+          <strong>I_max / I_min = [(a₁ + a₂)/(a₁ − a₂)]²</strong>
+        </div>
+
+        <div class="exam-box mt-4">
+          <strong>🎯 পরীক্ষার প্রশ্ন প্যাটার্ন:</strong> "দুটি সুসঙ্গত উৎসের তীব্রতার অনুপাত I₁:I₂ = 4:1 হলে, I_max : I_min নির্ণয় করো।" — এই ধরনের প্রশ্ন প্রায়ই আসে!
+        </div>
+      </div>
+
+      <!-- Angular Position -->
+      <div class="card bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-6">
+        <h2 class="text-2xl font-bold mb-4">🔄 কৌণিক অবস্থান (Angular Position)</h2>
+        
+        <div class="math-box">
+          <strong>n-তম উজ্জ্বল ডোরার কৌণিক অবস্থান:</strong><br>
+          sin θₙ ≈ θₙ = nλ/a<br><br>
+          
+          <strong>n-তম অন্ধকার ডোরার কৌণিক অবস্থান:</strong><br>
+          sin θₙ ≈ θₙ = (2n+1)λ/(2a)<br><br>
+          
+          <strong>কৌণিক ডোরা ব্যবধান:</strong><br>
+          Δθ = λ/a
+        </div>
+      </div>
+
+      <!-- Summary Table -->
+      <div class="card bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-6">
+        <h2 class="text-2xl font-bold mb-4">📊 সমস্ত সূত্রের সারণি</h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm border-collapse">
+            <thead>
+              <tr style="background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(168,85,247,0.1));">
+                <th class="border border-[var(--border)] p-3 text-left">বিষয়</th>
+                <th class="border border-[var(--border)] p-3 text-left">সূত্র</th>
+                <th class="border border-[var(--border)] p-3 text-left">শর্ত</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="border border-[var(--border)] p-3">দশা-পথ সম্পর্ক</td>
+                <td class="border border-[var(--border)] p-3 font-mono">δ = (2π/λ) × Δ</td>
+                <td class="border border-[var(--border)] p-3">সর্বদা প্রযোজ্য</td>
+              </tr>
+              <tr style="background: rgba(34,197,94,0.05);">
+                <td class="border border-[var(--border)] p-3">গঠনমূলক (উজ্জ্বল)</td>
+                <td class="border border-[var(--border)] p-3 font-mono">Δ = nλ</td>
+                <td class="border border-[var(--border)] p-3">n = 0, 1, 2, 3...</td>
+              </tr>
+              <tr style="background: rgba(239,68,68,0.05);">
+                <td class="border border-[var(--border)] p-3">ধ্বংসাত্মক (অন্ধকার)</td>
+                <td class="border border-[var(--border)] p-3 font-mono">Δ = (n+½)λ</td>
+                <td class="border border-[var(--border)] p-3">n = 0, 1, 2, 3...</td>
+              </tr>
+              <tr>
+                <td class="border border-[var(--border)] p-3">n-তম উজ্জ্বল ডোরার দূরত্ব</td>
+                <td class="border border-[var(--border)] p-3 font-mono">xₙ = nλD/a</td>
+                <td class="border border-[var(--border)] p-3">কেন্দ্র থেকে</td>
+              </tr>
+              <tr>
+                <td class="border border-[var(--border)] p-3">ডোরার ব্যবধান</td>
+                <td class="border border-[var(--border)] p-3 font-mono">Δx = λD/a</td>
+                <td class="border border-[var(--border)] p-3">পরপর দুটি একই ধরনের ডোরা</td>
+              </tr>
+              <tr>
+                <td class="border border-[var(--border)] p-3">ডোরা প্রস্থ</td>
+                <td class="border border-[var(--border)] p-3 font-mono">x = λD/(2a)</td>
+                <td class="border border-[var(--border)] p-3">ব্যবধানের অর্ধেক</td>
+              </tr>
+              <tr>
+                <td class="border border-[var(--border)] p-3">লব্ধি তীব্রতা</td>
+                <td class="border border-[var(--border)] p-3 font-mono">I = 4I₀cos²(δ/2)</td>
+                <td class="border border-[var(--border)] p-3">সমান বিস্তারে</td>
+              </tr>
+              <tr>
+                <td class="border border-[var(--border)] p-3">I_max : I_min</td>
+                <td class="border border-[var(--border)] p-3 font-mono">[(a₁+a₂)/(a₁−a₂)]²</td>
+                <td class="border border-[var(--border)] p-3">অসমান বিস্তারে</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SECTION 4: PROBLEMS ==================== -->
+    <div id="problems" class="section fade-in" style="display:none;">
+      
+      <div class="card bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-6">
+        <h2 class="text-2xl font-bold mb-2">✏️ সমাধানসহ গাণিতিক সমস্যা</h2>
+        <p class="mb-4" style="color: var(--muted-foreground);">HSC পরীক্ষায় যে ধরনের সমস্যা আসে তার নমুনা ও বিস্তারিত সমাধান:</p>
+
+        <!-- Problem 1 -->
+        <div class="problem-card" onclick="this.classList.toggle('open')">
+          <div class="problem-header">
+            <div>
+              <span class="text-xs font-medium px-2 py-1 rounded" style="background: rgba(34,197,94,0.2); color: #16a34a;">সহজ</span>
+              <strong class="ml-2">সমস্যা ১: ডোরার ব্যবধান নির্ণয়</strong>
+            </div>
+            <span class="text-xl">▼</span>
+          </div>
+          <div class="problem-body">
+            <div class="highlight-box mb-3">
+              <strong>প্রশ্ন:</strong> ইয়ং-এর দ্বি-চির পরীক্ষায় চির দুটির মধ্যবর্তী দূরত্ব 0.5 mm, পর্দার দূরত্ব 1 m এবং ব্যবহৃত আলোর তরঙ্গদৈর্ঘ্য 5000 Å। পর্দায় পরপর দুটি উজ্জ্বল ডোরার মধ্যবর্তী দূরত্ব নির্ণয় করো।
+            </div>
+            <div class="math-box">
+              <strong>সমাধান:</strong><br><br>
+              <strong>দেওয়া আছে:</strong><br>
+              a = 0.5 mm = 0.5 × 10⁻³ m = 5 × 10⁻⁴ m<br>
+              D = 1 m<br>
+              λ = 5000 Å = 5000 × 10⁻¹⁰ m = 5 × 10⁻⁷ m<br><br>
+              
+              <strong>নির্ণেয়:</strong> Δx = ?<br><br>
+              
+              <strong>সূত্র:</strong> Δx = λD/a<br><br>
+              
+              Δx = (5 × 10⁻⁷ × 1) / (5 × 10⁻⁴)<br>
+              = 5 × 10⁻⁷ / 5 × 10⁻⁴<br>
+              = 10⁻³ m<br>
+              = <strong>1 mm</strong> (উত্তর)
+            </div>
+          </div>
+        </div>
+
+        <!-- Problem 2 -->
+        <div class="problem-card" onclick="this.classList.toggle('open')">
+          <div class="problem-header">
+            <div>
+              <span class="text-xs font-medium px-2 py-1 rounded" style="background: rgba(234,179,8,0.2); color: #ca8a04;">মাঝারি</span>
+              <strong class="ml-2">সমস্যা ২: তরঙ্গদৈর্ঘ্য নির্ণয়</strong>
+            </div>
+            <span class="text-xl">▼</span>
+          </div>
+          <div class="problem-body">
+            <div class="highlight-box mb-3">
+              <strong>প্রশ্ন:</strong> ইয়ং-এর দ্বি-চির পরীক্ষায় দুটি চিরের ব্যবধান 0.2 mm এবং পর্দার দূরত্ব 1.5 m। পর্দায় 5তম উজ্জ্বল ডোরার দূরত্ব কেন্দ্র থেকে 18.75 mm হলে আলোর তরঙ্গদৈর্ঘ্য নির্ণয় করো।
+            </div>
+            <div class="math-box">
+              <strong>সমাধান:</strong><br><br>
+              <strong>দেওয়া আছে:</strong><br>
+              a = 0.2 mm = 2 × 10⁻⁴ m<br>
+              D = 1.5 m<br>
+              n = 5<br>
+              x₅ = 18.75 mm = 18.75 × 10⁻³ m<br><br>
+              
+              <strong>সূত্র:</strong> xₙ = nλD/a<br>
+              ∴ λ = xₙ × a / (nD)<br><br>
+              
+              λ = (18.75 × 10⁻³ × 2 × 10⁻⁴) / (5 × 1.5)<br>
+              = (37.5 × 10⁻⁷) / 7.5<br>
+              = 5 × 10⁻⁷ m<br>
+              = <strong>5000 Å = 500 nm</strong> (উত্তর)
+            </div>
+          </div>
+        </div>
+
+        <!-- Problem 3 -->
+        <div class="problem-card" onclick="this.classList.toggle('open')">
+          <div class="problem-header">
+            <div>
+              <span class="text-xs font-medium px-2 py-1 rounded" style="background: rgba(234,179,8,0.2); color: #ca8a04;">মাঝারি</span>
+              <strong class="ml-2">সমস্যা ৩: পথ পার্থক্য ও ডোরার ধরন</strong>
+            </div>
+            <span class="text-xl">▼</span>
+          </div>
+          <div class="problem-body">
+            <div class="highlight-box mb-3">
+              <strong>প্রশ্ন:</strong> 6000 Å তরঙ্গদৈর্ঘ্যের আলো ব্যবহার করে দ্বি-চির পরীক্ষা করা হচ্ছে। পর্দার কোনো বিন্দুতে পথ পার্থক্য 1.8 × 10⁻⁶ m হলে, ঐ বিন্দুতে উজ্জ্বল না অন্ধকার ডোরা পাওয়া যাবে? কততম ডোরা?
+            </div>
+            <div class="math-box">
+              <strong>সমাধান:</strong><br><br>
+              <strong>দেওয়া আছে:</strong><br>
+              λ = 6000 Å = 6 × 10⁻⁷ m<br>
+              পথ পার্থক্য Δ = 1.8 × 10⁻⁶ m<br><br>
+              
+              পথ পার্থক্য / λ = (1.8 × 10⁻⁶) / (6 × 10⁻⁷) = 3<br><br>
+              
+              যেহেতু Δ = 3λ = nλ (যেখানে n = 3, একটি পূর্ণ সংখ্যা)<br><br>
+              
+              ∴ গঠনমূলক ব্যতিচার ঘটবে এবং ঐ বিন্দুতে <strong>৩য় উজ্জ্বল ডোরা</strong> পাওয়া যাবে। (উত্তর)
+            </div>
+          </div>
+        </div>
+
+        <!-- Problem 4 -->
+        <div class="problem-card" onclick="this.classList.toggle('open')">
+          <div class="problem-header">
+            <div>
+              <span class="text-xs font-medium px-2 py-1 rounded" style="background: rgba(239,68,68,0.2); color: #ef4444;">কঠিন</span>
+              <strong class="ml-2">সমস্যা ৪: তীব্রতার অনুপাত (I_max/I_min)</strong>
+            </div>
+            <span class="text-xl">▼</span>
+          </div>
+          <div class="problem-body">
+            <div class="highlight-box mb-3">
+              <strong>প্রশ্ন:</strong> দুটি সুসঙ্গত উৎসের বিস্তারের অনুপাত 3:1। ব্যতিচার প্যাটার্নে সর্বোচ্চ ও সর্বনিম্ন তীব্রতার অনুপাত নির্ণয় করো।
+            </div>
+            <div class="math-box">
+              <strong>সমাধান:</strong><br><br>
+              <strong>দেওয়া আছে:</strong> a₁ : a₂ = 3 : 1<br>
+              ধরি, a₁ = 3k, a₂ = k<br><br>
+              
+              <strong>সর্বোচ্চ তীব্রতা:</strong> (গঠনমূলক ব্যতিচারে)<br>
+              I_max = (a₁ + a₂)² = (3k + k)² = (4k)² = 16k²<br><br>
+              
+              <strong>সর্বনিম্ন তীব্রতা:</strong> (ধ্বংসাত্মক ব্যতিচারে)<br>
+              I_min = (a₁ − a₂)² = (3k − k)² = (2k)² = 4k²<br><br>
+              
+              ∴ I_max : I_min = 16k² : 4k² = <strong>4 : 1</strong> (উত্তর)
+            </div>
+          </div>
+        </div>
+
+        <!-- Problem 5 -->
+        <div class="problem-card" onclick="this.classList.toggle('open')">
+          <div class="problem-header">
+            <div>
+              <span class="text-xs font-medium px-2 py-1 rounded" style="background: rgba(239,68,68,0.2); color: #ef4444;">কঠিন</span>
+              <strong class="ml-2">সমস্যা ৫: তীব্রতা অনুপাত থেকে বিস্তার</strong>
+            </div>
+            <span class="text-xl">▼</span>
+          </div>
+          <div class="problem-body">
+            <div class="highlight-box mb-3">
+              <strong>প্রশ্ন:</strong> দুটি সুসঙ্গত উৎসের তীব্রতার অনুপাত 4:1। I_max : I_min নির্ণয় করো।
+            </div>
+            <div class="math-box">
+              <strong>সমাধান:</strong><br><br>
+              <strong>দেওয়া আছে:</strong> I₁ : I₂ = 4 : 1<br><br>
+              
+              যেহেতু I ∝ a², তাই a ∝ √I<br>
+              ∴ a₁ : a₂ = √4 : √1 = 2 : 1<br><br>
+              
+              I_max = (a₁ + a₂)² = (2 + 1)² = 9<br>
+              I_min = (a₁ − a₂)² = (2 − 1)² = 1<br><br>
+              
+              ∴ I_max : I_min = <strong>9 : 1</strong> (উত্তর)<br><br>
+              
+              <em>বিকল্প পদ্ধতি:</em><br>
+              I_max/I_min = [(√I₁ + √I₂)/(√I₁ − √I₂)]²<br>
+              = [(√4 + √1)/(√4 − √1)]²<br>
+              = [(2+1)/(2−1)]² = 9/1 = <strong>9 : 1</strong> ✓
+            </div>
+          </div>
+        </div>
+
+        <!-- Problem 6 -->
+        <div class="problem-card" onclick="this.classList.toggle('open')">
+          <div class="problem-header">
+            <div>
+              <span class="text-xs font-medium px-2 py-1 rounded" style="background: rgba(234,179,8,0.2); color: #ca8a04;">মাঝারি</span>
+              <strong class="ml-2">সমস্যা ৬: চিরের দূরত্ব নির্ণয়</strong>
+            </div>
+            <span class="text-xl">▼</span>
+          </div>
+          <div class="problem-body">
+            <div class="highlight-box mb-3">
+              <strong>প্রশ্ন:</strong> 5890 Å তরঙ্গদৈর্ঘ্যের সোডিয়াম আলো ব্যবহার করে দ্বি-চির পরীক্ষা করা হচ্ছে। পর্দা চির থেকে 1 m দূরে এবং ডোরার ব্যবধান 0.589 mm। চির দুটির মধ্যবর্তী দূরত্ব নির্ণয় করো।
+            </div>
+            <div class="math-box">
+              <strong>সমাধান:</strong><br><br>
+              <strong>দেওয়া আছে:</strong><br>
+              λ = 5890 Å = 5.89 × 10⁻⁷ m<br>
+              D = 1 m<br>
+              Δx = 0.589 mm = 5.89 × 10⁻⁴ m<br><br>
+              
+              <strong>সূত্র:</strong> Δx = λD/a<br>
+              ∴ a = λD/Δx<br><br>
+              
+              a = (5.89 × 10⁻⁷ × 1) / (5.89 × 10⁻⁴)<br>
+              = 10⁻³ m<br>
+              = <strong>1 mm</strong> (উত্তর)
+            </div>
+          </div>
+        </div>
+
+        <!-- Problem 7 -->
+        <div class="problem-card" onclick="this.classList.toggle('open')">
+          <div class="problem-header">
+            <div>
+              <span class="text-xs font-medium px-2 py-1 rounded" style="background: rgba(239,68,68,0.2); color: #ef4444;">কঠিন</span>
+              <strong class="ml-2">সমস্যা ৭: দশা পার্থক্য ও তীব্রতা</strong>
+            </div>
+            <span class="text-xl">▼</span>
+          </div>
+          <div class="problem-body">
+            <div class="highlight-box mb-3">
+              <strong>প্রশ্ন:</strong> দ্বি-চির পরীক্ষায় পর্দার কোনো বিন্দুতে দুটি তরঙ্গের দশা পার্থক্য π/3 রেডিয়ান। প্রতিটি চির থেকে ঐ বিন্দুতে তীব্রতা I₀ হলে, ঐ বিন্দুতে লব্ধি তীব্রতা কত?
+            </div>
+            <div class="math-box">
+              <strong>সমাধান:</strong><br><br>
+              <strong>দেওয়া আছে:</strong><br>
+              δ = π/3 rad<br>
+              প্রতিটি তরঙ্গের তীব্রতা = I₀<br><br>
+              
+              <strong>সূত্র:</strong> I = 4I₀ cos²(δ/2)<br><br>
+              
+              I = 4I₀ cos²(π/6)<br>
+              = 4I₀ × (√3/2)²<br>
+              = 4I₀ × 3/4<br>
+              = <strong>3I₀</strong> (উত্তর)<br><br>
+              
+              <em>অর্থাৎ তীব্রতা সর্বোচ্চ (4I₀) এর 75%!</em>
+            </div>
+          </div>
+        </div>
+
+        <!-- Problem 8 -->
+        <div class="problem-card" onclick="this.classList.toggle('open')">
+          <div class="problem-header">
+            <div>
+              <span class="text-xs font-medium px-2 py-1 rounded" style="background: rgba(234,179,8,0.2); color: #ca8a04;">মাঝারি</span>
+              <strong class="ml-2">সমস্যা ৮: পানিতে ব্যতিচার</strong>
+            </div>
+            <span class="text-xl">▼</span>
+          </div>
+          <div class="problem-body">
+            <div class="highlight-box mb-3">
+              <strong>প্রশ্ন:</strong> বায়ুতে ডোরার ব্যবধান 1 mm। পুরো যন্ত্রটি μ = 1.33 প্রতিসরাঙ্কের পানিতে ডোবালে ডোরার ব্যবধান কত হবে?
+            </div>
+            <div class="math-box">
+              <strong>সমাধান:</strong><br><br>
+              পানিতে তরঙ্গদৈর্ঘ্য: λ' = λ/μ<br><br>
+              
+              বায়ুতে ডোরা ব্যবধান: Δx = λD/a<br>
+              পানিতে ডোরা ব্যবধান: Δx' = λ'D/a = (λ/μ)D/a = Δx/μ<br><br>
+              
+              Δx' = 1/1.33 = <strong>0.75 mm</strong> (উত্তর)<br><br>
+              
+              <em>⚡ মজার বিষয়: পানিতে তরঙ্গদৈর্ঘ্য কমে যায়, তাই ডোরা সংকীর্ণ হয়!</em>
+            </div>
+          </div>
+        </div>
+
+        <!-- Problem 9 -->
+        <div class="problem-card" onclick="this.classList.toggle('open')">
+          <div class="problem-header">
+            <div>
+              <span class="text-xs font-medium px-2 py-1 rounded" style="background: rgba(99,102,241,0.2); color: #6366f1;">ক্লাসিক HSC</span>
+              <strong class="ml-2">সমস্যা ৯: শর্ত প্রমাণ (প্রমাণ-ভিত্তিক)</strong>
+            </div>
+            <span class="text-xl">▼</span>
+          </div>
+          <div class="problem-body">
+            <div class="highlight-box mb-3">
+              <strong>প্রশ্ন:</strong> দ্বি-চির পরীক্ষায় দেখাও যে, পরপর দুটি উজ্জ্বল ডোরার ব্যবধান Δx = λD/a।
+            </div>
+            <div class="math-box">
+              <strong>প্রমাণ:</strong><br><br>
+              ধরি, দুটি চির S₁ ও S₂-এর মধ্যবর্তী দূরত্ব = a<br>
+              চির থেকে পর্দার দূরত্ব = D<br>
+              O = কেন্দ্রীয় উজ্জ্বল ডোরা<br><br>
+              
+              P বিন্দু O থেকে xₙ দূরে n-তম উজ্জ্বল ডোরা।<br><br>
+              
+              P বিন্দুতে পথ পার্থক্য = a sin θ<br>
+              [যেখানে θ হলো OP রেখা এবং পর্দার লম্ব AO-এর মধ্যবর্তী কোণ]<br><br>
+              
+              গঠনমূলক ব্যতিচারের শর্ত: a sin θ = nλ<br><br>
+              
+              θ ক্ষুদ্র হওয়ায়: sin θ ≈ tan θ = xₙ/D<br><br>
+              
+              ∴ a × xₙ/D = nλ<br>
+              ∴ xₙ = nλD/a ... (i)<br><br>
+              
+              একইভাবে, (n+1)-তম উজ্জ্বল ডোরার দূরত্ব:<br>
+              x_{n+1} = (n+1)λD/a ... (ii)<br><br>
+              
+              (ii) − (i):<br>
+              Δx = x_{n+1} − xₙ<br>
+              = (n+1)λD/a − nλD/a<br>
+              = λD/a × [(n+1) − n]<br><br>
+              
+              <strong style="font-size: 1.2em;">∴ Δx = λD/a (প্রমাণিত)</strong>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================== SECTION 5: HSC TIPS ==================== -->
+    <div id="hsc" class="section fade-in" style="display:none;">
+      
+      <div class="card bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-6">
+        <h2 class="text-2xl font-bold mb-4">🎓 HSC পরীক্ষার জন্য গুরুত্বপূর্ণ টিপস</h2>
+
+        <h3 class="text-lg font-semibold mb-3 mt-2">📝 কী ধরনের প্রশ্ন আসে?</h3>
+        
+        <div class="space-y-3 mb-6">
+          <div class="border border-[var(--border)] rounded-xl p-4" style="background: rgba(99,102,241,0.05);">
+            <strong>১. জ্ঞানমূলক (Knowledge):</strong>
+            <ul class="list-disc list-inside mt-2 text-sm space-y-1">
+              <li>সুসঙ্গত উৎস কী? ব্যতিচার কী?</li>
+              <li>গঠনমূলক ও ধ্বংসাত্মক ব্যতিচারের পার্থক্য</li>
+              <li>ব্যতিচারের শর্ত কী কী?</li>
+              <li>চির কী?</li>
+            </ul>
+          </div>
+          
+          <div class="border border-[var(--border)] rounded-xl p-4" style="background: rgba(168,85,247,0.05);">
+            <strong>২. অনুধাবনমূলক (Understanding):</strong>
+            <ul class="list-disc list-inside mt-2 text-sm space-y-1">
+              <li>দুটি আলাদা বাল্ব কেন সুসঙ্গত উৎস নয় — ব্যাখ্যা করো</li>
+              <li>দশা পার্থক্য ও পথ পার্থক্যের সম্পর্ক ব্যাখ্যা করো</li>
+              <li>কেন্দ্রীয় উজ্জ্বল ডোরা কেন সবচেয়ে উজ্জ্বল?</li>
+              <li>একটি চির বন্ধ করলে কী ঘটবে?</li>
+            </ul>
+          </div>
+
+          <div class="border border-[var(--border)] rounded-xl p-4" style="background: rgba(234,179,8,0.05);">
+            <strong>৩. প্রয়োগমূলক (Application — গাণিতিক সমস্যা):</strong>
+            <ul class="list-disc list-inside mt-2 text-sm space-y-1">
+              <li>Δx = λD/a ব্যবহার করে ডোরার ব্যবধান/তরঙ্গদৈর্ঘ্য/চিরের দূরত্ব নির্ণয়</li>
+              <li>xₙ = nλD/a ব্যবহার করে n-তম ডোরার দূরত্ব নির্ণয়</li>
+              <li>পথ পার্থক্য দেওয়া থাকলে কোন ধরনের ডোরা ও কততম তা বলা</li>
+              <li>I_max : I_min নির্ণয়</li>
+              <li>ভিন্ন মাধ্যমে (পানি) ডোরার ব্যবধান</li>
+            </ul>
+          </div>
+
+          <div class="border border-[var(--border)] rounded-xl p-4" style="background: rgba(239,68,68,0.05);">
+            <strong>৪. উচ্চতর দক্ষতামূলক (Higher Order):</strong>
+            <ul class="list-disc list-inside mt-2 text-sm space-y-1">
+              <li>Δx = λD/a সূত্র প্রমাণ করো</li>
+              <li>গঠনমূলক ও ধ্বংসাত্মক ব্যতিচারের শর্ত নির্ণয় করো</li>
+              <li>দশা পার্থক্য ও পথ পার্থক্যের সম্পর্ক প্রতিষ্ঠা করো</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-6">
+        <h2 class="text-2xl font-bold mb-4">⚡ দ্রুত মনে রাখার কৌশল</h2>
+        
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="tip-box">
+            <strong>🧠 সূত্র মনে রাখা:</strong><br>
+            "ল্যামডা ডি বাই এ" (λD/a)<br>
+            → <strong>ল</strong>ম্বা <strong>ড</strong>রা <strong>আ</strong>সে<br>
+            (লম্বা = λ বড়, ডরা = D বড়, আসে = a ছোট হলে ডোরা বড় হয়!)
+          </div>
+          
+          <div class="tip-box">
+            <strong>🧠 উজ্জ্বল vs অন্ধকার:</strong><br>
+            উজ্জ্বল → পূর্ণ (nλ) → "<strong>পূর্ণ</strong>চন্দ্র <strong>উজ্জ্বল</strong>"<br>
+            অন্ধকার → অর্ধ ((n+½)λ) → "<strong>অর্ধ</strong>চন্দ্র <strong>অন্ধকার</strong>"
+          </div>
+        </div>
+        
+        <div class="exam-box mt-4">
+          <strong>🚨 সাধারণ ভুল যেগুলো এড়াও:</strong>
+          <ul class="list-disc list-inside mt-2 space-y-1">
+            <li>Å (অ্যাংস্ট্রম) কে m-এ রূপান্তর ভুলে যাওয়া (1 Å = 10⁻¹⁰ m)</li>
+            <li>mm কে m-এ রূপান্তর ভুলে যাওয়া (1 mm = 10⁻³ m)</li>
+            <li>nm কে m-এ রূপান্তর ভুলে যাওয়া (1 nm = 10⁻⁹ m)</li>
+            <li>ডোরা প্রস্থ (λD/2a) আর ডোরার ব্যবধান (λD/a) গুলিয়ে ফেলা</li>
+            <li>গঠনমূলকে nλ এবং ধ্বংসাত্মকে (n+½)λ — উলটো লেখা</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-6">
+        <h2 class="text-2xl font-bold mb-4">🔥 বইয়ের বাইরে — যা জানলে এগিয়ে থাকবে</h2>
+        
+        <div class="space-y-4">
+          <div class="border border-[var(--border)] rounded-xl p-4">
+            <h4 class="font-semibold mb-2">১. শক্তি সংরক্ষণ ও ব্যতিচার</h4>
+            <p class="text-sm">অনেকের মনে প্রশ্ন জাগে: ধ্বংসাত্মক ব্যতিচারে শক্তি কোথায় যায়? উত্তর: শক্তি ধ্বংস হয় না! অন্ধকার ডোরায় যে শক্তি কম, সেই শক্তি উজ্জ্বল ডোরায় চলে যায়। মোট শক্তি একই থাকে — শুধু পুনর্বণ্টন হয়!</p>
+          </div>
+
+          <div class="border border-[var(--border)] rounded-xl p-4">
+            <h4 class="font-semibold mb-2">২. সাদা আলোতে ব্যতিচার</h4>
+            <p class="text-sm">সাদা আলো ব্যবহার করলে কেন্দ্রীয় ডোরা সাদা থাকে (সব রঙের পথপার্থক্য 0)। কিন্তু পাশের ডোরাগুলোতে রঙিন ঝালর দেখা যায় কারণ বিভিন্ন রঙের λ ভিন্ন → ডোরার অবস্থান ভিন্ন। বেগুনি ভেতরে, লাল বাইরে!</p>
+          </div>
+
+          <div class="border border-[var(--border)] rounded-xl p-4">
+            <h4 class="font-semibold mb-2">৩. কৌণিক ডোরা ব্যবধান</h4>
+            <p class="text-sm">Δθ = λ/a — এটি D-এর উপর নির্ভর করে না! তাই পর্দা যত দূরেই রাখো, কৌণিক ব্যবধান একই থাকবে (শুধু রৈখিক ব্যবধান বাড়বে)।</p>
+          </div>
+
+          <div class="border border-[var(--border)] rounded-xl p-4">
+            <h4 class="font-semibold mb-2">৪. একটি চিরের প্রভাব</h4>
+            <p class="text-sm">একটি চির বন্ধ করলে ব্যতিচার থামে এবং শুধু একটি চিরের অপবর্তন (diffraction) প্যাটার্ন দেখা যায় — যা সম্পূর্ণ আলাদা!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Reference Card -->
+      <div class="card bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-6 pulse-glow">
+        <h2 class="text-2xl font-bold mb-4 text-center">⚡ পরীক্ষার আগে দ্রুত দেখে নাও!</h2>
+        
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
+          <div class="border border-[var(--border)] rounded-lg p-3">
+            <div class="text-xs" style="color: var(--muted-foreground);">দশা-পথ</div>
+            <div class="font-bold text-sm mt-1">δ = (2π/λ)Δ</div>
+          </div>
+          <div class="border border-[var(--border)] rounded-lg p-3" style="background: rgba(34,197,94,0.08);">
+            <div class="text-xs" style="color: var(--muted-foreground);">উজ্জ্বল ডোরা</div>
+            <div class="font-bold text-sm mt-1">Δ = nλ</div>
+          </div>
+          <div class="border border-[var(--border)] rounded-lg p-3" style="background: rgba(239,68,68,0.08);">
+            <div class="text-xs" style="color: var(--muted-foreground);">অন্ধকার ডোরা</div>
+            <div class="font-bold text-sm mt-1">Δ = (n+½)λ</div>
+          </div>
+          <div class="border border-[var(--border)] rounded-lg p-3">
+            <div class="text-xs" style="color: var(--muted-foreground);">n-তম উজ্জ্বল</div>
+            <div class="font-bold text-sm mt-1">xₙ = nλD/a</div>
+          </div>
+          <div class="border border-[var(--border)] rounded-lg p-3" style="background: rgba(99,102,241,0.08);">
+            <div class="text-xs" style="color: var(--muted-foreground);">ডোরা ব্যবধান</div>
+            <div class="font-bold text-sm mt-1">Δx = λD/a</div>
+          </div>
+          <div class="border border-[var(--border)] rounded-lg p-3">
+            <div class="text-xs" style="color: var(--muted-foreground);">ডোরা প্রস্থ</div>
+            <div class="font-bold text-sm mt-1">x = λD/2a</div>
+          </div>
+          <div class="border border-[var(--border)] rounded-lg p-3">
+            <div class="text-xs" style="color: var(--muted-foreground);">তীব্রতা</div>
+            <div class="font-bold text-sm mt-1">I = 4I₀cos²(δ/2)</div>
+          </div>
+          <div class="border border-[var(--border)] rounded-lg p-3">
+            <div class="text-xs" style="color: var(--muted-foreground);">1 Å</div>
+            <div class="font-bold text-sm mt-1">= 10⁻¹⁰ m</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="text-center py-6" style="color: var(--muted-foreground);">
+      <p class="text-sm">🌟 পদার্থবিজ্ঞান সুন্দর — কারণ প্রকৃতি সুন্দর! 🌟</p>
+      <p class="text-xs mt-1">আলোর ব্যতিচার · HSC পদার্থবিজ্ঞান ২য় পত্র</p>
+    </div>
+  </div>
+
+  <script>
+    // =============== NAVIGATION ===============
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
+      document.getElementById(id).style.display = 'block';
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      if (id === 'simulation') {
+        setTimeout(() => {
+          drawIntensityPattern();
+          drawSimFrame();
+        }, 100);
+      }
+      if (id === 'concepts') {
+        setTimeout(drawFringes, 100);
+      }
+      if (id === 'math') {
+        setTimeout(drawGeometry, 100);
+      }
+    }
+
+    // =============== WAVE ANIMATION ===============
+    let waveType = 'constructive';
+    let waveTime = 0;
+    let waveAnimId;
+
+    function setInterferenceType(type) {
+      waveType = type;
+      const label = document.getElementById('interference-label');
+      if (type === 'constructive') {
+        label.textContent = '✨ গঠনমূলক ব্যতিচার';
+        label.style.color = '#16a34a';
+      } else {
+        label.textContent = '💀 ধ্বংসাত্মক ব্যতিচার';
+        label.style.color = '#ef4444';
+      }
+    }
+
+    function drawWaves() {
+      const canvas = document.getElementById('waveCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width, H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
+
+      const mid = H / 2;
+      const amp = 40;
+      const freq = 0.05;
+      const phase2 = waveType === 'constructive' ? 0 : Math.PI;
+
+      // Wave 1 (blue)
+      ctx.beginPath();
+      ctx.strokeStyle = 'rgba(59, 130, 246, 0.7)';
+      ctx.lineWidth = 2.5;
+      for (let x = 0; x < W; x++) {
+        const y = mid - 50 + amp * Math.sin(freq * x - waveTime);
+        x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      // Wave 2 (red)
+      ctx.beginPath();
+      ctx.strokeStyle = 'rgba(239, 68, 68, 0.7)';
+      ctx.lineWidth = 2.5;
+      for (let x = 0; x < W; x++) {
+        const y = mid + amp * Math.sin(freq * x - waveTime + phase2);
+        x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      // Resultant (green, thick)
+      ctx.beginPath();
+      ctx.strokeStyle = 'rgba(34, 197, 94, 0.9)';
+      ctx.lineWidth = 3.5;
+      for (let x = 0; x < W; x++) {
+        const y1 = amp * Math.sin(freq * x - waveTime);
+        const y2 = amp * Math.sin(freq * x - waveTime + phase2);
+        const y = mid + 50 + (y1 + y2);
+        x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      // Labels
+      ctx.fillStyle = 'rgba(100,100,150,0.6)';
+      ctx.font = '11px sans-serif';
+      ctx.fillText('তরঙ্গ ১', 10, mid - 80);
+      ctx.fillText('তরঙ্গ ২', 10, mid + 10);
+      ctx.fillText('লব্ধি', 10, mid + 60);
+
+      waveTime += 0.08;
+      waveAnimId = requestAnimationFrame(drawWaves);
+    }
+    drawWaves();
+
+    // =============== FRINGE PATTERN ===============
+    function drawFringes() {
+      const canvas = document.getElementById('fringeCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width, H = canvas.height;
+      
+      const a = parseFloat(document.getElementById('slitSep').value);
+      const D = parseFloat(document.getElementById('screenDist').value);
+      const lam = parseFloat(document.getElementById('wavelength').value);
+      
+      document.getElementById('slitSepVal').textContent = a.toFixed(1);
+      document.getElementById('screenDistVal').textContent = D.toFixed(1);
+      document.getElementById('wavelengthVal').textContent = lam.toFixed(1);
+
+      const fringeWidth = lam * D / a;
+      const scale = 15;
+
+      ctx.clearRect(0, 0, W, H);
+      
+      for (let x = 0; x < W; x++) {
+        const pos = (x - W/2) / scale;
+        const intensity = Math.cos(Math.PI * pos / fringeWidth);
+        const I = intensity * intensity;
+        
+        const hue = 45 + lam * 5;
+        const r = Math.floor(255 * I);
+        const g = Math.floor(200 * I);
+        const b = Math.floor(50 * I * (1 - lam/15));
+        
+        ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+        ctx.fillRect(x, 0, 1, H);
+      }
+
+      // Labels
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 12px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('n=0', W/2, H - 5);
+      
+      const pixelFringe = fringeWidth * scale;
+      for (let n = 1; n <= 4; n++) {
+        if (W/2 + n * pixelFringe < W) {
+          ctx.fillText(`n=${n}`, W/2 + n * pixelFringe, H - 5);
+          ctx.fillText(`n=-${n}`, W/2 - n * pixelFringe, H - 5);
+        }
+      }
+    }
+    setTimeout(drawFringes, 200);
+
+    // =============== EXPERIMENT DIAGRAM ===============
+    function drawExperiment() {
+      const canvas = document.getElementById('experimentCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width, H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
+      
+      // Background
+      ctx.fillStyle = 'rgba(0,0,0,0.02)';
+      ctx.fillRect(0, 0, W, H);
+
+      const lightX = 50;
+      const slit1X = 200;
+      const slit2X = 350;
+      const screenX = 600;
+      const mid = H / 2;
+      const slitGap = 50;
+
+      // Light source
+      ctx.beginPath();
+      ctx.arc(lightX, mid, 20, 0, 2 * Math.PI);
+      ctx.fillStyle = '#fbbf24';
+      ctx.fill();
+      ctx.fillStyle = '#78350f';
+      ctx.font = 'bold 14px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('💡', lightX, mid + 5);
+      ctx.fillStyle = '#666';
+      ctx.font = '11px sans-serif';
+      ctx.fillText('উৎস', lightX, mid + 38);
+
+      // First slit S
+      ctx.fillStyle = '#4b5563';
+      ctx.fillRect(slit1X - 3, 30, 6, mid - 40);
+      ctx.fillRect(slit1X - 3, mid + 10, 6, H - mid - 40);
+      ctx.fillStyle = '#6366f1';
+      ctx.font = 'bold 13px sans-serif';
+      ctx.fillText('S', slit1X, 25);
+
+      // Rays from source to S
+      ctx.setLineDash([4, 3]);
+      ctx.strokeStyle = '#fbbf24';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(lightX + 20, mid);
+      ctx.lineTo(slit1X - 3, mid);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Double slit S1, S2
+      ctx.fillStyle = '#4b5563';
+      ctx.fillRect(slit2X - 3, 30, 6, mid - slitGap - 10);
+      ctx.fillRect(slit2X - 3, mid - slitGap + 10, 6, slitGap * 2 - 20);
+      ctx.fillRect(slit2X - 3, mid + slitGap + 10, 6, H - mid - slitGap - 40);
+
+      ctx.fillStyle = '#6366f1';
+      ctx.font = 'bold 12px sans-serif';
+      ctx.fillText('S₁', slit2X + 15, mid - slitGap);
+      ctx.fillText('S₂', slit2X + 15, mid + slitGap);
+
+      // Waves from S to S1, S2
+      ctx.setLineDash([3, 3]);
+      ctx.strokeStyle = '#818cf8';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(slit1X + 3, mid);
+      ctx.lineTo(slit2X - 3, mid - slitGap);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(slit1X + 3, mid);
+      ctx.lineTo(slit2X - 3, mid + slitGap);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Circular waves from S1 and S2
+      ctx.globalAlpha = 0.15;
+      for (let r = 20; r < 280; r += 25) {
+        ctx.beginPath();
+        ctx.arc(slit2X, mid - slitGap, r, -0.6, 0.6);
+        ctx.strokeStyle = '#3b82f6';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        
+        ctx.beginPath();
+        ctx.arc(slit2X, mid + slitGap, r, -0.6, 0.6);
+        ctx.strokeStyle = '#ef4444';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+
+      // Screen
+      ctx.fillStyle = '#1f2937';
+      ctx.fillRect(screenX, 30, 8, H - 60);
+      
+      // Fringe pattern on screen
+      for (let y = 30; y < H - 30; y++) {
+        const dy = y - mid;
+        const I = Math.cos(dy * 0.08) ** 2;
+        ctx.fillStyle = `rgba(34, 197, 94, ${I * 0.8})`;
+        ctx.fillRect(screenX + 10, y, 20, 1);
+      }
+
+      ctx.fillStyle = '#666';
+      ctx.font = '11px sans-serif';
+      ctx.fillText('পর্দা', screenX + 15, H - 15);
+
+      // Labels
+      ctx.fillStyle = '#16a34a';
+      ctx.font = 'bold 11px sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('O (কেন্দ্র)', screenX + 35, mid + 4);
+      ctx.fillText('P (উজ্জ্বল)', screenX + 35, mid - 38);
+      ctx.fillText('Q (অন্ধকার)', screenX + 35, mid + 50);
+
+      // Distance labels
+      ctx.strokeStyle = '#9ca3af';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([2, 2]);
+      // D arrow
+      ctx.beginPath();
+      ctx.moveTo(slit2X, H - 20);
+      ctx.lineTo(screenX, H - 20);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#666';
+      ctx.textAlign = 'center';
+      ctx.fillText('D', (slit2X + screenX) / 2, H - 8);
+      
+      // a label
+      ctx.fillStyle = '#6366f1';
+      ctx.fillText('a', slit2X - 15, mid);
+    }
+    setTimeout(drawExperiment, 300);
+
+    // =============== GEOMETRY DIAGRAM ===============
+    function drawGeometry() {
+      const canvas = document.getElementById('geometryCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width, H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
+
+      const mid = H / 2;
+      const slitX = 120;
+      const screenX = 580;
+      const slitGap = 80;
+
+      // Slits
+      ctx.fillStyle = '#6366f1';
+      ctx.font = 'bold 14px sans-serif';
+      ctx.textAlign = 'center';
+
+      ctx.beginPath();
+      ctx.arc(slitX, mid - slitGap/2, 5, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.fillText('S₁', slitX - 20, mid - slitGap/2 + 5);
+
+      ctx.beginPath();
+      ctx.arc(slitX, mid + slitGap/2, 5, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.fillText('S₂', slitX - 20, mid + slitGap/2 + 5);
+
+      // Midpoint A
+      ctx.beginPath();
+      ctx.arc(slitX, mid, 3, 0, 2 * Math.PI);
+      ctx.fillStyle = '#9ca3af';
+      ctx.fill();
+      ctx.fillStyle = '#666';
+      ctx.font = '12px sans-serif';
+      ctx.fillText('A', slitX - 15, mid + 5);
+
+      // a label
+      ctx.strokeStyle = '#6366f1';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath();
+      ctx.moveTo(slitX + 10, mid - slitGap/2);
+      ctx.lineTo(slitX + 10, mid + slitGap/2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#6366f1';
+      ctx.font = 'bold 12px sans-serif';
+      ctx.fillText('a', slitX + 25, mid + 5);
+
+      // Screen
+      ctx.fillStyle = '#1f2937';
+      ctx.fillRect(screenX, 20, 4, H - 40);
+
+      // O point
+      ctx.fillStyle = '#16a34a';
+      ctx.beginPath();
+      ctx.arc(screenX + 2, mid, 5, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.font = 'bold 13px sans-serif';
+      ctx.fillText('O', screenX + 18, mid + 5);
+
+      // P point
+      const pY = mid - 70;
+      ctx.fillStyle = '#f59e0b';
+      ctx.beginPath();
+      ctx.arc(screenX + 2, pY, 5, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.fillText('P', screenX + 18, pY + 5);
+
+      // Lines S1P and S2P
+      ctx.strokeStyle = '#3b82f6';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(slitX, mid - slitGap/2);
+      ctx.lineTo(screenX, pY);
+      ctx.stroke();
+
+      ctx.strokeStyle = '#ef4444';
+      ctx.beginPath();
+      ctx.moveTo(slitX, mid + slitGap/2);
+      ctx.lineTo(screenX, pY);
+      ctx.stroke();
+
+      // AO line (normal)
+      ctx.strokeStyle = '#9ca3af';
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(slitX, mid);
+      ctx.lineTo(screenX, mid);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // xn label
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(screenX + 40, mid);
+      ctx.lineTo(screenX + 40, pY);
+      ctx.stroke();
+      ctx.fillStyle = '#f59e0b';
+      ctx.font = 'bold 12px sans-serif';
+      ctx.fillText('xₙ', screenX + 55, (mid + pY) / 2 + 5);
+
+      // D label
+      ctx.strokeStyle = '#9ca3af';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([2, 2]);
+      ctx.beginPath();
+      ctx.moveTo(slitX, H - 20);
+      ctx.lineTo(screenX, H - 20);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#666';
+      ctx.font = '12px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('D', (slitX + screenX) / 2, H - 8);
+
+      // θ angle
+      ctx.strokeStyle = '#a855f7';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(slitX, mid, 40, -Math.atan2(mid - pY, screenX - slitX), 0);
+      ctx.stroke();
+      ctx.fillStyle = '#a855f7';
+      ctx.font = 'bold 14px sans-serif';
+      ctx.fillText('θ', slitX + 50, mid - 15);
+
+      // Labels
+      ctx.fillStyle = '#3b82f6';
+      ctx.font = '11px sans-serif';
+      ctx.textAlign = 'left';
+      const s1pMidX = (slitX + screenX) / 2 - 30;
+      const s1pMidY = (mid - slitGap/2 + pY) / 2 - 8;
+      ctx.fillText('S₁P = x₁', s1pMidX, s1pMidY);
+      
+      ctx.fillStyle = '#ef4444';
+      const s2pMidX = (slitX + screenX) / 2 + 10;
+      const s2pMidY = (mid + slitGap/2 + pY) / 2 - 5;
+      ctx.fillText('S₂P = x₂', s2pMidX, s2pMidY);
+    }
+    setTimeout(drawGeometry, 400);
+
+    // =============== WAVE SIMULATION ===============
+    let simRunning = false;
+    let simTime = 0;
+    let simAnimId;
+
+    function toggleSim() {
+      simRunning = !simRunning;
+      document.getElementById('simToggle').textContent = simRunning ? '⏸️ থামাও' : '▶️ চালু করো';
+      if (simRunning) runSim();
+    }
+
+    function resetSim() {
+      simRunning = false;
+      simTime = 0;
+      document.getElementById('simToggle').textContent = '▶️ চালু করো';
+      if (simAnimId) cancelAnimationFrame(simAnimId);
+      drawSimFrame();
+    }
+
+    function updateSim() {
+      if (!simRunning) drawSimFrame();
+    }
+
+    function drawSimFrame() {
+      const canvas = document.getElementById('simCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width, H = canvas.height;
+      
+      const wavelength = parseInt(document.getElementById('simWavelength').value);
+      const slitDist = parseInt(document.getElementById('simSlitDist').value);
+      
+      const s1 = { x: 100, y: H/2 - slitDist/2 };
+      const s2 = { x: 100, y: H/2 + slitDist/2 };
+
+      ctx.fillStyle = '#0a0a2e';
+      ctx.fillRect(0, 0, W, H);
+
+      // Draw interference pattern using pixel-level calculation
+      const imageData = ctx.createImageData(W, H);
+      for (let px = 100; px < W; px++) {
+        for (let py = 0; py < H; py++) {
+          const d1 = Math.sqrt((px - s1.x) ** 2 + (py - s1.y) ** 2);
+          const d2 = Math.sqrt((px - s2.x) ** 2 + (py - s2.y) ** 2);
+          
+          const wave1 = Math.sin(2 * Math.PI * d1 / wavelength - simTime);
+          const wave2 = Math.sin(2 * Math.PI * d2 / wavelength - simTime);
+          const combined = (wave1 + wave2) / 2;
+          
+          const intensity = combined * combined;
+          const idx = (py * W + px) * 4;
+          
+          imageData.data[idx] = Math.floor(intensity * 100);
+          imageData.data[idx + 1] = Math.floor(intensity * 220);
+          imageData.data[idx + 2] = Math.floor(intensity * 255);
+          imageData.data[idx + 3] = 255;
+        }
+      }
+      ctx.putImageData(imageData, 0, 0);
+
+      // Draw barrier
+      ctx.fillStyle = '#374151';
+      ctx.fillRect(95, 0, 10, s1.y - 5);
+      ctx.fillRect(95, s1.y + 5, 10, s2.y - s1.y - 10);
+      ctx.fillRect(95, s2.y + 5, 10, H - s2.y - 5);
+
+      // Source dots
+      ctx.fillStyle = '#fbbf24';
+      ctx.beginPath();
+      ctx.arc(s1.x, s1.y, 4, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(s2.x, s2.y, 4, 0, 2 * Math.PI);
+      ctx.fill();
+
+      // Labels
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 12px sans-serif';
+      ctx.fillText('S₁', 75, s1.y + 4);
+      ctx.fillText('S₂', 75, s2.y + 4);
+    }
+
+    function runSim() {
+      if (!simRunning) return;
+      simTime += 0.15;
+      drawSimFrame();
+      simAnimId = requestAnimationFrame(runSim);
+    }
+
+    // =============== INTENSITY PATTERN ===============
+    function drawIntensityPattern() {
+      const canvas = document.getElementById('intensityCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width, H = canvas.height;
+      
+      ctx.clearRect(0, 0, W, H);
+
+      // Axes
+      ctx.strokeStyle = '#9ca3af';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(30, H - 30);
+      ctx.lineTo(W - 10, H - 30);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(W/2, H - 30);
+      ctx.lineTo(W/2, 10);
+      ctx.stroke();
+
+      // Intensity curve
+      ctx.beginPath();
+      ctx.strokeStyle = '#6366f1';
+      ctx.lineWidth = 2.5;
+      const maxH = H - 50;
+      for (let x = 30; x < W - 10; x++) {
+        const pos = (x - W/2) / (W/8);
+        const I = Math.cos(Math.PI * pos) ** 2;
+        const y = H - 30 - I * maxH;
+        x === 30 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      // Fill under curve
+      ctx.globalAlpha = 0.1;
+      ctx.fillStyle = '#6366f1';
+      ctx.beginPath();
+      for (let x = 30; x < W - 10; x++) {
+        const pos = (x - W/2) / (W/8);
+        const I = Math.cos(Math.PI * pos) ** 2;
+        const y = H - 30 - I * maxH;
+        x === 30 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.lineTo(W - 10, H - 30);
+      ctx.lineTo(30, H - 30);
+      ctx.fill();
+      ctx.globalAlpha = 1;
+
+      // Labels
+      ctx.fillStyle = '#6366f1';
+      ctx.font = 'bold 11px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('I_max = 4I₀', W/2, 20);
+      ctx.fillStyle = '#666';
+      ctx.font = '10px sans-serif';
+      ctx.fillText('তীব্রতা (I)', 50, 15);
+      ctx.fillText('অবস্থান', W - 40, H - 10);
+    }
+
+    // Initial draws
+    setTimeout(() => {
+      drawExperiment();
+      drawFringes();
+    }, 500);
+  </script>
+</body>
+</html>
