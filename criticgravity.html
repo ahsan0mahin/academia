@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    /* Dark Theme Variables for Standalone Hosting */
+    :root {
+      --background: #0f172a;
+      --foreground: #e2e8f0;
+      --card: #1e293b;
+      --border: #334155;
+      --muted-foreground: #94a3b8;
+      --primary: #3b82f6;
+      --primary-foreground: #ffffff;
+      --content: #020617;
+    }
+    
+    /* Contrast Fixes for Dark Mode */
+    .text-green-700, .text-green-800, .text-green-900 { color: #4ade80 !important; }
+    .text-blue-700, .text-blue-800, .text-blue-900 { color: #60a5fa !important; }
+    .text-yellow-700, .text-yellow-800, .text-yellow-900 { color: #facc15 !important; }
+    .text-red-600, .text-red-800, .text-red-900 { color: #f87171 !important; }
+    .text-purple-900 { color: #c084fc !important; }
+    .text-orange-600, .text-orange-900 { color: #fb923c !important; }
+    
+    .bg-green-100, .bg-green-50 { background-color: rgba(74, 222, 128, 0.15) !important; border-color: rgba(74, 222, 128, 0.3) !important; }
+    .bg-blue-100, .bg-blue-50 { background-color: rgba(96, 165, 250, 0.15) !important; border-color: rgba(96, 165, 250, 0.3) !important; }
+    .bg-yellow-100, .bg-yellow-50 { background-color: rgba(250, 204, 21, 0.15) !important; border-color: rgba(250, 204, 21, 0.3) !important; }
+    .bg-red-100, .bg-red-50 { background-color: rgba(248, 113, 113, 0.15) !important; border-color: rgba(248, 113, 113, 0.3) !important; }
+    .bg-purple-50 { background-color: rgba(192, 132, 252, 0.15) !important; border-color: rgba(192, 132, 252, 0.3) !important; }
+    .bg-orange-50 { background-color: rgba(251, 146, 60, 0.15) !important; border-color: rgba(251, 146, 60, 0.3) !important; }
+
+    .section { display: none; }
+    .section.active { display: block; }
+    .nav-btn.active-nav { background: var(--primary); color: var(--primary-foreground); }
+    .concept-card { transition: all 0.2s ease; }
+    .concept-card:hover { transform: translateY(-2px); }
+    .bangla { background: rgba(59,130,246,0.08); border-left: 3px solid var(--primary); padding: 8px 12px; margin: 8px 0; border-radius: 0 6px 6px 0; }
+    .book-content { border-left: 3px solid #22c55e; padding: 8px 12px; margin: 8px 0; background: rgba(34,197,94,0.06); border-radius: 0 6px 6px 0; }
+    .additional { border-left: 3px solid #f59e0b; padding: 8px 12px; margin: 8px 0; background: rgba(245,158,11,0.06); border-radius: 0 6px 6px 0; }
+    .exam-tip { background: rgba(239,68,68,0.06); border: 1px dashed rgba(239,68,68,0.3); padding: 10px 14px; border-radius: 8px; margin: 10px 0; }
+    details summary { cursor: pointer; font-weight: 600; padding: 6px 0; }
+    details summary:hover { color: var(--primary); }
+    .quiz-option { cursor: pointer; transition: all 0.15s; }
+    .quiz-option:hover { background: rgba(59,130,246,0.1); }
+    .correct { background: rgba(34,197,94,0.15) !important; border-color: #22c55e !important; }
+    .incorrect { background: rgba(239,68,68,0.15) !important; border-color: #ef4444 !important; }
+    .tag { display: inline-block; padding: 2px 8px; border-radius: 9999px; font-size: 0.7rem; font-weight: 600; }
+  </style>
+</head>
+<body class="bg-[var(--background)] text-[var(--foreground)] antialiased p-4">
+
+  <!-- Header -->
+  <div class="max-w-5xl mx-auto">
+    <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-4 shadow-sm">
+      <h1 class="text-2xl font-bold mb-1">📚 New Criticism — Complete Study Guide</h1>
+      <p class="text-[var(--muted-foreground)] text-sm">Based on <em>Critical Theory Today: A User-Friendly Guide</em> by Lois Tyson</p>
+      <p class="text-[var(--muted-foreground)] text-xs mt-1">Easy English + বাংলা Explanation + Exam-Oriented</p>
+      <div class="flex flex-wrap gap-2 mt-3">
+        <span class="tag bg-green-100 text-green-800">📗 = From the Book</span>
+        <span class="tag bg-yellow-100 text-yellow-800">📙 = Additional Info</span>
+        <span class="tag bg-blue-100 text-blue-800">🇧🇩 = Bangla Explanation</span>
+        <span class="tag bg-red-100 text-red-800">🎯 = Exam Tip</span>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-3 mb-4 shadow-sm overflow-x-auto">
+      <div class="flex flex-wrap gap-2 text-xs">
+        <button onclick="showSection('s1')" class="nav-btn active-nav px-3 py-2 rounded-lg border border-[var(--border)] font-medium" data-section="s1">1. What is NC?</button>
+        <button onclick="showSection('s2')" class="nav-btn px-3 py-2 rounded-lg border border-[var(--border)] font-medium" data-section="s2">2. Key Concepts</button>
+        <button onclick="showSection('s3')" class="nav-btn px-3 py-2 rounded-lg border border-[var(--border)] font-medium" data-section="s3">3. Deep Dive</button>
+        <button onclick="showSection('s4')" class="nav-btn px-3 py-2 rounded-lg border border-[var(--border)] font-medium" data-section="s4">4. Key Critics</button>
+        <button onclick="showSection('s5')" class="nav-btn px-3 py-2 rounded-lg border border-[var(--border)] font-medium" data-section="s5">5. Literary Terms</button>
+        <button onclick="showSection('s6')" class="nav-btn px-3 py-2 rounded-lg border border-[var(--border)] font-medium" data-section="s6">6. Principles</button>
+        <button onclick="showSection('s7')" class="nav-btn px-3 py-2 rounded-lg border border-[var(--border)] font-medium" data-section="s7">7. Rejections</button>
+        <button onclick="showSection('s8')" class="nav-btn px-3 py-2 rounded-lg border border-[var(--border)] font-medium" data-section="s8">8. Comparisons</button>
+        <button onclick="showSection('s9')" class="nav-btn px-3 py-2 rounded-lg border border-[var(--border)] font-medium" data-section="s9">9. Difficult Passages</button>
+        <button onclick="showSection('s10')" class="nav-btn px-3 py-2 rounded-lg border border-[var(--border)] font-medium" data-section="s10">10. Quick Revision</button>
+        <button onclick="showSection('s11')" class="nav-btn px-3 py-2 rounded-lg border border-[var(--border)] font-medium" data-section="s11">11-12. Questions</button>
+        <button onclick="showSection('s13')" class="nav-btn px-3 py-2 rounded-lg border border-[var(--border)] font-medium" data-section="s13">13-15. Answers</button>
+        <button onclick="showSection('s16')" class="nav-btn px-3 py-2 rounded-lg border border-[var(--border)] font-medium" data-section="s16">16. Last Minute</button>
+        <button onclick="showSection('s17')" class="nav-btn px-3 py-2 rounded-lg border border-[var(--border)] font-medium" data-section="s17">17. Test Yourself</button>
+      </div>
+    </div>
+
+    <!-- ==================== SECTION 1 ==================== -->
+    <div id="s1" class="section active">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-4 shadow-sm">
+        <h2 class="text-xl font-bold mb-4">1️⃣ What is New Criticism? — সহজ ভাষায়</h2>
+        
+        <div class="book-content mb-4">
+          <p class="text-xs font-semibold text-green-700 mb-1">📗 FROM THE BOOK (Tyson's Chapter)</p>
+          <p>New Criticism is a literary theory that says: <strong>"The text itself is the only thing that matters."</strong></p>
+          <p class="mt-2">When you read a poem, story, or novel, you should focus <strong>only on the words on the page</strong>. You should NOT care about:</p>
+          <ul class="list-disc ml-5 mt-1 space-y-1">
+            <li>The author's life or what the author intended to say</li>
+            <li>The historical period when it was written</li>
+            <li>Your personal feelings or emotional reactions</li>
+            <li>The political or social context</li>
+          </ul>
+          <p class="mt-2">According to Tyson, New Criticism dominated American literary criticism from the late 1930s through the 1970s. It was the first theory many students learned and its method of <strong>close reading</strong> is still widely used today, even by critics who don't call themselves New Critics.</p>
+        </div>
+
+        <div class="bangla">
+          <p class="text-xs font-semibold text-blue-700 mb-1">🇧🇩 বাংলায় বুঝি</p>
+          <p>New Criticism বলে: "শুধু text-এ কী লেখা আছে সেটাই দেখো। লেখক কে, কখন লিখেছে, তুমি পড়ে কী feel করছো — এসব matter করে না।"</p>
+          <p class="mt-1">ধরো তুমি একটা কবিতা পড়ছো। New Critic বলবে — কবির জীবনী পড়ো না, কবিতার যুগ নিয়ে ভাবো না। শুধু কবিতার ভেতরে কী আছে — words, images, metaphors, structure — এগুলো analyze করো।</p>
+          <p class="mt-1">এটা অনেকটা এরকম — তুমি একটা painting দেখছো। New Criticism বলবে: "শুধু painting-টা দেখো। painter-এর biography পড়ো না।"</p>
+        </div>
+
+        <div class="exam-tip mt-4">
+          <p class="text-xs font-semibold text-red-600 mb-1">🎯 EXAM TIP</p>
+          <p class="text-sm">Exam-এ যদি জিজ্ঞেস করে "What is New Criticism?" — তাহলে প্রথমেই বলবে: "New Criticism is a formalist approach to literature that focuses exclusively on the text itself, examining its formal elements such as imagery, symbolism, paradox, irony, and the interrelationship of these elements to create organic unity." তারপর explain করবে।</p>
+        </div>
+
+        <h3 class="font-bold mt-5 mb-2">The Core Idea in One Line:</h3>
+        <div class="bg-[var(--content)] border-2 border-[var(--primary)] rounded-xl p-4 text-center">
+          <p class="text-lg font-bold">"A literary text is an autonomous work of art — a self-contained, self-referential object."</p>
+          <p class="text-sm text-[var(--muted-foreground)] mt-1">— Central belief of New Criticism, as presented in Tyson</p>
+        </div>
+
+        <div class="bangla mt-3">
+          <p class="text-xs font-semibold text-blue-700 mb-1">🇧🇩 বাংলায়</p>
+          <p>একটি সাহিত্যকর্ম (literary text) নিজেই সম্পূর্ণ — এটা বোঝার জন্য বাইরের কোনো কিছুর দরকার নেই। Text নিজেই নিজের meaning তৈরি করে।</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SECTION 2 ==================== -->
+    <div id="s2" class="section">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-4 shadow-sm">
+        <h2 class="text-xl font-bold mb-4">2️⃣ Important Concepts/Terms — Identified & Explained</h2>
+        <p class="text-[var(--muted-foreground)] text-sm mb-4">Tyson's chapter-এ যে গুরুত্বপূর্ণ concepts আছে, সেগুলো এখানে আলাদা করে চিহ্নিত করা হলো:</p>
+
+        <div class="grid gap-3">
+          <!-- Concept 1 -->
+          <div class="concept-card bg-[var(--content)] border border-[var(--border)] rounded-xl p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="tag bg-green-100 text-green-800">📗 Book</span>
+              <h3 class="font-bold">1. Close Reading</h3>
+            </div>
+            <p class="text-sm">The careful, detailed analysis of a text's formal elements — every word, image, and literary device. This is the <strong>primary method</strong> of New Criticism.</p>
+            <div class="bangla text-sm mt-2">
+              <p>🇧🇩 Text-কে খুব কাছ থেকে, একটা একটা শব্দ ধরে ধরে পড়া এবং analyze করা। প্রতিটি word, image, symbol-এর meaning বের করা।</p>
+            </div>
+          </div>
+
+          <!-- Concept 2 -->
+          <div class="concept-card bg-[var(--content)] border border-[var(--border)] rounded-xl p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="tag bg-green-100 text-green-800">📗 Book</span>
+              <h3 class="font-bold">2. Organic Unity</h3>
+            </div>
+            <p class="text-sm">The idea that every element in a literary text (plot, characters, imagery, symbols, etc.) works together to create a single, unified meaning. Nothing is extra; everything is connected.</p>
+            <div class="bangla text-sm mt-2">
+              <p>🇧🇩 একটা ভালো সাহিত্যকর্মে সবকিছু একসাথে কাজ করে — কোনো element আলাদা না। যেমন শরীরের প্রতিটি organ একসাথে কাজ করে, তেমনি text-এর প্রতিটি part একসাথে একটি unified meaning তৈরি করে।</p>
+            </div>
+          </div>
+
+          <!-- Concept 3 -->
+          <div class="concept-card bg-[var(--content)] border border-[var(--border)] rounded-xl p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="tag bg-green-100 text-green-800">📗 Book</span>
+              <h3 class="font-bold">3. Intentional Fallacy</h3>
+            </div>
+            <p class="text-sm">The error of judging a text based on what the <strong>author intended</strong> to say. Tyson explains that for New Critics, the author's intention is irrelevant — only the text matters. The meaning is in the text, not in the author's mind.</p>
+            <div class="bangla text-sm mt-2">
+              <p>🇧🇩 "লেখক কী বোঝাতে চেয়েছিলেন" — এটা দিয়ে text বিচার করা ভুল। কারণ text-ই সব। লেখকের মাথায় কী ছিল সেটা আমরা জানি না, আর জানার দরকারও নেই।</p>
+            </div>
+          </div>
+
+          <!-- Concept 4 -->
+          <div class="concept-card bg-[var(--content)] border border-[var(--border)] rounded-xl p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="tag bg-green-100 text-green-800">📗 Book</span>
+              <h3 class="font-bold">4. Affective Fallacy</h3>
+            </div>
+            <p class="text-sm">The error of judging a text based on the <strong>reader's emotional response</strong>. Just because a poem makes you cry doesn't mean it's good literature. The value of a text is in its formal qualities, not in how it makes readers feel.</p>
+            <div class="bangla text-sm mt-2">
+              <p>🇧🇩 "পড়ে আমার কেমন লাগলো" — এটা দিয়ে text বিচার করা ভুল। তুমি কাঁদলে বা হাসলে সেটা text-এর literary value নির্ধারণ করে না।</p>
+            </div>
+          </div>
+
+          <!-- Concept 5 -->
+          <div class="concept-card bg-[var(--content)] border border-[var(--border)] rounded-xl p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="tag bg-green-100 text-green-800">📗 Book</span>
+              <h3 class="font-bold">5. The Text as Autonomous Object</h3>
+            </div>
+            <p class="text-sm">The text exists on its own. It is independent from the author, the reader, and the historical context. Think of a text like a "well-wrought urn" — a beautiful object that exists by itself.</p>
+            <div class="bangla text-sm mt-2">
+              <p>🇧🇩 Text স্বয়ংসম্পূর্ণ — বাইরের কোনো কিছু ছাড়াই এটি নিজে নিজে complete। এটিকে একটি স্বতন্ত্র শিল্পকর্ম হিসেবে দেখতে হবে।</p>
+            </div>
+          </div>
+
+          <!-- Concept 6 -->
+          <div class="concept-card bg-[var(--content)] border border-[var(--border)] rounded-xl p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="tag bg-green-100 text-green-800">📗 Book</span>
+              <h3 class="font-bold">6. Literary Language vs. Scientific Language</h3>
+            </div>
+            <p class="text-sm">Tyson explains that New Critics believed literary language is fundamentally different from scientific or everyday language. Scientific language is direct and has one meaning. Literary language is rich, complex, and has <strong>multiple meanings</strong> through ambiguity, paradox, irony, and metaphor.</p>
+            <div class="bangla text-sm mt-2">
+              <p>🇧🇩 বিজ্ঞানের ভাষা সরাসরি — "পানি ১০০° তে ফুটে।" কিন্তু সাহিত্যের ভাষা জটিল — একটি শব্দে অনেক meaning থাকে। "My love is a rose" — এখানে rose মানে শুধু ফুল না, সৌন্দর্য, ক্ষণস্থায়িত্ব, কাঁটা — অনেক কিছু।</p>
+            </div>
+          </div>
+
+          <!-- Concept 7 -->
+          <div class="concept-card bg-[var(--content)] border border-[var(--border)] rounded-xl p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="tag bg-green-100 text-green-800">📗 Book</span>
+              <h3 class="font-bold">7. Ambiguity</h3>
+            </div>
+            <p class="text-sm">When a word, phrase, or passage has <strong>more than one meaning</strong>, and all those meanings contribute to the richness of the text. For New Critics, ambiguity is not a weakness — it's a sign of literary quality.</p>
+            <div class="bangla text-sm mt-2">
+              <p>🇧🇩 একটি শব্দ বা বাক্যের একাধিক অর্থ থাকা। New Critics-এর কাছে এটা দুর্বলতা না, বরং শক্তি — কারণ এতে text আরও rich হয়।</p>
+            </div>
+          </div>
+
+          <!-- Concept 8 -->
+          <div class="concept-card bg-[var(--content)] border border-[var(--border)] rounded-xl p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="tag bg-green-100 text-green-800">📗 Book</span>
+              <h3 class="font-bold">8. Paradox</h3>
+            </div>
+            <p class="text-sm">A statement that seems contradictory but reveals a deeper truth. For New Critics, paradox is central to how literary language works — it holds opposing ideas together.</p>
+            <div class="bangla text-sm mt-2">
+              <p>🇧🇩 যেটা দেখতে স্ববিরোধী (contradictory) মনে হয়, কিন্তু আসলে গভীর সত্য প্রকাশ করে। যেমন: "The child is father of the man" — বাচ্চা কিভাবে বাবা হয়? কিন্তু এর গভীর অর্থ আছে।</p>
+            </div>
+          </div>
+
+          <!-- Concept 9 -->
+          <div class="concept-card bg-[var(--content)] border border-[var(--border)] rounded-xl p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="tag bg-green-100 text-green-800">📗 Book</span>
+              <h3 class="font-bold">9. Irony</h3>
+            </div>
+            <p class="text-sm">When there is a contrast between what is said and what is actually meant, or between expectation and reality. New Critics valued irony because it adds <strong>complexity and depth</strong> to a text.</p>
+            <div class="bangla text-sm mt-2">
+              <p>🇧🇩 যখন বলা হচ্ছে একটা, কিন্তু আসল অর্থ অন্য কিছু। বা যখন আশা করা হচ্ছে একটা, কিন্তু ঘটছে তার উল্টো। New Critics irony-কে ভালোবাসতো কারণ এটা text-কে complex করে তোলে।</p>
+            </div>
+          </div>
+
+          <!-- Concept 10 -->
+          <div class="concept-card bg-[var(--content)] border border-[var(--border)] rounded-xl p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="tag bg-green-100 text-green-800">📗 Book</span>
+              <h3 class="font-bold">10. Tension</h3>
+            </div>
+            <p class="text-sm">The stretching between opposing meanings, ideas, or elements within a text. Tension is created by the interplay of conflicting elements — and for New Critics, the best literature holds these tensions together without resolving them too easily.</p>
+            <div class="bangla text-sm mt-2">
+              <p>🇧🇩 Text-এর ভেতরে বিপরীত ideas-এর মধ্যে টানাটানি। যেমন love vs. duty, appearance vs. reality — এই conflict text-কে interesting করে তোলে। ভালো সাহিত্য এই tension-কে ধরে রাখে।</p>
+            </div>
+          </div>
+
+          <!-- Concept 11 -->
+          <div class="concept-card bg-[var(--content)] border border-[var(--border)] rounded-xl p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="tag bg-green-100 text-green-800">📗 Book</span>
+              <h3 class="font-bold">11. The Heresy of Paraphrase</h3>
+            </div>
+            <p class="text-sm">Tyson discusses this concept (from Cleanth Brooks): you cannot simply paraphrase a poem's meaning into a plain statement. The meaning of a literary text is inseparable from its form — HOW it says something is part of WHAT it says. If you paraphrase a poem, you lose the poem.</p>
+            <div class="bangla text-sm mt-2">
+              <p>🇧🇩 তুমি একটা কবিতার মানে সহজ ভাষায় বলতে পারো না — কারণ কবিতার meaning তার form-এর সাথে জড়িত। তুমি যদি "Shall I compare thee to a summer's day?" কে বলো "তুমি কি সুন্দর?" — তাহলে কবিতাটাই হারিয়ে গেলো। Form আর content আলাদা করা যায় না।</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SECTION 3 ==================== -->
+    <div id="s3" class="section">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-4 shadow-sm">
+        <h2 class="text-xl font-bold mb-4">3️⃣ Deep Dive — প্রতিটি Concept বিস্তারিত</h2>
+
+        <!-- Close Reading Deep Dive -->
+        <details class="border border-[var(--border)] rounded-xl p-4 mb-3">
+          <summary class="text-base">📖 Close Reading — Full Breakdown</summary>
+          <div class="mt-3 space-y-3">
+            <div>
+              <h4 class="font-bold text-sm text-[var(--muted-foreground)]">DEFINITION:</h4>
+              <p class="text-sm">Close reading is the careful, sustained analysis of a literary text that focuses on the text's formal elements — such as images, symbols, metaphors, rhyme, meter, point of view, setting, characterization, plot — and their contribution to the text's overall meaning (its organic unity).</p>
+            </div>
+            <div>
+              <h4 class="font-bold text-sm text-[var(--muted-foreground)]">মূল IDEA:</h4>
+              <p class="text-sm">Instead of reading a text quickly for "what happens," you read it slowly, word by word, paying attention to HOW it creates meaning. You ask: "Why did the author use THIS word instead of another? What does this image suggest? How does this metaphor connect to the theme?"</p>
+            </div>
+            <div>
+              <h4 class="font-bold text-sm text-[var(--muted-foreground)]">কেন IMPORTANT:</h4>
+              <p class="text-sm">Close reading is the <strong>fundamental method</strong> of New Criticism. Without close reading, you cannot do New Critical analysis. Tyson emphasizes that even after New Criticism lost its dominance, close reading remained the foundational skill for literary study.</p>
+            </div>
+            <div>
+              <h4 class="font-bold text-sm text-[var(--muted-foreground)]">কীভাবে কাজ করে:</h4>
+              <p class="text-sm">Step 1: Read the text carefully, multiple times. Step 2: Identify literary devices (metaphor, simile, irony, paradox, symbols, imagery). Step 3: See how these devices relate to each other. Step 4: Show how they all contribute to a single, unified theme (organic unity).</p>
+            </div>
+            <div>
+              <h4 class="font-bold text-sm text-[var(--muted-foreground)]">EXAMPLE (from Tyson's analysis of The Great Gatsby):</h4>
+              <div class="book-content text-sm">
+                <p>📗 Tyson demonstrates a New Critical reading of <em>The Great Gatsby</em> by analyzing how the novel's imagery, symbolism, and narrative structure all work together to produce the theme of the American Dream's corruption. She examines the green light, the eyes of Doctor T.J. Eckleburg, the valley of ashes, and other formal elements to show how they create organic unity around this central theme.</p>
+              </div>
+            </div>
+            <div class="exam-tip">
+              <p class="text-xs font-semibold text-red-600 mb-1">🎯 EXAM-এ কীভাবে ব্যবহার করবে:</p>
+              <p class="text-sm">যখন exam-এ কোনো passage দিয়ে বলবে "Analyze this passage" — তখন close reading-এর technique ব্যবহার করো। প্রতিটি literary device identify করো এবং দেখাও কীভাবে সব মিলে একটা unified meaning তৈরি করে।</p>
+            </div>
+          </div>
+        </details>
+
+        <!-- Organic Unity Deep Dive -->
+        <details class="border border-[var(--border)] rounded-xl p-4 mb-3">
+          <summary class="text-base">🔗 Organic Unity — Full Breakdown</summary>
+          <div class="mt-3 space-y-3">
+            <div>
+              <h4 class="font-bold text-sm text-[var(--muted-foreground)]">DEFINITION:</h4>
+              <p class="text-sm">Organic unity means that all the formal elements of a literary text — plot, characterization, imagery, symbolism, tone, point of view, setting, theme — work together harmoniously, like parts of a living organism. Each part is necessary and contributes to the whole.</p>
+            </div>
+            <div>
+              <h4 class="font-bold text-sm text-[var(--muted-foreground)]">মূল IDEA:</h4>
+              <p class="text-sm">A great literary work is not just a collection of parts — it's an organic whole where everything fits together. Remove one element and the whole meaning changes. The form and content are inseparable.</p>
+            </div>
+            <div>
+              <h4 class="font-bold text-sm text-[var(--muted-foreground)]">কেন IMPORTANT:</h4>
+              <p class="text-sm">This is the <strong>ultimate goal</strong> of New Critical analysis — to demonstrate that a text has organic unity. If you can show that all elements work together to produce a unified meaning, you've successfully done a New Critical reading.</p>
+            </div>
+            <div>
+              <h4 class="font-bold text-sm text-[var(--muted-foreground)]">কীভাবে কাজ করে:</h4>
+              <p class="text-sm">When analyzing a text, you identify various formal elements (imagery, symbols, plot, etc.) and then show how they ALL point toward the same central theme or meaning. The connections between these elements create the organic unity.</p>
+            </div>
+            <div>
+              <h4 class="font-bold text-sm text-[var(--muted-foreground)]">EXAMPLE:</h4>
+              <div class="book-content text-sm">
+                <p>📗 In Tyson's New Critical reading of <em>The Great Gatsby</em>, she shows how the green light (Gatsby's hope/dream), the valley of ashes (dream's corruption), the eyes of Eckleburg (moral emptiness), and Nick's narrative perspective all work together organically to produce the unified theme: the American Dream is fundamentally corrupt.</p>
+              </div>
+            </div>
+            <div class="exam-tip">
+              <p class="text-xs font-semibold text-red-600 mb-1">🎯 EXAM-এ কীভাবে ব্যবহার করবে:</p>
+              <p class="text-sm">Answer-এর conclusion-এ always বলো: "Thus, through the interplay of [elements you discussed], the text achieves organic unity around the theme of [central theme]." এটা New Critical answer-এর best conclusion।</p>
+            </div>
+          </div>
+        </details>
+
+        <!-- Intentional Fallacy Deep Dive -->
+        <details class="border border-[var(--border)] rounded-xl p-4 mb-3">
+          <summary class="text-base">🚫 Intentional Fallacy — Full Breakdown</summary>
+          <div class="mt-3 space-y-3">
+            <div>
+              <h4 class="font-bold text-sm text-[var(--muted-foreground)]">DEFINITION:</h4>
+              <p class="text-sm">The intentional fallacy is the mistaken belief that the meaning of a literary text can be determined by looking at the author's stated or assumed intention. According to New Critics, the text's meaning is in the text itself, not in what the author meant to say.</p>
+            </div>
+            <div>
+              <h4 class="font-bold text-sm text-[var(--muted-foreground)]">মূল IDEA:</h4>
+              <p class="text-sm">Once a text is written, it becomes an independent object. The author's plan, diary entries, letters, interviews — none of these should determine how we interpret the text. The "words on the page" speak for themselves.</p>
+            </div>
+            <div>
+              <h4 class="font-bold text-sm text-[var(--muted-foreground)]">কেন IMPORTANT:</h4>
+              <p class="text-sm">This concept liberates the text from the author. It says that critics should analyze what the text DOES, not what the author WANTED it to do. This made literary criticism more objective and text-focused.</p>
+            </div>
+            <div class="bangla text-sm">
+              <p>🇧🇩 ধরো Shakespeare একটা চিঠিতে লিখলেন "Hamlet-এ আমি X বোঝাতে চেয়েছি।" New Critic বলবে — "সেটা irrelevant। Hamlet-এ আসলে কী আছে সেটাই matter করে। Shakespeare যা বোঝাতে চেয়েছিলেন আর Hamlet যা actually বলছে — দুটো আলাদা জিনিস হতে পারে।"</p>
+            </div>
+            <div class="exam-tip">
+              <p class="text-xs font-semibold text-red-600 mb-1">🎯 EXAM-এ কীভাবে ব্যবহার করবে:</p>
+              <p class="text-sm">Short question-এ directly define করো এবং বলো কেন New Critics এটাকে fallacy বলেন। Broad question-এ এটাকে New Criticism-এর key rejection হিসেবে explain করো।</p>
+            </div>
+          </div>
+        </details>
+
+        <!-- Affective Fallacy Deep Dive -->
+        <details class="border border-[var(--border)] rounded-xl p-4 mb-3">
+          <summary class="text-base">💔 Affective Fallacy — Full Breakdown</summary>
+          <div class="mt-3 space-y-3">
+            <div>
+              <h4 class="font-bold text-sm text-[var(--muted-foreground)]">DEFINITION:</h4>
+              <p class="text-sm">The affective fallacy is the error of evaluating a literary text based on the emotional effects it produces in the reader. New Critics argue that the reader's feelings are subjective and unreliable — they cannot serve as the basis for objective literary analysis.</p>
+            </div>
+            <div>
+              <h4 class="font-bold text-sm text-[var(--muted-foreground)]">মূল IDEA:</h4>
+              <p class="text-sm">"I cried when I read this poem, so it must be great" — this is the affective fallacy. Your tears don't make it great literature. What makes it great (or not) is its formal qualities — its use of language, imagery, structure, etc.</p>
+            </div>
+            <div>
+              <h4 class="font-bold text-sm text-[var(--muted-foreground)]">কেন IMPORTANT:</h4>
+              <p class="text-sm">This keeps literary criticism objective. Different readers feel different things — so emotional response is too subjective to be a valid critical tool. By rejecting the affective fallacy, New Critics tried to make literary criticism more like a science.</p>
+            </div>
+            <div class="bangla text-sm">
+              <p>🇧🇩 ধরো একটা গান শুনে তোমার খুব কষ্ট হলো। কিন্তু সেটা কি প্রমাণ করে যে গানটা musically great? না। তোমার ব্যক্তিগত আবেগ text-এর literary quality নির্ধারণ করে না। New Critics বলতো — আবেগ সরাও, text-এর ভাষা আর structure দেখো।</p>
+            </div>
+            <div class="exam-tip">
+              <p class="text-xs font-semibold text-red-600 mb-1">🎯 EXAM TIP:</p>
+              <p class="text-sm">Intentional Fallacy আর Affective Fallacy-কে একসাথে compare করো exam-এ — দুটোই বলছে text-এর বাইরের জিনিস (author's intent / reader's emotion) দিয়ে text বিচার করা ভুল।</p>
+            </div>
+          </div>
+        </details>
+
+        <!-- Heresy of Paraphrase Deep Dive -->
+        <details class="border border-[var(--border)] rounded-xl p-4 mb-3">
+          <summary class="text-base">⛪ The Heresy of Paraphrase — Full Breakdown</summary>
+          <div class="mt-3 space-y-3">
+            <div>
+              <h4 class="font-bold text-sm text-[var(--muted-foreground)]">DEFINITION:</h4>
+              <p class="text-sm">Coined by Cleanth Brooks, the "heresy of paraphrase" means that the meaning of a literary text CANNOT be reduced to a simple paraphrase or summary. The way something is said (form) is inseparable from what is said (content).</p>
+            </div>
+            <div>
+              <h4 class="font-bold text-sm text-[var(--muted-foreground)]">মূল IDEA:</h4>
+              <p class="text-sm">If you could simply paraphrase a poem's meaning into a plain sentence, then why would the poem exist? The poem exists because its meaning can ONLY be expressed in that particular form. Form = Content.</p>
+            </div>
+            <div>
+              <h4 class="font-bold text-sm text-[var(--muted-foreground)]">EXAMPLE:</h4>
+              <p class="text-sm">Take Keats' line: "A thing of beauty is a joy forever." You could paraphrase it as "Beautiful things make people happy for a long time." But the paraphrase loses the rhythm, the music, the weight of the original words. The MEANING of the line includes its form.</p>
+            </div>
+            <div class="bangla text-sm">
+              <p>🇧🇩 রবীন্দ্রনাথের "আমার সোনার বাংলা, আমি তোমায় ভালোবাসি" — এটার মানে কি শুধু "I love Bangladesh"? না! ওই specific শব্দ, ওই সুর, ওই ছন্দ — সব মিলে meaning তৈরি হয়। Paraphrase করলে মূল জিনিসটাই হারিয়ে যায়।</p>
+            </div>
+          </div>
+        </details>
+
+        <!-- Literary vs Scientific Language -->
+        <details class="border border-[var(--border)] rounded-xl p-4 mb-3">
+          <summary class="text-base">🔬 Literary Language vs. Scientific Language — Full Breakdown</summary>
+          <div class="mt-3 space-y-3">
+            <div>
+              <h4 class="font-bold text-sm text-[var(--muted-foreground)]">DEFINITION:</h4>
+              <p class="text-sm">New Critics made a sharp distinction between literary (poetic) language and scientific (referential) language. Scientific language has one clear, fixed meaning. Literary language is rich, complex, ambiguous, and has multiple layers of meaning.</p>
+            </div>
+            <div>
+              <h4 class="font-bold text-sm text-[var(--muted-foreground)]">কীভাবে কাজ করে:</h4>
+              <table class="w-full text-sm mt-2 border border-[var(--border)]">
+                <thead>
+                  <tr class="bg-[var(--content)]">
+                    <th class="p-2 border border-[var(--border)] text-left">Scientific Language</th>
+                    <th class="p-2 border border-[var(--border)] text-left">Literary Language</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td class="p-2 border border-[var(--border)]">One fixed meaning</td><td class="p-2 border border-[var(--border)]">Multiple meanings (ambiguity)</td></tr>
+                  <tr><td class="p-2 border border-[var(--border)]">Direct, clear</td><td class="p-2 border border-[var(--border)]">Indirect, complex</td></tr>
+                  <tr><td class="p-2 border border-[var(--border)]">Can be paraphrased</td><td class="p-2 border border-[var(--border)]">Cannot be paraphrased (heresy of paraphrase)</td></tr>
+                  <tr><td class="p-2 border border-[var(--border)]">Informational</td><td class="p-2 border border-[var(--border)]">Experiential</td></tr>
+                  <tr><td class="p-2 border border-[var(--border)]">"Water boils at 100°C"</td><td class="p-2 border border-[var(--border)]">"My love is like a red, red rose"</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <!-- ==================== SECTION 4 ==================== -->
+    <div id="s4" class="section">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-4 shadow-sm">
+        <h2 class="text-xl font-bold mb-4">4️⃣ New Critics এবং তাদের Ideas/Terms</h2>
+
+        <div class="book-content mb-3">
+          <p class="text-xs font-semibold text-green-700 mb-1">📗 FROM THE BOOK — Tyson-এর chapter-এ যেভাবে এসেছে</p>
+        </div>
+
+        <div class="grid gap-3">
+          <div class="border border-[var(--border)] rounded-xl p-4">
+            <h3 class="font-bold text-base">🧑‍🏫 John Crowe Ransom</h3>
+            <p class="text-sm mt-1"><strong>Key Contribution:</strong> Coined the term <strong>"New Criticism"</strong> with his 1941 book <em>The New Criticism</em>. He helped establish the movement and gave it its name.</p>
+            <p class="text-sm mt-1"><strong>Key Idea:</strong> Advocated for treating literature as an object of study in itself, separate from historical and biographical approaches.</p>
+            <div class="bangla text-sm mt-2">
+              <p>🇧🇩 "New Criticism" নামটাই দিয়েছিলেন তিনি। তিনি বলেছিলেন সাহিত্যকে নিজের merit-এ বিচার করতে হবে, ইতিহাস বা জীবনী দিয়ে নয়।</p>
+            </div>
+          </div>
+
+          <div class="border border-[var(--border)] rounded-xl p-4">
+            <h3 class="font-bold text-base">🧑‍🏫 Cleanth Brooks</h3>
+            <p class="text-sm mt-1"><strong>Key Contributions:</strong></p>
+            <ul class="list-disc ml-5 text-sm space-y-1">
+              <li><strong>The Heresy of Paraphrase</strong> — You cannot reduce a poem's meaning to a simple paraphrase</li>
+              <li><strong>The Well Wrought Urn</strong> (1947) — His famous book of New Critical analyses</li>
+              <li>Emphasized <strong>paradox</strong> and <strong>irony</strong> as key elements of poetic language</li>
+              <li>Co-authored <em>Understanding Poetry</em> (with Robert Penn Warren), a textbook that taught close reading to generations of students</li>
+            </ul>
+            <div class="bangla text-sm mt-2">
+              <p>🇧🇩 Brooks-ই বলেছিলেন কবিতাকে paraphrase করা "heresy" (ধর্মদ্রোহিতা/পাপ)। তিনি paradox আর irony-কে কবিতার প্রাণ মনে করতেন। তাঁর Understanding Poetry বইটি close reading শেখানোর bible ছিল।</p>
+            </div>
+          </div>
+
+          <div class="border border-[var(--border)] rounded-xl p-4">
+            <h3 class="font-bold text-base">🧑‍🏫 W.K. Wimsatt & Monroe Beardsley</h3>
+            <p class="text-sm mt-1"><strong>Key Contributions:</strong></p>
+            <ul class="list-disc ml-5 text-sm space-y-1">
+              <li><strong>The Intentional Fallacy</strong> (1946) — Argued that the author's intention should not determine a text's meaning</li>
+              <li><strong>The Affective Fallacy</strong> (1949) — Argued that the reader's emotional response should not determine a text's value</li>
+            </ul>
+            <p class="text-sm mt-2">These two essays are foundational to New Criticism because they remove both the author and the reader from the equation, leaving only the text.</p>
+            <div class="bangla text-sm mt-2">
+              <p>🇧🇩 এই দুজন মিলে লেখক আর পাঠক দুজনকেই সরিয়ে দিলেন। Intentional Fallacy-তে বললেন — লেখকের উদ্দেশ্য matter করে না। Affective Fallacy-তে বললেন — পাঠকের আবেগ matter করে না। শুধু text-ই থাকলো।</p>
+            </div>
+          </div>
+
+          <div class="border border-[var(--border)] rounded-xl p-4">
+            <h3 class="font-bold text-base">🧑‍🏫 Robert Penn Warren</h3>
+            <p class="text-sm mt-1"><strong>Key Contribution:</strong> Co-authored <em>Understanding Poetry</em> and <em>Understanding Fiction</em> with Cleanth Brooks. These textbooks made close reading the standard method of teaching literature in American universities.</p>
+            <div class="bangla text-sm mt-2">
+              <p>🇧🇩 Brooks-এর সাথে মিলে Understanding Poetry বই লিখেছিলেন যেটা American university-তে close reading শেখানোর standard textbook হয়ে গিয়েছিল।</p>
+            </div>
+          </div>
+
+          <div class="border border-[var(--border)] rounded-xl p-4">
+            <h3 class="font-bold text-base">🧑‍🏫 Allen Tate</h3>
+            <p class="text-sm mt-1"><strong>Key Contribution:</strong> Developed the concept of <strong>tension</strong> in poetry — the interplay between the literal and figurative meanings of words.</p>
+            <div class="bangla text-sm mt-2">
+              <p>🇧🇩 কবিতায় শব্দের literal (আক্ষরিক) আর figurative (রূপক) অর্থের মধ্যে যে tension থাকে — সেই concept তিনি develop করেছিলেন।</p>
+            </div>
+          </div>
+
+          <div class="additional mt-4">
+            <p class="text-xs font-semibold text-yellow-700 mb-1">📙 ADDITIONAL INFO (বইয়ের বাইরে)</p>
+            <p class="text-sm"><strong>I.A. Richards</strong> — Often considered a precursor to New Criticism. His work on practical criticism and close analysis of texts influenced the New Critics, though he was not strictly a New Critic himself. Tyson mentions the broader intellectual context but the degree of coverage of Richards varies by edition.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SECTION 5 ==================== -->
+    <div id="s5" class="section">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-4 shadow-sm">
+        <h2 class="text-xl font-bold mb-4">5️⃣ গুরুত্বপূর্ণ Literary Terms — Chapter অনুযায়ী</h2>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm border border-[var(--border)]">
+            <thead>
+              <tr class="bg-[var(--content)]">
+                <th class="p-3 border border-[var(--border)] text-left">Term</th>
+                <th class="p-3 border border-[var(--border)] text-left">Definition (Easy English)</th>
+                <th class="p-3 border border-[var(--border)] text-left">বাংলায়</th>
+                <th class="p-3 border border-[var(--border)] text-left">Role in New Criticism</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="p-3 border border-[var(--border)] font-bold">Close Reading</td>
+                <td class="p-3 border border-[var(--border)]">Careful, word-by-word analysis of a text's literary devices and how they create meaning</td>
+                <td class="p-3 border border-[var(--border)]">Text-কে গভীরভাবে পড়া, প্রতিটি শব্দ ও device বিশ্লেষণ করা</td>
+                <td class="p-3 border border-[var(--border)]">The PRIMARY METHOD — this is HOW New Critics analyze</td>
+              </tr>
+              <tr>
+                <td class="p-3 border border-[var(--border)] font-bold">Organic Unity</td>
+                <td class="p-3 border border-[var(--border)]">All parts of a text work together to create a single, unified meaning</td>
+                <td class="p-3 border border-[var(--border)]">Text-এর সব element একত্রে একটি অর্থ তৈরি করে</td>
+                <td class="p-3 border border-[var(--border)]">The GOAL — this is WHAT New Critics try to demonstrate</td>
+              </tr>
+              <tr>
+                <td class="p-3 border border-[var(--border)] font-bold">Ambiguity</td>
+                <td class="p-3 border border-[var(--border)]">Multiple meanings in a word or passage — seen as literary richness, not confusion</td>
+                <td class="p-3 border border-[var(--border)]">একাধিক অর্থ — এটি সাহিত্যের শক্তি</td>
+                <td class="p-3 border border-[var(--border)]">Shows how literary language is different from scientific language</td>
+              </tr>
+              <tr>
+                <td class="p-3 border border-[var(--border)] font-bold">Paradox</td>
+                <td class="p-3 border border-[var(--border)]">A statement that seems contradictory but reveals a deeper truth</td>
+                <td class="p-3 border border-[var(--border)]">আপাত-বিরোধী কিন্তু গভীর সত্য প্রকাশকারী বক্তব্য</td>
+                <td class="p-3 border border-[var(--border)]">Key feature of literary language; central to Brooks' analysis</td>
+              </tr>
+              <tr>
+                <td class="p-3 border border-[var(--border)] font-bold">Irony</td>
+                <td class="p-3 border border-[var(--border)]">Gap between what is said and what is meant, or between expectation and reality</td>
+                <td class="p-3 border border-[var(--border)]">বলা আর বোঝানো-র মধ্যে পার্থক্য</td>
+                <td class="p-3 border border-[var(--border)]">Adds complexity; New Critics highly valued irony in texts</td>
+              </tr>
+              <tr>
+                <td class="p-3 border border-[var(--border)] font-bold">Tension</td>
+                <td class="p-3 border border-[var(--border)]">The pull between opposing elements/meanings within a text</td>
+                <td class="p-3 border border-[var(--border)]">বিপরীত উপাদানের মধ্যে টানাটানি</td>
+                <td class="p-3 border border-[var(--border)]">Creates depth; associated with Allen Tate</td>
+              </tr>
+              <tr>
+                <td class="p-3 border border-[var(--border)] font-bold">Intentional Fallacy</td>
+                <td class="p-3 border border-[var(--border)]">Error of using author's intention to determine meaning</td>
+                <td class="p-3 border border-[var(--border)]">লেখকের উদ্দেশ্য দিয়ে অর্থ নির্ধারণের ভুল</td>
+                <td class="p-3 border border-[var(--border)]">Removes author from interpretation</td>
+              </tr>
+              <tr>
+                <td class="p-3 border border-[var(--border)] font-bold">Affective Fallacy</td>
+                <td class="p-3 border border-[var(--border)]">Error of using reader's emotions to judge a text's value</td>
+                <td class="p-3 border border-[var(--border)]">পাঠকের আবেগ দিয়ে মূল্যায়নের ভুল</td>
+                <td class="p-3 border border-[var(--border)]">Removes reader from evaluation</td>
+              </tr>
+              <tr>
+                <td class="p-3 border border-[var(--border)] font-bold">Heresy of Paraphrase</td>
+                <td class="p-3 border border-[var(--border)]">A poem's meaning cannot be reduced to a simple paraphrase; form = content</td>
+                <td class="p-3 border border-[var(--border)]">কবিতার অর্থ সরল ভাষায় বলা সম্ভব না; রূপ আর বিষয়বস্তু অবিচ্ছেদ্য</td>
+                <td class="p-3 border border-[var(--border)]">Central concept by Cleanth Brooks; supports text autonomy</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SECTION 6 ==================== -->
+    <div id="s6" class="section">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-4 shadow-sm">
+        <h2 class="text-xl font-bold mb-4">6️⃣ Assumptions, Characteristics, Principles & Method</h2>
+
+        <!-- Assumptions -->
+        <div class="border border-[var(--border)] rounded-xl p-4 mb-4">
+          <h3 class="font-bold text-lg mb-3">📌 Core Assumptions (বইয়ের ভিত্তিতে)</h3>
+          <div class="book-content">
+            <ol class="list-decimal ml-5 space-y-2 text-sm">
+              <li><strong>The literary text is autonomous</strong> — It exists independently from author, reader, and historical context.</li>
+              <li><strong>The text is the most important thing</strong> — Only the "words on the page" matter for interpretation.</li>
+              <li><strong>Literary language is special</strong> — It is different from and richer than everyday or scientific language because of its ambiguity, paradox, irony, and complexity.</li>
+              <li><strong>Form and content are inseparable</strong> — HOW something is said is part of WHAT it means. You cannot separate them.</li>
+              <li><strong>Great literature has organic unity</strong> — All elements work together to create a unified whole.</li>
+              <li><strong>The meaning of a text is timeless and universal</strong> — Good literature speaks to all people across all time periods. The meaning doesn't change based on when you read it.</li>
+            </ol>
+          </div>
+          <div class="bangla text-sm mt-3">
+            <p>🇧🇩 <strong>সহজ কথায়:</strong> New Criticism ধরে নেয় যে — text নিজেই সব, text-এর ভাষা বিশেষ, form আর content এক, ভালো সাহিত্যে সবকিছু একসাথে কাজ করে, এবং সাহিত্যের অর্থ চিরকালের জন্য।</p>
+          </div>
+        </div>
+
+        <!-- Characteristics -->
+        <div class="border border-[var(--border)] rounded-xl p-4 mb-4">
+          <h3 class="font-bold text-lg mb-3">📌 Key Characteristics</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="bg-[var(--content)] rounded-lg p-3">
+              <h4 class="font-bold text-sm">🔍 Text-Centered</h4>
+              <p class="text-xs mt-1">All analysis focuses on the text itself</p>
+            </div>
+            <div class="bg-[var(--content)] rounded-lg p-3">
+              <h4 class="font-bold text-sm">🔬 Objective</h4>
+              <p class="text-xs mt-1">Tries to be scientific and impersonal</p>
+            </div>
+            <div class="bg-[var(--content)] rounded-lg p-3">
+              <h4 class="font-bold text-sm">📝 Formalist</h4>
+              <p class="text-xs mt-1">Focuses on form, structure, literary devices</p>
+            </div>
+            <div class="bg-[var(--content)] rounded-lg p-3">
+              <h4 class="font-bold text-sm">🏛️ Anti-Historical</h4>
+              <p class="text-xs mt-1">Ignores historical/social context</p>
+            </div>
+            <div class="bg-[var(--content)] rounded-lg p-3">
+              <h4 class="font-bold text-sm">🚫 Anti-Biographical</h4>
+              <p class="text-xs mt-1">Ignores the author's life</p>
+            </div>
+            <div class="bg-[var(--content)] rounded-lg p-3">
+              <h4 class="font-bold text-sm">♾️ Universalist</h4>
+              <p class="text-xs mt-1">Believes great literature is timeless</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Principles -->
+        <div class="border border-[var(--border)] rounded-xl p-4 mb-4">
+          <h3 class="font-bold text-lg mb-3">📌 Key Principles</h3>
+          <ol class="list-decimal ml-5 space-y-2 text-sm">
+            <li><strong>The Primacy of the Text:</strong> The text is a self-sufficient object. External factors are irrelevant.</li>
+            <li><strong>Close Reading is the Method:</strong> Careful analysis of formal elements is the only valid approach.</li>
+            <li><strong>Organic Unity is the Goal:</strong> A successful analysis shows how all elements work together.</li>
+            <li><strong>Form = Content:</strong> What a text says cannot be separated from how it says it.</li>
+            <li><strong>Author's Intention is Irrelevant:</strong> (Intentional Fallacy)</li>
+            <li><strong>Reader's Emotion is Irrelevant:</strong> (Affective Fallacy)</li>
+            <li><strong>Literary Language is Unique:</strong> It operates through ambiguity, paradox, irony, and tension.</li>
+          </ol>
+        </div>
+
+        <!-- Method of Analysis -->
+        <div class="border border-[var(--border)] rounded-xl p-4">
+          <h3 class="font-bold text-lg mb-3">📌 Method of Analysis (কীভাবে New Critical Analysis করবে)</h3>
+          <div class="book-content text-sm mb-3">
+            <p>📗 Tyson describes the New Critical method through her sample analysis of <em>The Great Gatsby</em>:</p>
+          </div>
+          <div class="space-y-3 text-sm">
+            <div class="flex gap-3">
+              <div class="bg-[var(--primary)] text-[var(--primary-foreground)] rounded-full w-8 h-8 flex items-center justify-center font-bold shrink-0">1</div>
+              <div>
+                <p class="font-bold">Read the text carefully (Close Reading)</p>
+                <p class="text-[var(--muted-foreground)]">Read multiple times. Focus on the words on the page.</p>
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <div class="bg-[var(--primary)] text-[var(--primary-foreground)] rounded-full w-8 h-8 flex items-center justify-center font-bold shrink-0">2</div>
+              <div>
+                <p class="font-bold">Identify Formal Elements</p>
+                <p class="text-[var(--muted-foreground)]">Find imagery, symbols, metaphors, irony, paradox, tone, point of view, narrative structure, etc.</p>
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <div class="bg-[var(--primary)] text-[var(--primary-foreground)] rounded-full w-8 h-8 flex items-center justify-center font-bold shrink-0">3</div>
+              <div>
+                <p class="font-bold">Analyze the Interrelationships</p>
+                <p class="text-[var(--muted-foreground)]">Show how these elements relate to each other. How does the imagery connect to the symbolism? How does irony create tension?</p>
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <div class="bg-[var(--primary)] text-[var(--primary-foreground)] rounded-full w-8 h-8 flex items-center justify-center font-bold shrink-0">4</div>
+              <div>
+                <p class="font-bold">Demonstrate Organic Unity</p>
+                <p class="text-[var(--muted-foreground)]">Show that ALL these elements work together to produce a single, unified theme/meaning.</p>
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <div class="bg-[var(--primary)] text-[var(--primary-foreground)] rounded-full w-8 h-8 flex items-center justify-center font-bold shrink-0">5</div>
+              <div>
+                <p class="font-bold">Avoid External References</p>
+                <p class="text-[var(--muted-foreground)]">Do NOT bring in author biography, historical context, or personal feelings.</p>
+              </div>
+            </div>
+          </div>
+          <div class="bangla text-sm mt-4">
+            <p>🇧🇩 <strong>সহজ কথায়:</strong> Text বারবার পড়ো → Literary devices খুঁজে বের করো → দেখাও কীভাবে সব devices একসাথে কাজ করে → প্রমাণ করো সব মিলে একটা unified meaning তৈরি করে → বাইরের কিছু আনবে না।</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SECTION 7 ==================== -->
+    <div id="s7" class="section">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-4 shadow-sm">
+        <h2 class="text-xl font-bold mb-4">7️⃣ What New Criticism Rejects & Why</h2>
+
+        <div class="space-y-3">
+          <div class="border-l-4 border-red-400 pl-4 py-2">
+            <h3 class="font-bold">❌ Rejects: Author's Biography/Intention</h3>
+            <p class="text-sm"><strong>Why?</strong> Because the author's life and intention are EXTERNAL to the text. The text must speak for itself. Using the author's diary or letters to interpret a text is the <strong>Intentional Fallacy</strong>.</p>
+            <div class="bangla text-sm mt-1">
+              <p>🇧🇩 লেখকের জীবনকাহিনী বা উদ্দেশ্য text-এর বাইরের জিনিস। Text নিজেই কথা বলুক — লেখকের মুখের দিকে তাকানোর দরকার নেই।</p>
+            </div>
+          </div>
+
+          <div class="border-l-4 border-red-400 pl-4 py-2">
+            <h3 class="font-bold">❌ Rejects: Reader's Emotional Response</h3>
+            <p class="text-sm"><strong>Why?</strong> Because emotions are subjective — different readers feel differently. If we judge a text by emotion, we have no objective standard. This is the <strong>Affective Fallacy</strong>.</p>
+            <div class="bangla text-sm mt-1">
+              <p>🇧🇩 আবেগ ব্যক্তিগত — একজন কাঁদে, আরেকজন হাসে। আবেগ দিয়ে বিচার করলে কোনো objective standard থাকে না।</p>
+            </div>
+          </div>
+
+          <div class="border-l-4 border-red-400 pl-4 py-2">
+            <h3 class="font-bold">❌ Rejects: Historical/Social Context</h3>
+            <p class="text-sm"><strong>Why?</strong> Because the text is autonomous. Its meaning is timeless and universal. Tying it to a specific historical period limits its universal significance.</p>
+            <div class="bangla text-sm mt-1">
+              <p>🇧🇩 Text চিরকালের — একে কোনো নির্দিষ্ট যুগে বেঁধে রাখলে এর universal significance কমে যায়।</p>
+            </div>
+          </div>
+
+          <div class="border-l-4 border-red-400 pl-4 py-2">
+            <h3 class="font-bold">❌ Rejects: Political/Ideological Reading</h3>
+            <p class="text-sm"><strong>Why?</strong> Because using a text to promote political or social ideas turns literature into propaganda. New Critics wanted to keep literature "pure" — focused on aesthetic/formal qualities.</p>
+            <div class="bangla text-sm mt-1">
+              <p>🇧🇩 সাহিত্যকে রাজনৈতিক বা সামাজিক প্রচার (propaganda) হিসেবে ব্যবহার করলে সাহিত্যের নিজস্ব শিল্পমূল্য নষ্ট হয়। New Critics সাহিত্যকে "শুদ্ধ" রাখতে চেয়েছিলেন।</p>
+            </div>
+          </div>
+
+          <div class="border-l-4 border-red-400 pl-4 py-2">
+            <h3 class="font-bold">❌ Rejects: Paraphrase as Interpretation</h3>
+            <p class="text-sm"><strong>Why?</strong> Because the meaning of a literary text is embedded in its form. You cannot extract the meaning and put it in plain words without losing the essence. This is the <strong>Heresy of Paraphrase</strong>.</p>
+            <div class="bangla text-sm mt-1">
+              <p>🇧🇩 সাহিত্যের অর্থ তার রূপের (form) মধ্যে আটকানো। সরল ভাষায় বললে আসল জিনিসটা হারিয়ে যায়।</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="exam-tip mt-4">
+          <p class="text-xs font-semibold text-red-600 mb-1">🎯 EXAM TIP</p>
+          <p class="text-sm">যদি প্রশ্ন আসে "What does New Criticism reject?" — তাহলে এই 5টি point মনে রাখো: Author's intention, Reader's emotion, Historical context, Political reading, Paraphrase. মনে রাখার shortcut: <strong>A-R-H-P-P</strong> (Author, Reader, History, Politics, Paraphrase).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SECTION 8 ==================== -->
+    <div id="s8" class="section">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-4 shadow-sm">
+        <h2 class="text-xl font-bold mb-4">8️⃣ Comparison with Other Approaches</h2>
+
+        <div class="book-content mb-3">
+          <p class="text-xs font-semibold text-green-700 mb-1">📗 FROM THE BOOK</p>
+          <p class="text-sm">Tyson's book is structured so that each chapter presents a different critical theory. In the New Criticism chapter, she implicitly and sometimes explicitly contrasts New Criticism with other approaches:</p>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm border border-[var(--border)]">
+            <thead>
+              <tr class="bg-[var(--content)]">
+                <th class="p-3 border border-[var(--border)] text-left">Aspect</th>
+                <th class="p-3 border border-[var(--border)] text-left">New Criticism</th>
+                <th class="p-3 border border-[var(--border)] text-left">Other Approaches</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="p-3 border border-[var(--border)] font-bold">Focus</td>
+                <td class="p-3 border border-[var(--border)]">The text itself (words on the page)</td>
+                <td class="p-3 border border-[var(--border)]">Psychoanalytic: author's/character's psyche; Marxist: social/economic context; Feminist: gender dynamics; Reader-Response: reader's experience</td>
+              </tr>
+              <tr>
+                <td class="p-3 border border-[var(--border)] font-bold">Author</td>
+                <td class="p-3 border border-[var(--border)]">Irrelevant (Intentional Fallacy)</td>
+                <td class="p-3 border border-[var(--border)]">Psychoanalytic criticism may use author's biography; Biographical criticism centers on it</td>
+              </tr>
+              <tr>
+                <td class="p-3 border border-[var(--border)] font-bold">Reader</td>
+                <td class="p-3 border border-[var(--border)]">Irrelevant (Affective Fallacy)</td>
+                <td class="p-3 border border-[var(--border)]">Reader-Response criticism centers on the reader's experience</td>
+              </tr>
+              <tr>
+                <td class="p-3 border border-[var(--border)] font-bold">History</td>
+                <td class="p-3 border border-[var(--border)]">Irrelevant — text is timeless</td>
+                <td class="p-3 border border-[var(--border)]">New Historicism, Marxism: essential context</td>
+              </tr>
+              <tr>
+                <td class="p-3 border border-[var(--border)] font-bold">Politics</td>
+                <td class="p-3 border border-[var(--border)]">Literature should be apolitical</td>
+                <td class="p-3 border border-[var(--border)]">Marxist, Feminist, Postcolonial: literature is inherently political</td>
+              </tr>
+              <tr>
+                <td class="p-3 border border-[var(--border)] font-bold">Method</td>
+                <td class="p-3 border border-[var(--border)]">Close reading of formal elements</td>
+                <td class="p-3 border border-[var(--border)]">Deconstruction also does close reading but to show instability of meaning (opposite conclusion)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="bangla text-sm mt-4">
+          <p>🇧🇩 <strong>মূল পার্থক্য:</strong> New Criticism শুধু text দেখে। অন্যান্য theory text-এর বাইরে দেখে — কেউ লেখক দেখে, কেউ পাঠক দেখে, কেউ সমাজ দেখে, কেউ ইতিহাস দেখে। New Criticism-এর বিশেষত্ব হলো এটা বলে: "বাইরের কিছু দরকার নেই।"</p>
+        </div>
+
+        <div class="additional mt-3">
+          <p class="text-xs font-semibold text-yellow-700 mb-1">📙 ADDITIONAL CONTEXT</p>
+          <p class="text-sm">Interestingly, Deconstruction (which came after New Criticism) also does close reading — but reaches the opposite conclusion. Where New Criticism says close reading reveals unified meaning, Deconstruction says close reading reveals that meaning is always unstable and contradictory. Tyson discusses this in her Deconstruction chapter.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SECTION 9 ==================== -->
+    <div id="s9" class="section">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-4 shadow-sm">
+        <h2 class="text-xl font-bold mb-4">9️⃣ Difficult Passages — Paraphrased & Explained</h2>
+
+        <!-- Passage 1 -->
+        <div class="border border-[var(--border)] rounded-xl p-4 mb-4">
+          <h3 class="font-bold mb-2">Difficult Idea #1: "The Text as Autonomous Object"</h3>
+          <div class="bg-[var(--content)] rounded-lg p-3 mb-3 text-sm italic">
+            "For New Critics, a literary text is an <em>autotelic</em> artifact — that is, a self-contained, self-referential aesthetic object that exists for its own sake, independent of the conditions that produced it, the psychological responses it produces in readers, or the political, moral, or philosophical programs it might be said to support."
+          </div>
+          <div class="mb-3">
+            <h4 class="font-bold text-sm text-[var(--muted-foreground)]">PARAPHRASE (Easy English):</h4>
+            <p class="text-sm">New Critics believed that a literary text is a complete, independent object — like a vase or a painting. It exists on its own. You don't need to know who made it, when it was made, how it makes you feel, or what political message it carries. You just look at the object itself and study its qualities.</p>
+          </div>
+          <div class="bangla text-sm">
+            <p>🇧🇩 New Critics মনে করতো একটা literary text হলো একটা self-contained object — যেমন একটা মূর্তি। মূর্তিটা কে বানিয়েছে, কখন বানিয়েছে, তুমি দেখে কী feel করো — এসব দরকার নেই। শুধু মূর্তিটার নিজের সৌন্দর্য দেখো। "Autotelic" মানে "নিজের মধ্যেই নিজের উদ্দেশ্য আছে" — text নিজেই নিজের জন্য exist করে।</p>
+          </div>
+        </div>
+
+        <!-- Passage 2 -->
+        <div class="border border-[var(--border)] rounded-xl p-4 mb-4">
+          <h3 class="font-bold mb-2">Difficult Idea #2: Form and Content Inseparability</h3>
+          <div class="bg-[var(--content)] rounded-lg p-3 mb-3 text-sm italic">
+            "For New Criticism, the form and content of a literary work are inseparable: what a text says and how it says it are viewed as one thing, not two. To try to separate them by, for example, summarizing a poem's 'theme' in a sentence or two, is to commit what Cleanth Brooks calls 'the heresy of paraphrase.'"
+          </div>
+          <div class="mb-3">
+            <h4 class="font-bold text-sm text-[var(--muted-foreground)]">PARAPHRASE (Easy English):</h4>
+            <p class="text-sm">For New Critics, the content (what a text says) and the form (how it says it) cannot be separated. They are ONE thing. If you try to summarize a poem's theme in simple words, you destroy the poem — because the poem's meaning IS its form. Brooks called this mistake the "heresy of paraphrase" — it's like a sin against literature.</p>
+          </div>
+          <div class="bangla text-sm">
+            <p>🇧🇩 ধরো একটা কবিতায় লেখা আছে: "Shall I compare thee to a summer's day?" এর theme কী? "তুমি সুন্দর"? কিন্তু এই summary তো কবিতার আসল রস-ই দেয় না! কারণ কবিতার meaning শুধু theme-এ না — ওই নির্দিষ্ট শব্দ, ছন্দ, রূপকল্প — সবকিছু মিলে meaning তৈরি হয়। Form আর content আলাদা করা যায় না — এটা Brooks-এর মূল কথা।</p>
+          </div>
+        </div>
+
+        <!-- Passage 3 -->
+        <div class="border border-[var(--border)] rounded-xl p-4">
+          <h3 class="font-bold mb-2">Difficult Idea #3: Timeless, Universal Meaning</h3>
+          <div class="bg-[var(--content)] rounded-lg p-3 mb-3 text-sm italic">
+            "New Critics believe that the timeless meaning of a text — what the text says about the human condition — is accessible to any 'competent' reader who gives the text sufficient time and attention through close reading."
+          </div>
+          <div class="mb-3">
+            <h4 class="font-bold text-sm text-[var(--muted-foreground)]">PARAPHRASE (Easy English):</h4>
+            <p class="text-sm">New Critics believed that great literature has a meaning that never changes — it is true for all people, at all times, in all places. And any reader who is skilled enough and reads carefully enough can find this meaning. The meaning is "in" the text, waiting to be discovered through close reading.</p>
+          </div>
+          <div class="bangla text-sm">
+            <p>🇧🇩 New Critics বিশ্বাস করতো যে ভালো সাহিত্যের meaning চিরকালের — ১০০ বছর আগেও same, ১০০ বছর পরেও same। Shakespeare-এর Hamlet আজও relevant কারণ এর meaning universal — সব মানুষের জন্য প্রযোজ্য। যেকোনো "যোগ্য" পাঠক close reading করে এই meaning বুঝতে পারবে।</p>
+            <p class="mt-1">⚠️ <strong>সমালোচনা:</strong> এই ধারণাটি পরবর্তী তাত্ত্বিকরা (Marxists, Feminists, Postcolonialists) challenge করেছেন — তাঁরা বলেন "universal" meaning আসলে white, male, Western perspective থেকে দেখা meaning।</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SECTION 10 ==================== -->
+    <div id="s10" class="section">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-4 shadow-sm">
+        <h2 class="text-xl font-bold mb-4">🔟 Quick Revision — দ্রুত মনে করার জন্য</h2>
+
+        <!-- Mind Map Style -->
+        <div class="border border-[var(--border)] rounded-xl p-4 mb-4">
+          <h3 class="font-bold text-center mb-4">🧠 New Criticism — Mental Map</h3>
+          <div class="text-center mb-4">
+            <div class="inline-block bg-[var(--primary)] text-[var(--primary-foreground)] rounded-full px-6 py-3 font-bold text-lg">NEW CRITICISM</div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+            <div class="bg-green-50 border border-green-200 rounded-lg p-3 text-green-900">
+              <h4 class="font-bold text-center mb-2">✅ FOCUSES ON</h4>
+              <ul class="space-y-1">
+                <li>• Text itself</li>
+                <li>• Words on the page</li>
+                <li>• Formal elements</li>
+                <li>• Literary devices</li>
+                <li>• Organic unity</li>
+              </ul>
+            </div>
+            <div class="bg-red-50 border border-red-200 rounded-lg p-3 text-red-900">
+              <h4 class="font-bold text-center mb-2">❌ REJECTS</h4>
+              <ul class="space-y-1">
+                <li>• Author's intention</li>
+                <li>• Reader's emotion</li>
+                <li>• Historical context</li>
+                <li>• Political meaning</li>
+                <li>• Paraphrase</li>
+              </ul>
+            </div>
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 text-blue-900">
+              <h4 class="font-bold text-center mb-2">🔧 KEY TOOLS</h4>
+              <ul class="space-y-1">
+                <li>• Close reading</li>
+                <li>• Ambiguity</li>
+                <li>• Paradox</li>
+                <li>• Irony</li>
+                <li>• Tension</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Flash Cards Style -->
+        <div class="border border-[var(--border)] rounded-xl p-4 mb-4">
+          <h3 class="font-bold mb-3">⚡ Flash Facts — মনে রাখো!</h3>
+          <div class="grid gap-2 text-sm">
+            <div class="flex gap-2 items-start bg-[var(--content)] rounded-lg p-3">
+              <span class="font-bold text-[var(--primary)] shrink-0">Q:</span>
+              <span>New Criticism-এর method কী? → <strong>Close Reading</strong></span>
+            </div>
+            <div class="flex gap-2 items-start bg-[var(--content)] rounded-lg p-3">
+              <span class="font-bold text-[var(--primary)] shrink-0">Q:</span>
+              <span>New Criticism-এর goal কী? → <strong>Organic Unity demonstrate করা</strong></span>
+            </div>
+            <div class="flex gap-2 items-start bg-[var(--content)] rounded-lg p-3">
+              <span class="font-bold text-[var(--primary)] shrink-0">Q:</span>
+              <span>"New Criticism" নাম কে দিয়েছিলেন? → <strong>John Crowe Ransom</strong> (1941)</span>
+            </div>
+            <div class="flex gap-2 items-start bg-[var(--content)] rounded-lg p-3">
+              <span class="font-bold text-[var(--primary)] shrink-0">Q:</span>
+              <span>Intentional Fallacy কারা propose করেন? → <strong>Wimsatt & Beardsley</strong></span>
+            </div>
+            <div class="flex gap-2 items-start bg-[var(--content)] rounded-lg p-3">
+              <span class="font-bold text-[var(--primary)] shrink-0">Q:</span>
+              <span>Heresy of Paraphrase কার concept? → <strong>Cleanth Brooks</strong></span>
+            </div>
+            <div class="flex gap-2 items-start bg-[var(--content)] rounded-lg p-3">
+              <span class="font-bold text-[var(--primary)] shrink-0">Q:</span>
+              <span>Understanding Poetry কারা লিখেছেন? → <strong>Brooks & Warren</strong></span>
+            </div>
+            <div class="flex gap-2 items-start bg-[var(--content)] rounded-lg p-3">
+              <span class="font-bold text-[var(--primary)] shrink-0">Q:</span>
+              <span>Tension concept কার? → <strong>Allen Tate</strong></span>
+            </div>
+            <div class="flex gap-2 items-start bg-[var(--content)] rounded-lg p-3">
+              <span class="font-bold text-[var(--primary)] shrink-0">Q:</span>
+              <span>NC কখন dominant ছিল? → <strong>Late 1930s – 1970s</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mnemonics -->
+        <div class="border border-[var(--border)] rounded-xl p-4">
+          <h3 class="font-bold mb-3">🧩 Mnemonics — মনে রাখার কৌশল</h3>
+          <div class="space-y-3 text-sm">
+            <div class="bg-[var(--content)] rounded-lg p-3">
+              <p class="font-bold">Rejections মনে রাখো: "A-R-H-P-P"</p>
+              <p class="text-[var(--muted-foreground)]"><strong>A</strong>uthor (Intentional Fallacy) → <strong>R</strong>eader (Affective Fallacy) → <strong>H</strong>istory → <strong>P</strong>olitics → <strong>P</strong>araphrase (Heresy)</p>
+            </div>
+            <div class="bg-[var(--content)] rounded-lg p-3">
+              <p class="font-bold">Key devices মনে রাখো: "A-P-I-T"</p>
+              <p class="text-[var(--muted-foreground)]"><strong>A</strong>mbiguity → <strong>P</strong>aradox → <strong>I</strong>rony → <strong>T</strong>ension — (APIT = এই চারটি literary language-কে special করে)</p>
+            </div>
+            <div class="bg-[var(--content)] rounded-lg p-3">
+              <p class="font-bold">Method মনে রাখো: "Read → Find → Connect → Unify → Exclude"</p>
+              <p class="text-[var(--muted-foreground)]">Close read → Find devices → Connect them → Show unity → Exclude external</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SECTION 11-12 ==================== -->
+    <div id="s11" class="section">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-4 shadow-sm">
+        <h2 class="text-xl font-bold mb-4">1️⃣1️⃣ Short Questions</h2>
+        <ol class="list-decimal ml-5 space-y-2 text-sm">
+          <li>What is New Criticism?</li>
+          <li>Define close reading according to New Criticism.</li>
+          <li>What is the Intentional Fallacy? Who proposed it?</li>
+          <li>What is the Affective Fallacy? Who proposed it?</li>
+          <li>What does "organic unity" mean in New Criticism?</li>
+          <li>Explain the "Heresy of Paraphrase."</li>
+          <li>Who coined the term "New Criticism"?</li>
+          <li>How do New Critics distinguish literary language from scientific language?</li>
+          <li>What does it mean to say a text is "autonomous"?</li>
+          <li>Define ambiguity as understood by New Critics.</li>
+          <li>What is paradox and why do New Critics value it?</li>
+          <li>What is irony in the context of New Criticism?</li>
+          <li>Explain the concept of "tension" in New Critical theory.</li>
+          <li>Why do New Critics reject the use of historical context in literary analysis?</li>
+          <li>What is the relationship between form and content according to New Criticism?</li>
+        </ol>
+      </div>
+
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-4 shadow-sm">
+        <h2 class="text-xl font-bold mb-4">1️⃣2️⃣ Broad/Descriptive Questions</h2>
+        <ol class="list-decimal ml-5 space-y-3 text-sm">
+          <li><strong>Discuss the basic assumptions and principles of New Criticism.</strong>
+            <p class="text-[var(--muted-foreground)] text-xs mt-1">Expected: Cover text autonomy, close reading, organic unity, form-content inseparability, fallacies</p>
+          </li>
+          <li><strong>Explain the Intentional Fallacy and the Affective Fallacy with their significance in New Criticism.</strong>
+            <p class="text-[var(--muted-foreground)] text-xs mt-1">Expected: Define both, explain why NC rejects them, show how they support text autonomy</p>
+          </li>
+          <li><strong>How do New Critics approach a literary text? Discuss the method of close reading.</strong>
+            <p class="text-[var(--muted-foreground)] text-xs mt-1">Expected: Explain close reading steps, formal elements, goal of organic unity</p>
+          </li>
+          <li><strong>Discuss the concept of organic unity with reference to New Criticism.</strong>
+            <p class="text-[var(--muted-foreground)] text-xs mt-1">Expected: Define, explain how all elements work together, give textual example</p>
+          </li>
+          <li><strong>Critically evaluate the strengths and limitations of New Criticism as a literary approach.</strong>
+            <p class="text-[var(--muted-foreground)] text-xs mt-1">Expected: Strengths (close reading skill, objectivity) + Limitations (ignores context, politics, reader)</p>
+          </li>
+          <li><strong>How does New Criticism differ from other critical approaches like Reader-Response or Marxist criticism?</strong>
+            <p class="text-[var(--muted-foreground)] text-xs mt-1">Expected: Compare on key parameters — focus, author, reader, history, politics</p>
+          </li>
+          <li><strong>Explain the significance of literary devices such as ambiguity, paradox, irony, and tension in New Criticism.</strong>
+            <p class="text-[var(--muted-foreground)] text-xs mt-1">Expected: Define each, explain why NC values them, show how they create literary meaning</p>
+          </li>
+          <li><strong>Discuss the concept of "the heresy of paraphrase" and its implications for New Critical theory.</strong>
+            <p class="text-[var(--muted-foreground)] text-xs mt-1">Expected: Define, explain form-content relationship, why paraphrase "destroys" the text</p>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- ==================== SECTION 13-15 ==================== -->
+    <div id="s13" class="section">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-4 shadow-sm">
+        <h2 class="text-xl font-bold mb-4">1️⃣3️⃣ How to Structure Broad Answers</h2>
+
+        <div class="border border-[var(--border)] rounded-xl p-4 mb-4">
+          <h3 class="font-bold mb-3">📐 Universal Answer Structure</h3>
+          <div class="space-y-3 text-sm">
+            <div class="flex gap-3">
+              <div class="bg-green-500 text-white rounded-lg px-3 py-1 font-bold shrink-0">INTRO</div>
+              <div>
+                <p>Start with a brief definition/context. 2-3 sentences. Tell the examiner you know the topic.</p>
+                <p class="text-[var(--muted-foreground)] mt-1">Example opening: "New Criticism, which dominated American literary criticism from the 1930s to the 1970s, is a formalist approach that..."</p>
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <div class="bg-blue-500 text-white rounded-lg px-3 py-1 font-bold shrink-0">BODY</div>
+              <div>
+                <p>Break your answer into clear paragraphs, each covering one point. Use topic sentences. Include examples.</p>
+                <p class="text-[var(--muted-foreground)] mt-1">Each paragraph: Topic sentence → Explanation → Example/Evidence → Connection to the question</p>
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <div class="bg-purple-500 text-white rounded-lg px-3 py-1 font-bold shrink-0">EXAMPLES</div>
+              <div>
+                <p>Use specific terms and names. Mention critics (Brooks, Wimsatt, Beardsley). Reference concepts (Intentional Fallacy, organic unity).</p>
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <div class="bg-orange-500 text-white rounded-lg px-3 py-1 font-bold shrink-0">CONCLUSION</div>
+              <div>
+                <p>Summarize the key point. Add a final evaluative statement. 2-3 sentences.</p>
+                <p class="text-[var(--muted-foreground)] mt-1">Example closing: "Thus, New Criticism, despite its limitations, made a lasting contribution to literary studies through its emphasis on close reading and textual analysis."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-4 shadow-sm">
+        <h2 class="text-xl font-bold mb-4">1️⃣4️⃣ Model Answer #1</h2>
+        <div class="bg-[var(--content)] rounded-xl p-4 mb-3">
+          <h3 class="font-bold text-sm text-[var(--muted-foreground)]">QUESTION: Discuss the basic assumptions and principles of New Criticism.</h3>
+        </div>
+
+        <div class="text-sm space-y-4 leading-relaxed">
+          <div class="border-l-4 border-green-400 pl-4">
+            <p class="text-xs font-bold text-green-600 mb-1">INTRODUCTION</p>
+            <p>New Criticism is a formalist approach to literature that emerged in the United States in the 1930s and dominated literary criticism until the 1970s. As Lois Tyson explains in <em>Critical Theory Today</em>, the central belief of New Criticism is that the literary text is an autonomous, self-sufficient object whose meaning can be discovered through close reading of its formal elements. Unlike other approaches that consider the author's biography, historical context, or the reader's emotional response, New Criticism focuses exclusively on "the words on the page."</p>
+          </div>
+
+          <div class="border-l-4 border-blue-400 pl-4">
+            <p class="text-xs font-bold text-blue-600 mb-1">BODY — Paragraph 1: Text Autonomy</p>
+            <p>The most fundamental assumption of New Criticism is that the literary text is an <strong>autonomous object</strong>. According to the New Critics, a text exists independently from the author who wrote it, the historical period in which it was produced, and the readers who interpret it. The text is self-contained and self-referential — its meaning is embedded within its own formal structure. This assumption leads to two key principles: the Intentional Fallacy and the Affective Fallacy, proposed by W.K. Wimsatt and Monroe Beardsley. The Intentional Fallacy warns against using the author's stated or assumed intention to determine a text's meaning, while the Affective Fallacy warns against judging a text based on the emotional response it produces in readers.</p>
+          </div>
+
+          <div class="border-l-4 border-blue-400 pl-4">
+            <p class="text-xs font-bold text-blue-600 mb-1">BODY — Paragraph 2: Close Reading & Formal Elements</p>
+            <p>The primary method of New Criticism is <strong>close reading</strong> — the careful, detailed analysis of a text's formal elements such as imagery, symbolism, metaphor, irony, paradox, ambiguity, and tension. New Critics believe that literary language is fundamentally different from scientific or everyday language. While scientific language has one fixed, clear meaning, literary language is rich, complex, and multi-layered. The literary devices of ambiguity, paradox, irony, and tension are what make literary language special and give it the ability to express complex human experiences that cannot be conveyed through plain prose.</p>
+          </div>
+
+          <div class="border-l-4 border-blue-400 pl-4">
+            <p class="text-xs font-bold text-blue-600 mb-1">BODY — Paragraph 3: Organic Unity & Form-Content</p>
+            <p>Another crucial principle is <strong>organic unity</strong> — the idea that all formal elements of a literary text work together harmoniously to create a single, unified meaning, much like the organs of a living body work together to sustain life. Closely related to this is the principle that form and content are inseparable. Cleanth Brooks expressed this through his concept of the "heresy of paraphrase," arguing that a poem's meaning cannot be reduced to a simple paraphrase because the form (how something is said) is an integral part of the content (what is said). To paraphrase a poem is to destroy it.</p>
+          </div>
+
+          <div class="border-l-4 border-orange-400 pl-4">
+            <p class="text-xs font-bold text-orange-600 mb-1">CONCLUSION</p>
+            <p>In conclusion, New Criticism rests on several interconnected assumptions: the autonomy of the text, the irrelevance of authorial intention and reader response, the special nature of literary language, the inseparability of form and content, and the ideal of organic unity. While later critical approaches have challenged many of these assumptions — particularly the claim of timeless, universal meaning — New Criticism's legacy endures in the practice of close reading, which remains a foundational skill in literary analysis to this day.</p>
+          </div>
+        </div>
+
+        <div class="exam-tip mt-4">
+          <p class="text-xs font-semibold text-red-600 mb-1">🎯 NOTICE</p>
+          <p class="text-sm">দেখো কীভাবে answer-এ: (1) specific terms use করা হয়েছে, (2) critics-এর নাম এসেছে, (3) প্রতিটি paragraph একটি clear point নিয়ে, (4) examples আছে, (5) conclusion-এ evaluation আছে।</p>
+        </div>
+      </div>
+
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-4 shadow-sm">
+        <h2 class="text-xl font-bold mb-4">1️⃣4️⃣ Model Answer #2</h2>
+        <div class="bg-[var(--content)] rounded-xl p-4 mb-3">
+          <h3 class="font-bold text-sm text-[var(--muted-foreground)]">QUESTION: Explain the Intentional Fallacy and the Affective Fallacy with their significance.</h3>
+        </div>
+
+        <div class="text-sm space-y-4 leading-relaxed">
+          <div class="border-l-4 border-green-400 pl-4">
+            <p class="text-xs font-bold text-green-600 mb-1">INTRODUCTION</p>
+            <p>Two of the most influential concepts in New Criticism are the Intentional Fallacy and the Affective Fallacy, both proposed by W.K. Wimsatt and Monroe Beardsley. These two concepts are foundational because they effectively remove both the author and the reader from the process of literary interpretation, leaving only the text as the object of analysis.</p>
+          </div>
+
+          <div class="border-l-4 border-blue-400 pl-4">
+            <p class="text-xs font-bold text-blue-600 mb-1">BODY — Intentional Fallacy</p>
+            <p>The <strong>Intentional Fallacy</strong>, proposed in 1946, argues that it is an error to judge a literary text based on the author's stated or assumed intention. According to Wimsatt and Beardsley, once a text is written, it becomes an independent object. The author's diary entries, letters, interviews, or personal statements about what they "meant" to say are irrelevant to the text's meaning. The meaning is in the text itself — in its words, images, and structure — not in the author's mind. For example, even if a poet says "I intended this poem to be about love," the text itself might reveal themes of loss, mortality, or something entirely different. The text speaks for itself, regardless of the author's intention.</p>
+          </div>
+
+          <div class="border-l-4 border-blue-400 pl-4">
+            <p class="text-xs font-bold text-blue-600 mb-1">BODY — Affective Fallacy</p>
+            <p>The <strong>Affective Fallacy</strong>, proposed in 1949, argues that it is equally wrong to evaluate a literary text based on the emotional effects it produces in the reader. Just because a poem moves a reader to tears does not make it great literature; just because a novel bores a reader does not make it a failure. The reader's emotional response is subjective and varies from person to person, making it an unreliable basis for literary evaluation. The quality of a text should be judged by its formal properties — its use of language, imagery, structure, and how these elements create organic unity — not by how it makes individual readers feel.</p>
+          </div>
+
+          <div class="border-l-4 border-blue-400 pl-4">
+            <p class="text-xs font-bold text-blue-600 mb-1">BODY — Significance</p>
+            <p>Together, these two fallacies are significant because they establish the text as the sole focus of literary analysis. By removing the author (Intentional Fallacy) and the reader (Affective Fallacy), New Critics created a framework in which literary criticism could be more objective and systematic. The critic's job is not to guess what the author meant or to describe how the text makes them feel, but to analyze the text's formal properties through close reading. This approach made literary criticism more rigorous and gave it a methodology that could be taught, learned, and applied consistently.</p>
+          </div>
+
+          <div class="border-l-4 border-orange-400 pl-4">
+            <p class="text-xs font-bold text-orange-600 mb-1">CONCLUSION</p>
+            <p>In conclusion, the Intentional Fallacy and the Affective Fallacy are twin pillars of New Critical theory. By arguing against the use of authorial intention and reader response in literary interpretation, Wimsatt and Beardsley helped establish the text as an autonomous, self-sufficient object of study. While later approaches such as Reader-Response criticism have challenged the Affective Fallacy by placing the reader at the center of interpretation, these concepts remain important contributions to the history of literary theory.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-4 shadow-sm">
+        <h2 class="text-xl font-bold mb-4">1️⃣5️⃣ Answer Writing Formula</h2>
+
+        <div class="text-sm space-y-3">
+          <div class="bg-green-50 border border-green-200 rounded-lg p-4 text-green-900">
+            <h4 class="font-bold">🟢 INTRODUCTION Formula:</h4>
+            <p class="mt-1"><code>[Theory Name] is a [type] approach to literature that [core belief]. According to [critic name/Tyson], [key point]. This essay will discuss [what you'll cover].</code></p>
+            <p class="mt-2 text-xs text-green-700">💡 2-3 sentences. Show you know the basics immediately.</p>
+          </div>
+
+          <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-blue-900">
+            <h4 class="font-bold">🔵 BODY Paragraph Formula:</h4>
+            <p class="mt-1"><code>[Topic sentence stating the point] → [Define/explain the concept] → [Give evidence/example] → [Explain the significance] → [Connect back to the question]</code></p>
+            <p class="mt-2 text-xs text-blue-700">💡 Each paragraph = ONE clear point. Use transition words (Furthermore, Moreover, However, In addition).</p>
+          </div>
+
+          <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 text-purple-900">
+            <h4 class="font-bold">🟣 EXAMPLES in Answers:</h4>
+            <ul class="list-disc ml-4 mt-1 space-y-1">
+              <li>Name critics: "As Cleanth Brooks argues..." / "Wimsatt and Beardsley propose..."</li>
+              <li>Use specific terms: "organic unity," "close reading," "heresy of paraphrase"</li>
+              <li>Reference Tyson: "As Tyson explains in Critical Theory Today..."</li>
+              <li>Literary examples: Use Gatsby or any text you know well</li>
+            </ul>
+          </div>
+
+          <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 text-orange-900">
+            <h4 class="font-bold">🟠 CONCLUSION Formula:</h4>
+            <p class="mt-1"><code>In conclusion/Thus, [restate main argument]. [Evaluative statement about strengths/limitations]. [Final thought about lasting significance].</code></p>
+            <p class="mt-2 text-xs text-orange-700">💡 2-3 sentences. Don't introduce new information. End with an evaluative comment.</p>
+          </div>
+        </div>
+
+        <div class="bangla text-sm mt-4">
+          <p>🇧🇩 <strong>মনে রাখো:</strong> Introduction-এ সব জানি দেখাও → Body-তে point by point explain করো → Examples দিয়ে prove করো → Conclusion-এ summarize + evaluate করো। প্রতিটি paragraph-এ transition word ব্যবহার করো (Furthermore, Moreover, However, In addition, Consequently)।</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SECTION 16 ==================== -->
+    <div id="s16" class="section">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-4 shadow-sm">
+        <h2 class="text-xl font-bold mb-4">1️⃣6️⃣ 📋 LAST MINUTE REVISION SHEET</h2>
+        <p class="text-[var(--muted-foreground)] text-sm mb-4">Exam-এর আগে শুধু এই page-টা দেখো!</p>
+
+        <div class="bg-yellow-50 border-2 border-yellow-300 rounded-xl p-5 text-yellow-900 space-y-4 text-sm">
+          
+          <div>
+            <h3 class="font-bold text-base">⭐ NEW CRITICISM কী?</h3>
+            <p>Text-centered, formalist approach → Only "words on the page" matter → Close reading = method → Organic unity = goal</p>
+          </div>
+
+          <hr class="border-yellow-300">
+
+          <div>
+            <h3 class="font-bold text-base">⭐ 5 KEY REJECTIONS (A-R-H-P-P)</h3>
+            <p><strong>A</strong>uthor's intention (Intentional Fallacy — Wimsatt & Beardsley, 1946)</p>
+            <p><strong>R</strong>eader's emotion (Affective Fallacy — Wimsatt & Beardsley, 1949)</p>
+            <p><strong>H</strong>istorical context</p>
+            <p><strong>P</strong>olitical reading</p>
+            <p><strong>P</strong>araphrase (Heresy of Paraphrase — Cleanth Brooks)</p>
+          </div>
+
+          <hr class="border-yellow-300">
+
+          <div>
+            <h3 class="font-bold text-base">⭐ 4 KEY DEVICES (A-P-I-T)</h3>
+            <p><strong>A</strong>mbiguity → Multiple meanings = literary richness</p>
+            <p><strong>P</strong>aradox → Contradictory but true</p>
+            <p><strong>I</strong>rony → Said vs. Meant</p>
+            <p><strong>T</strong>ension → Pull between opposites (Allen Tate)</p>
+          </div>
+
+          <hr class="border-yellow-300">
+
+          <div>
+            <h3 class="font-bold text-base">⭐ KEY CRITICS & TERMS</h3>
+            <table class="w-full">
+              <tbody>
+                <tr><td class="pr-2 font-bold">Ransom:</td><td>Coined "New Criticism" (1941)</td></tr>
+                <tr><td class="pr-2 font-bold">Brooks:</td><td>Heresy of Paraphrase, paradox, irony, <em>Well Wrought Urn</em></td></tr>
+                <tr><td class="pr-2 font-bold">Brooks & Warren:</td><td><em>Understanding Poetry</em> (close reading textbook)</td></tr>
+                <tr><td class="pr-2 font-bold">Wimsatt & Beardsley:</td><td>Intentional Fallacy + Affective Fallacy</td></tr>
+                <tr><td class="pr-2 font-bold">Tate:</td><td>Tension in poetry</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <hr class="border-yellow-300">
+
+          <div>
+            <h3 class="font-bold text-base">⭐ CORE PRINCIPLES (এক নজরে)</h3>
+            <p>1. Text = autonomous, self-sufficient object</p>
+            <p>2. Form + Content = inseparable</p>
+            <p>3. Literary language ≠ Scientific language</p>
+            <p>4. Great lit = organic unity</p>
+            <p>5. Meaning = timeless & universal</p>
+            <p>6. Close reading = only valid method</p>
+          </div>
+
+          <hr class="border-yellow-300">
+
+          <div>
+            <h3 class="font-bold text-base">⭐ NC METHOD (5 Steps)</h3>
+            <p>Read carefully → Find devices → Connect them → Show unity → Exclude external</p>
+          </div>
+
+          <hr class="border-yellow-300">
+
+          <div>
+            <h3 class="font-bold text-base">⭐ ANSWER-এ যা MUST USE করবে</h3>
+            <p>• Terms: close reading, organic unity, intentional/affective fallacy, heresy of paraphrase</p>
+            <p>• Names: Brooks, Wimsatt, Beardsley, Ransom, Tate</p>
+            <p>• Phrases: "words on the page," "autonomous object," "form and content are inseparable"</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SECTION 17 ==================== -->
+    <div id="s17" class="section">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 mb-4 shadow-sm">
+        <h2 class="text-xl font-bold mb-4">1️⃣7️⃣ Test Yourself! — নিজেকে যাচাই করো</h2>
+        <p class="text-[var(--muted-foreground)] text-sm mb-4">প্রতিটি question-এর answer select করো। তারপর "Check Answer" button-এ click করো।</p>
+
+        <!-- Quiz 1 -->
+        <div class="border border-[var(--border)] rounded-xl p-4 mb-3" id="q1">
+          <p class="font-bold text-sm mb-3">Q1: Who coined the term "New Criticism"?</p>
+          <div class="space-y-2">
+            <div class="quiz-option border border-[var(--border)] rounded-lg p-3 text-sm" onclick="selectOption('q1', this)">A) Cleanth Brooks</div>
+            <div class="quiz-option border border-[var(--border)] rounded-lg p-3 text-sm" onclick="selectOption('q1', this)">B) John Crowe Ransom</div>
+            <div class="quiz-option border border-[var(--border)] rounded-lg p-3 text-sm" onclick="selectOption('q1', this)">C) W.K. Wimsatt</div>
+            <div class="quiz-option border border-[var(--border)] rounded-lg p-3 text-sm" onclick="selectOption('q1', this)">D) T.S. Eliot</div>
+          </div>
+          <button onclick="checkAnswer('q1', 'B')" class="mt-3 bg-[var(--primary)] text-[var(--primary-foreground)] px-4 py-2 rounded-lg text-sm font-medium">Check Answer</button>
+          <p id="q1-result" class="mt-2 text-sm font-bold hidden"></p>
+        </div>
+
+        <!-- Quiz 2 -->
+        <div class="border border-[var(--border)] rounded-xl p-4 mb-3" id="q2">
+          <p class="font-bold text-sm mb-3">Q2: The Intentional Fallacy argues that:</p>
+          <div class="space-y-2">
+            <div class="quiz-option border border-[var(--border)] rounded-lg p-3 text-sm" onclick="selectOption('q2', this)">A) The reader's intention matters most</div>
+            <div class="quiz-option border border-[var(--border)] rounded-lg p-3 text-sm" onclick="selectOption('q2', this)">B) The author's intention should determine meaning</div>
+            <div class="quiz-option border border-[var(--border)] rounded-lg p-3 text-sm" onclick="selectOption('q2', this)">C) The author's intention should NOT determine meaning</div>
+            <div class="quiz-option border border-[var(--border)] rounded-lg p-3 text-sm" onclick="selectOption('q2', this)">D) All intentions are valid interpretations</div>
+          </div>
+          <button onclick="checkAnswer('q2', 'C')" class="mt-3 bg-[var(--primary)] text-[var(--primary-foreground)] px-4 py-2 rounded-lg text-sm font-medium">Check Answer</button>
+          <p id="q2-result" class="mt-2 text-sm font-bold hidden"></p>
+        </div>
+
+        <!-- Quiz 3 -->
+        <div class="border border-[var(--border)] rounded-xl p-4 mb-3" id="q3">
+          <p class="font-bold text-sm mb-3">Q3: What is the "Heresy of Paraphrase"?</p>
+          <div class="space-y-2">
+            <div class="quiz-option border border-[var(--border)] rounded-lg p-3 text-sm" onclick="selectOption('q3', this)">A) Paraphrasing is the best way to understand poetry</div>
+            <div class="quiz-option border border-[var(--border)] rounded-lg p-3 text-sm" onclick="selectOption('q3', this)">B) A poem's meaning cannot be reduced to a paraphrase</div>
+            <div class="quiz-option border border-[var(--border)] rounded-lg p-3 text-sm" onclick="selectOption('q3', this)">C) Paraphrasing should be used before close reading</div>
+            <div class="quiz-option border border-[var(--border)] rounded-lg p-3 text-sm" onclick="selectOption('q3', this)">D) Religious texts cannot be paraphrased</div>
+          </div>
+          <button onclick="checkAnswer('q3', 'B')" class="mt-3 bg-[var(--primary)] text-[var(--primary-foreground)] px-4 py-2 rounded-lg text-sm font-medium">Check Answer</button>
+          <p id="q3-result" class="mt-2 text-sm font-bold hidden"></p>
+        </div>
+
+        <!-- Quiz 4 -->
+        <div class="border border-[var(--border)] rounded-xl p-4 mb-3" id="q4">
+          <p class="font-bold text-sm mb-3">Q4: Organic unity means:</p>
+          <div class="space-y-2">
+            <div class="quiz-option border border-[var(--border)] rounded-lg p-3 text-sm" onclick="selectOption('q4', this)">A) Literature should be about nature</div>
+            <div class="quiz-option border border-[var(--border)] rounded-lg p-3 text-sm" onclick="selectOption('q4', this)">B) All parts of a text work together to create unified meaning</div>
+            <div class="quiz-option border border-[var(--border)] rounded-lg p-3 text-sm" onclick="selectOption('q4', this)">C) Texts should grow organically without planning</div>
+            <div class="quiz-option border border-[var(--border)] rounded-lg p-3 text-sm" onclick="selectOption('q4', this)">D) Unity comes from the author's organic writing process</div>
+          </div>
+          <button onclick="checkAnswer('q4', 'B')" class="mt-3 bg-[var(--primary)] text-[var(--primary-foreground)] px-4 py-2 rounded-lg text-sm font-medium">Check Answer</button>
+          <p id="q4-result" class="mt-2 text-sm font-bold hidden"></p>
+        </div>
+
+        <!-- Quiz 5 -->
+        <div class="border border-[var(--border)] rounded-xl p-4 mb-3" id="q5">
+          <p class="font-bold text-sm mb-3">Q5: The Affective Fallacy warns against using _____ to judge a text.</p>
+          <div class="space-y-2">
+            <div class="quiz-option border border-[var(--border)] rounded-lg p-3 text-sm" onclick="selectOption('q5', this)">A) Historical context</div>
+            <div class="quiz-option border border-[var(--border)] rounded-lg p-3 text-sm" onclick="selectOption('q5', this)">B) The reader's emotional response</div>
+            <div class="quiz-option border border-[var(--border)] rounded-lg p-3 text-sm" onclick="selectOption('q5', this)">C) Close reading</div>
+            <div class="quiz-option border border-[var(--border)] rounded-lg p-3 text-sm" onclick="selectOption('q5', this)">D) Literary devices</div>
+          </div>
+          <button onclick="checkAnswer('q5', 'B')" class="mt-3 bg-[var(--primary)] text-[var(--primary-foreground)] px-4 py-2 rounded-lg text-sm font-medium">Check Answer</button>
+          <p id="q5-result" class="mt-2 text-sm font-bold hidden"></p>
+        </div>
+
+        <!-- Quiz 6 -->
+        <div class="border border-[var(--border)] rounded-xl p-4 mb-3" id="q6">
+          <p class="font-bold text-sm mb-3">Q6: Which critic developed the concept of "tension" in poetry?</p>
+          <div class="space-y-2">
+            <div class="quiz-option border border-[var(--border)] rounded-lg p-3 text-sm" onclick="selectOption('q6', this)">A) Cleanth Brooks</div>
+            <div class="quiz-option border border-[var(--border)] rounded-lg p-3 text-sm" onclick="selectOption('q6', this)">B) Monroe Beardsley</div>
+            <div class="quiz-option border border-[var(--border)] rounded-lg p-3 text-sm" onclick="selectOption('q6', this)">C) Allen Tate</div>
+            <div class="quiz-option border border-[var(--border)] rounded-lg p-3 text-sm" onclick="selectOption('q6', this)">D) Robert Penn Warren</div>
+          </div>
+          <button onclick="checkAnswer('q6', 'C')" class="mt-3 bg-[var(--primary)] text-[var(--primary-foreground)] px-4 py-2 rounded-lg text-sm font-medium">Check Answer</button>
+          <p id="q6-result" class="mt-2 text-sm font-bold hidden"></p>
+        </div>
+
+        <!-- Quiz 7 -->
+        <div class="border border-[var(--border)] rounded-xl p-4 mb-3" id="q7">
+          <p class="font-bold text-sm mb-3">Q7: For New Critics, ambiguity in a text is a sign of:</p>
+          <div class="space-y-2">
+            <div class="quiz-option border border-[var(--border)] rounded-lg p-3 text-sm" onclick="selectOption('q7', this)">A) Poor writing</div>
+            <div class="quiz-option border border-[var(--border)] rounded-lg p-3 text-sm" onclick="selectOption('q7', this)">B) The author's confusion</div>
+            <div class="quiz-option border border-[var(--border)] rounded-lg p-3 text-sm" onclick="selectOption('q7', this)">C) Literary richness and quality</div>
+            <div class="quiz-option border border-[var(--border)] rounded-lg p-3 text-sm" onclick="selectOption('q7', this)">D) Historical complexity</div>
+          </div>
+          <button onclick="checkAnswer('q7', 'C')" class="mt-3 bg-[var(--primary)] text-[var(--primary-foreground)] px-4 py-2 rounded-lg text-sm font-medium">Check Answer</button>
+          <p id="q7-result" class="mt-2 text-sm font-bold hidden"></p>
+        </div>
+
+        <!-- Written Practice -->
+        <div class="border-2 border-dashed border-[var(--primary)] rounded-xl p-5 mt-6">
+          <h3 class="font-bold text-lg mb-3">✍️ Written Practice — নিজে লেখো!</h3>
+          <p class="text-sm text-[var(--muted-foreground)] mb-4">এই প্রশ্নগুলোর উত্তর নিজে খাতায় লিখে practice করো। Timer দিয়ে লেখো — exam-এর মতো।</p>
+          
+          <div class="space-y-3 text-sm">
+            <div class="bg-[var(--content)] rounded-lg p-3">
+              <p class="font-bold">Practice Question 1 (Short — 5 min):</p>
+              <p>Define "close reading" and explain why it is central to New Criticism.</p>
+            </div>
+            <div class="bg-[var(--content)] rounded-lg p-3">
+              <p class="font-bold">Practice Question 2 (Short — 5 min):</p>
+              <p>What is the difference between the Intentional Fallacy and the Affective Fallacy?</p>
+            </div>
+            <div class="bg-[var(--content)] rounded-lg p-3">
+              <p class="font-bold">Practice Question 3 (Broad — 20 min):</p>
+              <p>Discuss how New Criticism treats the literary text as an autonomous object. In your answer, explain the concepts of Intentional Fallacy, Affective Fallacy, and organic unity.</p>
+            </div>
+            <div class="bg-[var(--content)] rounded-lg p-3">
+              <p class="font-bold">Practice Question 4 (Broad — 20 min):</p>
+              <p>Explain the role of literary devices such as ambiguity, paradox, irony, and tension in New Critical analysis. Why do New Critics consider literary language to be different from scientific language?</p>
+            </div>
+            <div class="bg-[var(--content)] rounded-lg p-3">
+              <p class="font-bold">Practice Question 5 (Broad — 25 min):</p>
+              <p>Critically assess the strengths and weaknesses of New Criticism as a literary approach. How has it contributed to and limited our understanding of literature?</p>
+            </div>
+          </div>
+
+          <div class="bangla text-sm mt-4">
+            <p>🇧🇩 <strong>পরামর্শ:</strong> প্রতিটি broad answer-এ Introduction + 3-4 Body Paragraphs + Conclusion রাখো। প্রতিটি paragraph-এ অন্তত একটি critic-এর নাম এবং একটি specific term ব্যবহার করো। Timer দিয়ে লেখো — broad answer ২০-২৫ মিনিটে লেখা শেষ করার practice করো।</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.querySelectorAll('.nav-btn').forEach(b => {
+        b.classList.remove('active-nav');
+        if (b.dataset.section === id) b.classList.add('active-nav');
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    const selectedOptions = {};
+
+    function selectOption(qId, el) {
+      document.querySelectorAll(`#${qId} .quiz-option`).forEach(o => {
+        o.style.border = '1px solid var(--border)';
+        o.style.background = '';
+      });
+      el.style.border = '2px solid var(--primary)';
+      el.style.background = 'rgba(59,130,246,0.1)';
+      selectedOptions[qId] = el.textContent.charAt(0);
+    }
+
+    function checkAnswer(qId, correct) {
+      const result = document.getElementById(`${qId}-result`);
+      result.classList.remove('hidden');
+      const selected = selectedOptions[qId];
+      if (!selected) {
+        result.textContent = '⚠️ Please select an option first!';
+        result.style.color = '#f59e0b';
+        return;
+      }
+      if (selected === correct) {
+        result.textContent = '✅ Correct! Excellent!';
+        result.style.color = '#22c55e';
+      } else {
+        result.textContent = `❌ Incorrect. The correct answer is ${correct}.`;
+        result.style.color = '#ef4444';
+      }
+      // Highlight correct option
+      document.querySelectorAll(`#${qId} .quiz-option`).forEach(o => {
+        if (o.textContent.charAt(0) === correct) {
+          o.classList.add('correct');
+        } else if (o.textContent.charAt(0) === selected && selected !== correct) {
+          o.classList.add('incorrect');
+        }
+      });
+    }
+  </script>
+</body>
+</html>
