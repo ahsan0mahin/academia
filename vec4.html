@@ -1,0 +1,2286 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ভেক্টর পরিচিতি | HSC Physics Notes</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@300;400;500;600;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #0a0e1a;
+            --card-bg: #111827;
+            --card-border: #1e293b;
+            --primary: #60a5fa;
+            --primary-dim: #2563eb;
+            --accent: #f59e0b;
+            --accent2: #10b981;
+            --accent3: #ec4899;
+            --accent4: #8b5cf6;
+            --text: #e2e8f0;
+            --text-dim: #94a3b8;
+            --text-bright: #f8fafc;
+            --danger: #ef4444;
+            --success: #22c55e;
+        }
+
+        body {
+            font-family: 'Noto Sans Bengali', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 2rem;
+        }
+
+        .hero-bg-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 800px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.4rem 1.2rem;
+            background: rgba(96, 165, 250, 0.15);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-dim);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-indicator svg {
+            width: 30px;
+            height: 30px;
+            stroke: var(--primary);
+            stroke-width: 2;
+            fill: none;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-12px); }
+            60% { transform: translateX(-50%) translateY(-6px); }
+        }
+
+        /* Category Navigation */
+        .category-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10, 14, 26, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--card-border);
+            padding: 1rem 2rem;
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cat-btn {
+            padding: 0.5rem 1.2rem;
+            border: 1px solid var(--card-border);
+            background: transparent;
+            color: var(--text-dim);
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            transition: all 0.3s;
+        }
+
+        .cat-btn:hover, .cat-btn.active {
+            background: var(--primary);
+            color: var(--bg);
+            border-color: var(--primary);
+        }
+
+        .cat-btn[data-cat="property"] { --cat-color: #60a5fa; }
+        .cat-btn[data-cat="property"]:hover, .cat-btn[data-cat="property"].active {
+            background: #60a5fa; border-color: #60a5fa;
+        }
+        .cat-btn[data-cat="direction"] { --cat-color: #f59e0b; }
+        .cat-btn[data-cat="direction"]:hover, .cat-btn[data-cat="direction"].active {
+            background: #f59e0b; border-color: #f59e0b;
+        }
+        .cat-btn[data-cat="value"] { --cat-color: #10b981; }
+        .cat-btn[data-cat="value"]:hover, .cat-btn[data-cat="value"].active {
+            background: #10b981; border-color: #10b981;
+        }
+        .cat-btn[data-cat="position"] { --cat-color: #ec4899; }
+        .cat-btn[data-cat="position"]:hover, .cat-btn[data-cat="position"].active {
+            background: #ec4899; border-color: #ec4899;
+        }
+        .cat-btn[data-cat="special"] { --cat-color: #8b5cf6; }
+        .cat-btn[data-cat="special"]:hover, .cat-btn[data-cat="special"].active {
+            background: #8b5cf6; border-color: #8b5cf6;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* Category Section */
+        .category-section {
+            margin-bottom: 4rem;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            padding: 1px;
+            background: linear-gradient(135deg, var(--cat-color), transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+        }
+
+        .category-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .category-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-bright);
+        }
+
+        .category-header .cat-desc {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+
+        /* Vector Card */
+        .vector-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+            transition: all 0.4s;
+        }
+
+        .vector-card:hover {
+            border-color: rgba(96, 165, 250, 0.3);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .card-number {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .card-title-group {
+            flex: 1;
+        }
+
+        .card-title-bn {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-bright);
+        }
+
+        .card-title-en {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            letter-spacing: 0.5px;
+        }
+
+        .card-toggle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid var(--card-border);
+            background: transparent;
+            color: var(--text-dim);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .card-toggle svg {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.3s;
+        }
+
+        .vector-card.open .card-toggle svg {
+            transform: rotate(180deg);
+        }
+
+        .card-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .vector-card.open .card-body {
+            max-height: 2000px;
+        }
+
+        .card-content {
+            padding: 0 2rem 2rem;
+        }
+
+        /* Definition Box */
+        .def-box {
+            background: rgba(96, 165, 250, 0.08);
+            border-left: 3px solid var(--primary);
+            padding: 1.2rem 1.5rem;
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .def-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .def-text {
+            font-size: 1rem;
+            color: var(--text);
+            line-height: 1.9;
+        }
+
+        /* Example Box */
+        .example-box {
+            background: rgba(245, 158, 11, 0.08);
+            border-left: 3px solid var(--accent);
+            padding: 1rem 1.5rem;
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .example-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+            margin-bottom: 0.3rem;
+            font-weight: 600;
+        }
+
+        /* Formula Box */
+        .formula-box {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--accent4);
+        }
+
+        /* Key Point */
+        .key-point {
+            background: rgba(16, 185, 129, 0.08);
+            border-left: 3px solid var(--accent2);
+            padding: 1rem 1.5rem;
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .key-point-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent2);
+            margin-bottom: 0.3rem;
+            font-weight: 600;
+        }
+
+        /* Animation Canvas */
+        .anim-container {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .anim-container canvas {
+            width: 100%;
+            display: block;
+        }
+
+        .anim-label {
+            text-align: center;
+            padding: 0.6rem;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            background: rgba(0,0,0,0.2);
+        }
+
+        .anim-controls {
+            display: flex;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(0,0,0,0.2);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .anim-btn {
+            padding: 0.35rem 1rem;
+            border: 1px solid var(--card-border);
+            background: rgba(255,255,255,0.05);
+            color: var(--text);
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .anim-btn:hover {
+            background: var(--primary);
+            color: var(--bg);
+            border-color: var(--primary);
+        }
+
+        /* Summary Chart */
+        .summary-section {
+            margin-top: 4rem;
+        }
+
+        .summary-title {
+            font-size: 2rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .summary-subtitle {
+            text-align: center;
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .summary-item {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 1.2rem 1.5rem;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            transition: all 0.3s;
+        }
+
+        .summary-item:hover {
+            border-color: rgba(96, 165, 250, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .summary-num {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .summary-info h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            margin-bottom: 0.2rem;
+        }
+
+        .summary-info .en-name {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-bottom: 0.4rem;
+        }
+
+        .summary-info p {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            line-height: 1.6;
+        }
+
+        .summary-tag {
+            display: inline-block;
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            margin-top: 0.3rem;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--card-border);
+            margin-top: 4rem;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary-dim); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .card-content { padding: 0 1.2rem 1.5rem; }
+            .card-header { padding: 1.2rem; }
+            .category-nav { justify-content: flex-start; padding: 0.8rem 1rem; }
+            .summary-grid { grid-template-columns: 1fr; }
+        }
+
+        .vector-arrow {
+            font-weight: bold;
+        }
+
+        .hat {
+            position: relative;
+            display: inline-block;
+        }
+        .hat::after {
+            content: '^';
+            position: absolute;
+            top: -0.45em;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9em;
+        }
+
+        .memo-tip {
+            background: rgba(236, 72, 153, 0.08);
+            border-left: 3px solid var(--accent3);
+            padding: 1rem 1.5rem;
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 1rem;
+        }
+        .memo-tip-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent3);
+            margin-bottom: 0.3rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Hero Section -->
+<section class="hero">
+    <canvas class="hero-bg-canvas" id="heroBg"></canvas>
+    <div class="hero-content">
+        <div class="hero-badge">📐 অধ্যায় ২ — ভেক্টর</div>
+        <h1>কতিপয় ভেক্টর</h1>
+        <p>পদার্থবিজ্ঞানে ব্যবহৃত ১৬টি গুরুত্বপূর্ণ ভেক্টরের সম্পূর্ণ গাইড — সংজ্ঞা, ভিজুয়াল, অ্যানিমেশন এবং মনে রাখার কৌশল সহ।</p>
+    </div>
+    <div class="scroll-indicator">
+        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+</section>
+
+<!-- Category Navigation -->
+<nav class="category-nav" id="catNav">
+    <button class="cat-btn active" data-cat="all">সব দেখাও</button>
+    <button class="cat-btn" data-cat="property">🔗 ধর্ম অনুসারে</button>
+    <button class="cat-btn" data-cat="direction">🧭 দিক অনুসারে</button>
+    <button class="cat-btn" data-cat="value">📏 মান অনুসারে</button>
+    <button class="cat-btn" data-cat="position">📍 অবস্থান অনুসারে</button>
+    <button class="cat-btn" data-cat="special">⚡ বিশেষ ধরন</button>
+</nav>
+
+<!-- Main Content -->
+<div class="main-content" id="mainContent">
+
+    <!-- ===== CATEGORY: ধর্ম অনুসারে ===== -->
+    <section class="category-section" data-category="property" id="cat-property">
+        <div class="category-header" style="--cat-color: #60a5fa;">
+            <div class="category-icon" style="background: rgba(96,165,250,0.15); color: #60a5fa;">🔗</div>
+            <div>
+                <h2>ধর্ম অনুসারে ভেক্টর</h2>
+                <div class="cat-desc">ভেক্টরের পাদবিন্দু নির্ধারণের স্বাধীনতার ভিত্তিতে</div>
+            </div>
+        </div>
+
+        <!-- 1. Free Vector -->
+        <div class="vector-card open" data-cat="property" id="card-free">
+            <div class="card-header" onclick="toggleCard(this)">
+                <div class="card-number" style="background: rgba(96,165,250,0.15); color: #60a5fa;">০১</div>
+                <div class="card-title-group">
+                    <div class="card-title-bn">স্বাধীন ভেক্টর</div>
+                    <div class="card-title-en">Free Vector</div>
+                </div>
+                <button class="card-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            </div>
+            <div class="card-body">
+                <div class="card-content">
+                    <div class="def-box">
+                        <div class="def-label">সংজ্ঞা</div>
+                        <div class="def-text">কোনো ভেক্টর রাশির <strong>পাদবিন্দু</strong> (starting point) কোথায় হবে তা যদি <strong>ইচ্ছেমতো পছন্দ</strong> করা যায়, তবে সেই ভেক্টরকে <strong>স্বাধীন ভেক্টর</strong> বলে।</div>
+                    </div>
+                    <div class="example-box">
+                        <div class="example-label">উদাহরণ</div>
+                        <div>5 N মানের পূর্বমুখী একটি বল — এটি একটি স্বাধীন ভেক্টর। কেননা নির্দিষ্ট দৈর্ঘ্যের পূর্ব-পশ্চিম বরাবর একটি সরলরেখা অঙ্কন করে পূর্বদিকে তীর চিহ্ন দিলেই এ ভেক্টর বোঝায় — পাদবিন্দু যেখানেই হোক।</div>
+                    </div>
+                    <div class="memo-tip">
+                        <div class="memo-tip-label">💡 মনে রাখো</div>
+                        <div>"স্বাধীন" মানে "ফ্রি" — যেখানে ইচ্ছা সেখানে বসাও, শুধু মান আর দিক ঠিক থাকলেই হলো!</div>
+                    </div>
+                    <div class="anim-container">
+                        <canvas id="freeVectorCanvas" width="600" height="250"></canvas>
+                        <div class="anim-controls">
+                            <button class="anim-btn" onclick="animFreeVector()">▶ অ্যানিমেশন দেখাও</button>
+                        </div>
+                        <div class="anim-label">স্বাধীন ভেক্টর — পাদবিন্দু পরিবর্তন করলেও ভেক্টর একই থাকে</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Localized Vector -->
+        <div class="vector-card" data-cat="property" id="card-localized">
+            <div class="card-header" onclick="toggleCard(this)">
+                <div class="card-number" style="background: rgba(96,165,250,0.15); color: #60a5fa;">০২</div>
+                <div class="card-title-group">
+                    <div class="card-title-bn">সীমাবদ্ধ ভেক্টর</div>
+                    <div class="card-title-en">Localized Vector</div>
+                </div>
+                <button class="card-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            </div>
+            <div class="card-body">
+                <div class="card-content">
+                    <div class="def-box">
+                        <div class="def-label">সংজ্ঞা</div>
+                        <div class="def-text">কোনো ভেক্টরের পাদবিন্দু যদি <strong>ইচ্ছেমতো পছন্দ করতে দেওয়া না হয়</strong> অর্থাৎ কোনো <strong>নির্দিষ্ট বিন্দুকে</strong> যদি পাদবিন্দু হিসেবে ঠিক করে রাখা হয়, তাহলে সেই ভেক্টরকে <strong>সীমাবদ্ধ ভেক্টর</strong> বলে।</div>
+                    </div>
+                    <div class="example-box">
+                        <div class="example-label">উদাহরণ</div>
+                        <div><strong>অবস্থান ভেক্টর</strong> একটি সীমাবদ্ধ ভেক্টর — কেননা এটি সবসময় প্রসঙ্গ কাঠামোর মূলবিন্দু থেকে আঁকতে হয়। লন রোলারের হাতলে প্রযুক্ত টানা বলও একটি সীমাবদ্ধ ভেক্টর।</div>
+                    </div>
+                    <div class="memo-tip">
+                        <div class="memo-tip-label">💡 মনে রাখো</div>
+                        <div>"সীমাবদ্ধ" = "Locked" — পাদবিন্দু লক করা, এদিক সেদিক করা যাবে না!</div>
+                    </div>
+                    <div class="anim-container">
+                        <canvas id="localizedCanvas" width="600" height="280"></canvas>
+                        <div class="anim-controls">
+                            <button class="anim-btn" onclick="animLocalized()">▶ অ্যানিমেশন দেখাও</button>
+                        </div>
+                        <div class="anim-label">সীমাবদ্ধ ভেক্টর — মূলবিন্দু O থেকেই শুরু, সরানো যায় না</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CATEGORY: দিক অনুসারে ===== -->
+    <section class="category-section" data-category="direction" id="cat-direction">
+        <div class="category-header" style="--cat-color: #f59e0b;">
+            <div class="category-icon" style="background: rgba(245,158,11,0.15); color: #f59e0b;">🧭</div>
+            <div>
+                <h2>দিক অনুসারে ভেক্টর</h2>
+                <div class="cat-desc">ভেক্টরগুলো কোন দিকে ক্রিয়া করে তার ভিত্তিতে</div>
+            </div>
+        </div>
+
+        <!-- 3. Like Vectors -->
+        <div class="vector-card" data-cat="direction" id="card-like">
+            <div class="card-header" onclick="toggleCard(this)">
+                <div class="card-number" style="background: rgba(245,158,11,0.15); color: #f59e0b;">০৩</div>
+                <div class="card-title-group">
+                    <div class="card-title-bn">সদৃশ ভেক্টর</div>
+                    <div class="card-title-en">Like / Parallel Vectors</div>
+                </div>
+                <button class="card-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            </div>
+            <div class="card-body">
+                <div class="card-content">
+                    <div class="def-box">
+                        <div class="def-label">সংজ্ঞা</div>
+                        <div class="def-text">সমজাতীয় দুই বা ততোধিক ভেক্টর যদি <strong>একই দিকে</strong> ক্রিয়া করে তবে তাদেরকে <strong>সদৃশ বা সমান্তরাল ভেক্টর</strong> বলে।</div>
+                    </div>
+                    <div class="key-point">
+                        <div class="key-point-label">মূল বিষয়</div>
+                        <div>মান ভিন্ন হতে পারে, কিন্তু দিক অবশ্যই একই হতে হবে।</div>
+                    </div>
+                    <div class="memo-tip">
+                        <div class="memo-tip-label">💡 মনে রাখো</div>
+                        <div>"সদৃশ" = "Like" = একই দিকে তাকিয়ে আছে, মান যাই হোক।</div>
+                    </div>
+                    <div class="anim-container">
+                        <canvas id="likeCanvas" width="600" height="200"></canvas>
+                        <div class="anim-label">সদৃশ ভেক্টর — A⃗ ও B⃗ একই দিকে, মান ভিন্ন হতে পারে</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Unlike Vectors -->
+        <div class="vector-card" data-cat="direction" id="card-unlike">
+            <div class="card-header" onclick="toggleCard(this)">
+                <div class="card-number" style="background: rgba(245,158,11,0.15); color: #f59e0b;">০৪</div>
+                <div class="card-title-group">
+                    <div class="card-title-bn">বিসদৃশ ভেক্টর</div>
+                    <div class="card-title-en">Unlike Vectors</div>
+                </div>
+                <button class="card-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            </div>
+            <div class="card-body">
+                <div class="card-content">
+                    <div class="def-box">
+                        <div class="def-label">সংজ্ঞা</div>
+                        <div class="def-text">সমজাতীয় দুটি ভেক্টর যদি <strong>বিপরীত দিকে</strong> ক্রিয়া করে তবে তাদেরকে <strong>বিসদৃশ ভেক্টর</strong> বলে।</div>
+                    </div>
+                    <div class="memo-tip">
+                        <div class="memo-tip-label">💡 মনে রাখো</div>
+                        <div>"বিসদৃশ" = "Unlike" = মুখোমুখি, বিপরীতমুখী!</div>
+                    </div>
+                    <div class="anim-container">
+                        <canvas id="unlikeCanvas" width="600" height="200"></canvas>
+                        <div class="anim-label">বিসদৃশ ভেক্টর — A⃗ ও B⃗ বিপরীত দিকে</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. Equal Vectors -->
+        <div class="vector-card" data-cat="direction" id="card-equal">
+            <div class="card-header" onclick="toggleCard(this)">
+                <div class="card-number" style="background: rgba(245,158,11,0.15); color: #f59e0b;">০৫</div>
+                <div class="card-title-group">
+                    <div class="card-title-bn">সমান ভেক্টর</div>
+                    <div class="card-title-en">Equal Vectors</div>
+                </div>
+                <button class="card-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            </div>
+            <div class="card-body">
+                <div class="card-content">
+                    <div class="def-box">
+                        <div class="def-label">সংজ্ঞা</div>
+                        <div class="def-text">সমজাতীয় দুটি ভেক্টরের <strong>মান যদি সমান</strong> হয় আর তাদের <strong>দিক যদি একই</strong> দিকে হয় তবে তাদেরকে <strong>সমান ভেক্টর</strong> বলে।</div>
+                    </div>
+                    <div class="formula-box">
+                        A⃗ = B⃗ ⟹ |A⃗| = |B⃗| এবং দিক অভিন্ন
+                    </div>
+                    <div class="key-point">
+                        <div class="key-point-label">গুরুত্বপূর্ণ</div>
+                        <div>দুটি ভেক্টরের সমতা তাদের <strong>পাদবিন্দুর অবস্থানের ওপর নির্ভর করে না</strong>। পাদবিন্দু যেখানেই থাকুক — মান সমান ও দিক একই হলেই তারা সমান।</div>
+                    </div>
+                    <div class="memo-tip">
+                        <div class="memo-tip-label">💡 মনে রাখো</div>
+                        <div>সদৃশ ভেক্টর + সমান মান = সমান ভেক্টর। অর্থাৎ সমান ভেক্টর হলে অবশ্যই সদৃশ, কিন্তু সদৃশ হলেই সমান নয়!</div>
+                    </div>
+                    <div class="anim-container">
+                        <canvas id="equalCanvas" width="600" height="200"></canvas>
+                        <div class="anim-label">সমান ভেক্টর — একই মান, একই দিক, পাদবিন্দু যেখানেই হোক</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. Negative Vector -->
+        <div class="vector-card" data-cat="direction" id="card-negative">
+            <div class="card-header" onclick="toggleCard(this)">
+                <div class="card-number" style="background: rgba(245,158,11,0.15); color: #f59e0b;">০৬</div>
+                <div class="card-title-group">
+                    <div class="card-title-bn">ঋণাত্মক / বিপরীত ভেক্টর</div>
+                    <div class="card-title-en">Negative Vector</div>
+                </div>
+                <button class="card-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            </div>
+            <div class="card-body">
+                <div class="card-content">
+                    <div class="def-box">
+                        <div class="def-label">সংজ্ঞা</div>
+                        <div class="def-text">নির্দিষ্ট দিক বরাবর কোনো ভেক্টরকে ধনাত্মক ধরলে তার <strong>বিপরীত দিকে সমমানের</strong> সমজাতীয় ভেক্টরকে <strong>ঋণাত্মক ভেক্টর বা বিপরীত ভেক্টর</strong> বলে।</div>
+                    </div>
+                    <div class="formula-box">
+                        PQ⃗ = A⃗ হলে, QP⃗ = −A⃗
+                    </div>
+                    <div class="memo-tip">
+                        <div class="memo-tip-label">💡 মনে রাখো</div>
+                        <div>শুধু তীর চিহ্ন উল্টে দাও — মান একই, দিক উল্টো = ঋণাত্মক ভেক্টর!</div>
+                    </div>
+                    <div class="anim-container">
+                        <canvas id="negativeCanvas" width="600" height="200"></canvas>
+                        <div class="anim-controls">
+                            <button class="anim-btn" onclick="animNegative()">▶ উল্টাও</button>
+                        </div>
+                        <div class="anim-label">ঋণাত্মক ভেক্টর — A⃗ ও −A⃗ সমমান কিন্তু বিপরীতমুখী</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. Collinear Vectors -->
+        <div class="vector-card" data-cat="direction" id="card-collinear">
+            <div class="card-header" onclick="toggleCard(this)">
+                <div class="card-number" style="background: rgba(245,158,11,0.15); color: #f59e0b;">০৭</div>
+                <div class="card-title-group">
+                    <div class="card-title-bn">সমরেখ ভেক্টর</div>
+                    <div class="card-title-en">Collinear Vectors</div>
+                </div>
+                <button class="card-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            </div>
+            <div class="card-body">
+                <div class="card-content">
+                    <div class="def-box">
+                        <div class="def-label">সংজ্ঞা</div>
+                        <div class="def-text">দু বা ততোধিক ভেক্টর যদি <strong>একই সরলরেখা বরাবর</strong> বা <strong>পরস্পর সমান্তরালে</strong> ক্রিয়া করে তবে তাদেরকে <strong>সমরেখ ভেক্টর</strong> বলে।</div>
+                    </div>
+                    <div class="key-point">
+                        <div class="key-point-label">লক্ষ্য করো</div>
+                        <div>সমরেখ ভেক্টর একই দিকেও হতে পারে, বিপরীত দিকেও হতে পারে। মূল শর্ত হলো — এরা সমান্তরাল বা একই রেখায়।</div>
+                    </div>
+                    <div class="anim-container">
+                        <canvas id="collinearCanvas" width="600" height="200"></canvas>
+                        <div class="anim-label">সমরেখ ভেক্টর — A⃗, B⃗, C⃗ সমান্তরালে বা একই রেখায়</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 8. Coplanar Vectors -->
+        <div class="vector-card" data-cat="direction" id="card-coplanar">
+            <div class="card-header" onclick="toggleCard(this)">
+                <div class="card-number" style="background: rgba(245,158,11,0.15); color: #f59e0b;">০৮</div>
+                <div class="card-title-group">
+                    <div class="card-title-bn">সমতলীয় ভেক্টর</div>
+                    <div class="card-title-en">Coplanar Vectors</div>
+                </div>
+                <button class="card-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            </div>
+            <div class="card-body">
+                <div class="card-content">
+                    <div class="def-box">
+                        <div class="def-label">সংজ্ঞা</div>
+                        <div class="def-text">দু বা ততোধিক ভেক্টর যদি <strong>একই সমতলে</strong> অবস্থিত হয় তবে তাদেরকে <strong>সমতলীয় ভেক্টর</strong> বলে।</div>
+                    </div>
+                    <div class="memo-tip">
+                        <div class="memo-tip-label">💡 মনে রাখো</div>
+                        <div>"Co-planar" = "Co" (একসাথে) + "Planar" (সমতল) = একই সমতলে। একটা কাগজের ওপরে যতগুলো ভেক্টর আঁকবে সব সমতলীয়!</div>
+                    </div>
+                    <div class="anim-container">
+                        <canvas id="coplanarCanvas" width="600" height="250"></canvas>
+                        <div class="anim-label">সমতলীয় ভেক্টর — A⃗, B⃗, C⃗ একই সমতলে (কাগজের পৃষ্ঠে)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CATEGORY: মান অনুসারে ===== -->
+    <section class="category-section" data-category="value" id="cat-value">
+        <div class="category-header" style="--cat-color: #10b981;">
+            <div class="category-icon" style="background: rgba(16,185,129,0.15); color: #10b981;">📏</div>
+            <div>
+                <h2>মান অনুসারে ভেক্টর</h2>
+                <div class="cat-desc">ভেক্টরের সংখ্যাগত মানের ভিত্তিতে</div>
+            </div>
+        </div>
+
+        <!-- 9. Proper Vector -->
+        <div class="vector-card" data-cat="value" id="card-proper">
+            <div class="card-header" onclick="toggleCard(this)">
+                <div class="card-number" style="background: rgba(16,185,129,0.15); color: #10b981;">০৯</div>
+                <div class="card-title-group">
+                    <div class="card-title-bn">সঠিক ভেক্টর</div>
+                    <div class="card-title-en">Proper Vector</div>
+                </div>
+                <button class="card-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            </div>
+            <div class="card-body">
+                <div class="card-content">
+                    <div class="def-box">
+                        <div class="def-label">সংজ্ঞা</div>
+                        <div class="def-text">যে সকল ভেক্টরের মান <strong>শূন্য নয়</strong> তাদেরকে <strong>সঠিক ভেক্টর</strong> বলে।</div>
+                    </div>
+                    <div class="memo-tip">
+                        <div class="memo-tip-label">💡 মনে রাখো</div>
+                        <div>নাল ভেক্টর ছাড়া বাকি সব ভেক্টরই সঠিক ভেক্টর!</div>
+                    </div>
+                    <div class="anim-container">
+                        <canvas id="properCanvas" width="600" height="160"></canvas>
+                        <div class="anim-label">সঠিক ভেক্টর — মান ≠ 0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 10. Null Vector -->
+        <div class="vector-card" data-cat="value" id="card-null">
+            <div class="card-header" onclick="toggleCard(this)">
+                <div class="card-number" style="background: rgba(16,185,129,0.15); color: #10b981;">১০</div>
+                <div class="card-title-group">
+                    <div class="card-title-bn">নাল / শূন্য ভেক্টর</div>
+                    <div class="card-title-en">Null Vector</div>
+                </div>
+                <button class="card-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            </div>
+            <div class="card-body">
+                <div class="card-content">
+                    <div class="def-box">
+                        <div class="def-label">সংজ্ঞা</div>
+                        <div class="def-text">যে ভেক্টরের মান <strong>শূন্য</strong> তাকে <strong>নাল ভেক্টর বা শূন্য ভেক্টর</strong> বলে। একটি ভেক্টরের সাথে তার বিপরীত ভেক্টর যোগ করে বা দুটি সমান ভেক্টর বিয়োগ করে নাল ভেক্টর পাওয়া যায়।</div>
+                    </div>
+                    <div class="formula-box">
+                        A⃗ + (−A⃗) = 0⃗ &nbsp;&nbsp;বা&nbsp;&nbsp; A⃗ − A⃗ = 0⃗
+                    </div>
+                    <div class="key-point">
+                        <div class="key-point-label">বৈশিষ্ট্য</div>
+                        <div>
+                            • পাদবিন্দু ও শীর্ষবিন্দু <strong>একই বিন্দুতে</strong> হয়।<br>
+                            • নাল ভেক্টরের কোনো <strong>সুনির্দিষ্ট দিক নেই</strong>।<br>
+                            • প্রতীক: <strong>0⃗</strong>
+                        </div>
+                    </div>
+                    <div class="anim-container">
+                        <canvas id="nullCanvas" width="600" height="220"></canvas>
+                        <div class="anim-controls">
+                            <button class="anim-btn" onclick="animNull()">▶ A⃗ + (−A⃗) দেখাও</button>
+                        </div>
+                        <div class="anim-label">নাল ভেক্টর — A⃗ ও −A⃗ যোগ করলে 0⃗</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 11. Unit Vector -->
+        <div class="vector-card" data-cat="value" id="card-unit">
+            <div class="card-header" onclick="toggleCard(this)">
+                <div class="card-number" style="background: rgba(16,185,129,0.15); color: #10b981;">১১</div>
+                <div class="card-title-group">
+                    <div class="card-title-bn">একক ভেক্টর</div>
+                    <div class="card-title-en">Unit Vector</div>
+                </div>
+                <button class="card-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            </div>
+            <div class="card-body">
+                <div class="card-content">
+                    <div class="def-box">
+                        <div class="def-label">সংজ্ঞা</div>
+                        <div class="def-text">কোনো ভেক্টরের মান যদি <strong>একক (1)</strong> হয় তাহলে তাকে <strong>একক ভেক্টর</strong> বলে। কোনো ভেক্টরকে তার মান দিয়ে ভাগ করলে সেই ভেক্টরের দিকে একটি একক ভেক্টর পাওয়া যায়।</div>
+                    </div>
+                    <div class="formula-box">
+                        â = A⃗ / |A⃗| &nbsp;&nbsp;(যেখানে |A⃗| ≠ 0)<br>
+                        <span style="font-size:0.9rem;">যেমন: A⃗ = 5â হলে, â = A⃗/5</span>
+                    </div>
+                    <div class="key-point">
+                        <div class="key-point-label">প্রতীক</div>
+                        <div>একক ভেক্টরের ওপরে তীর (→) এর পরিবর্তে <strong>হ্যাট/ক্যাপ চিহ্ন (^)</strong> ব্যবহার করা হয়: <strong>â, î, ĵ, k̂</strong></div>
+                    </div>
+                    <div class="memo-tip">
+                        <div class="memo-tip-label">💡 মনে রাখো</div>
+                        <div>একক ভেক্টর = দিক নির্দেশক। এটা শুধু "কোন দিকে" তা বলে, "কতটুকু" তা বলে না!</div>
+                    </div>
+                    <div class="anim-container">
+                        <canvas id="unitCanvas" width="600" height="220"></canvas>
+                        <div class="anim-controls">
+                            <button class="anim-btn" onclick="animUnit()">▶ একক ভেক্টর বের করো</button>
+                        </div>
+                        <div class="anim-label">একক ভেক্টর — A⃗ = 5â, â এর মান = 1</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 14. Reciprocal Vector -->
+        <div class="vector-card" data-cat="value" id="card-reciprocal">
+            <div class="card-header" onclick="toggleCard(this)">
+                <div class="card-number" style="background: rgba(16,185,129,0.15); color: #10b981;">১৪</div>
+                <div class="card-title-group">
+                    <div class="card-title-bn">বিপ্রতীপ / ব্যতিহার ভেক্টর</div>
+                    <div class="card-title-en">Reciprocal Vector</div>
+                </div>
+                <button class="card-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            </div>
+            <div class="card-body">
+                <div class="card-content">
+                    <div class="def-box">
+                        <div class="def-label">সংজ্ঞা</div>
+                        <div class="def-text">সমজাতীয় দুটি সমান্তরাল ভেক্টরের একটির মান যদি অপরটির <strong>বিপরীত সংখ্যা (reciprocal)</strong> হয়, তবে তাদেরকে <strong>বিপ্রতীপ বা ব্যতিহার ভেক্টর</strong> বলে।</div>
+                    </div>
+                    <div class="formula-box">
+                        A⃗ = 7î এবং B⃗ = (1/7)î হলে, A⃗ ও B⃗ পরস্পর বিপ্রতীপ ভেক্টর
+                    </div>
+                    <div class="memo-tip">
+                        <div class="memo-tip-label">💡 মনে রাখো</div>
+                        <div>"Reciprocal" মানে উল্টো ভগ্নাংশ — 7 এর reciprocal = 1/7। দিক একই, মান উল্টো!</div>
+                    </div>
+                    <div class="anim-container">
+                        <canvas id="reciprocalCanvas" width="600" height="200"></canvas>
+                        <div class="anim-label">বিপ্রতীপ ভেক্টর — A⃗ = 7î, B⃗ = (1/7)î</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CATEGORY: অবস্থান অনুসারে ===== -->
+    <section class="category-section" data-category="position" id="cat-position">
+        <div class="category-header" style="--cat-color: #ec4899;">
+            <div class="category-icon" style="background: rgba(236,72,153,0.15); color: #ec4899;">📍</div>
+            <div>
+                <h2>অবস্থান সংক্রান্ত ভেক্টর</h2>
+                <div class="cat-desc">বস্তুর অবস্থান ও স্থান পরিবর্তন নির্দেশক ভেক্টর</div>
+            </div>
+        </div>
+
+        <!-- 12. Position Vector -->
+        <div class="vector-card" data-cat="position" id="card-position">
+            <div class="card-header" onclick="toggleCard(this)">
+                <div class="card-number" style="background: rgba(236,72,153,0.15); color: #ec4899;">১২</div>
+                <div class="card-title-group">
+                    <div class="card-title-bn">অবস্থান ভেক্টর</div>
+                    <div class="card-title-en">Position Vector / Radius Vector</div>
+                </div>
+                <button class="card-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            </div>
+            <div class="card-body">
+                <div class="card-content">
+                    <div class="def-box">
+                        <div class="def-label">সংজ্ঞা</div>
+                        <div class="def-text">প্রসঙ্গ কাঠামোর <strong>মূলবিন্দুর সাপেক্ষে</strong> কোনো বিন্দুর অবস্থান যে ভেক্টর দিয়ে নির্দেশ করা হয় তাকে ঐ বিন্দুর <strong>অবস্থান ভেক্টর</strong> বলে। একে <strong>ব্যাসার্ধ ভেক্টর (radius vector)</strong>-ও বলা হয়।</div>
+                    </div>
+                    <div class="formula-box">
+                        OP⃗ = r⃗
+                    </div>
+                    <div class="key-point">
+                        <div class="key-point-label">মনে রাখো</div>
+                        <div>অবস্থান ভেক্টর সবসময় <strong>মূলবিন্দু O থেকে শুরু</strong> হয় — তাই এটি একটি <strong>সীমাবদ্ধ ভেক্টর</strong>!</div>
+                    </div>
+                    <div class="anim-container">
+                        <canvas id="positionCanvas" width="600" height="300"></canvas>
+                        <div class="anim-controls">
+                            <button class="anim-btn" onclick="animPosition()">▶ P বিন্দু সরাও</button>
+                        </div>
+                        <div class="anim-label">অবস্থান ভেক্টর — মূলবিন্দু O থেকে P বিন্দু পর্যন্ত r⃗</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 13. Displacement Vector -->
+        <div class="vector-card" data-cat="position" id="card-displacement">
+            <div class="card-header" onclick="toggleCard(this)">
+                <div class="card-number" style="background: rgba(236,72,153,0.15); color: #ec4899;">১৩</div>
+                <div class="card-title-group">
+                    <div class="card-title-bn">সরণ ভেক্টর</div>
+                    <div class="card-title-en">Displacement Vector</div>
+                </div>
+                <button class="card-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            </div>
+            <div class="card-body">
+                <div class="card-content">
+                    <div class="def-box">
+                        <div class="def-label">সংজ্ঞা</div>
+                        <div class="def-text">কোনো বস্তুর <strong>অবস্থান ভেক্টরের পরিবর্তনকে</strong> সরণ ভেক্টর বলে। শেষ অবস্থান ভেক্টর ও আদি অবস্থান ভেক্টরের <strong>পার্থক্যই</strong> সরণ ভেক্টর।</div>
+                    </div>
+                    <div class="formula-box">
+                        Δr⃗ = r⃗<sub>f</sub> − r⃗<sub>i</sub>
+                    </div>
+                    <div class="memo-tip">
+                        <div class="memo-tip-label">💡 মনে রাখো</div>
+                        <div>সরণ = "কোথা থেকে কোথায় গেলে" — শুধু শুরু আর শেষ পয়েন্ট গুরুত্বপূর্ণ, মাঝের পথ না!</div>
+                    </div>
+                    <div class="anim-container">
+                        <canvas id="displacementCanvas" width="600" height="300"></canvas>
+                        <div class="anim-controls">
+                            <button class="anim-btn" onclick="animDisplacement()">▶ সরণ দেখাও</button>
+                        </div>
+                        <div class="anim-label">সরণ ভেক্টর Δr⃗ = r⃗f − r⃗i</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CATEGORY: বিশেষ ধরন ===== -->
+    <section class="category-section" data-category="special" id="cat-special">
+        <div class="category-header" style="--cat-color: #8b5cf6;">
+            <div class="category-icon" style="background: rgba(139,92,246,0.15); color: #8b5cf6;">⚡</div>
+            <div>
+                <h2>বিশেষ ধরনের ভেক্টর</h2>
+                <div class="cat-desc">ঘূর্ণন ও রৈখিক গতি সম্পর্কিত ভেক্টর</div>
+            </div>
+        </div>
+
+        <!-- 15. Axial Vector -->
+        <div class="vector-card" data-cat="special" id="card-axial">
+            <div class="card-header" onclick="toggleCard(this)">
+                <div class="card-number" style="background: rgba(139,92,246,0.15); color: #8b5cf6;">১৫</div>
+                <div class="card-title-group">
+                    <div class="card-title-bn">অক্ষীয় ভেক্টর</div>
+                    <div class="card-title-en">Axial Vector (Pseudovector)</div>
+                </div>
+                <button class="card-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            </div>
+            <div class="card-body">
+                <div class="card-content">
+                    <div class="def-box">
+                        <div class="def-label">সংজ্ঞা</div>
+                        <div class="def-text">যে ভেক্টর কোনো <strong>ঘূর্ণন অক্ষ বরাবর</strong> ক্রিয়া করে এবং ঘূর্ণনের সাথে সম্পর্কিত, তাকে <strong>অক্ষীয় ভেক্টর</strong> বলে। এর দিক নির্ণয়ে <strong>ডান-হাত নিয়ম</strong> ব্যবহার করা হয়।</div>
+                    </div>
+                    <div class="example-box">
+                        <div class="example-label">উদাহরণ</div>
+                        <div>টর্ক (τ⃗), কৌণিক বেগ (ω⃗), কৌণিক ভরবেগ (L⃗), চৌম্বক ক্ষেত্র (B⃗)</div>
+                    </div>
+                    <div class="key-point">
+                        <div class="key-point-label">ডান-হাত নিয়ম</div>
+                        <div>ডান হাতের আঙুলগুলো ঘূর্ণনের দিকে মুড়ে ধরো — বুড়ো আঙুল যেদিকে থাকবে সেদিকেই অক্ষীয় ভেক্টরের দিক।</div>
+                    </div>
+                    <div class="anim-container">
+                        <canvas id="axialCanvas" width="600" height="280"></canvas>
+                        <div class="anim-controls">
+                            <button class="anim-btn" onclick="animAxial()">▶ ঘূর্ণন দেখাও</button>
+                        </div>
+                        <div class="anim-label">অক্ষীয় ভেক্টর — ঘূর্ণন অক্ষ বরাবর, ডান-হাত নিয়মে দিক</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 16. Polar Vector -->
+        <div class="vector-card" data-cat="special" id="card-polar">
+            <div class="card-header" onclick="toggleCard(this)">
+                <div class="card-number" style="background: rgba(139,92,246,0.15); color: #8b5cf6;">১৬</div>
+                <div class="card-title-group">
+                    <div class="card-title-bn">পোলার ভেক্টর</div>
+                    <div class="card-title-en">Polar Vector</div>
+                </div>
+                <button class="card-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            </div>
+            <div class="card-body">
+                <div class="card-content">
+                    <div class="def-box">
+                        <div class="def-label">সংজ্ঞা</div>
+                        <div class="def-text">যে ভেক্টরের একটি <strong>সুনির্দিষ্ট দিক</strong> আছে এবং যা <strong>রৈখিক (সরলরেখা বরাবর) প্রভাব</strong> নির্দেশ করে, তাকে <strong>পোলার ভেক্টর</strong> বলে। এগুলো সাধারণ ভেক্টর যা আমরা বেশিরভাগ সময় ব্যবহার করি।</div>
+                    </div>
+                    <div class="example-box">
+                        <div class="example-label">উদাহরণ</div>
+                        <div>বল (F⃗), বেগ (v⃗), ত্বরণ (a⃗), ভরবেগ (p⃗), সরণ (Δr⃗), তড়িৎ ক্ষেত্র (E⃗)</div>
+                    </div>
+                    <div class="memo-tip">
+                        <div class="memo-tip-label">💡 পোলার vs অক্ষীয়</div>
+                        <div><strong>পোলার</strong> = সোজাসুজি ধাক্কা/টানা সংক্রান্ত (Linear)<br>
+                        <strong>অক্ষীয়</strong> = ঘোরানো সংক্রান্ত (Rotational)</div>
+                    </div>
+                    <div class="anim-container">
+                        <canvas id="polarCanvas" width="600" height="220"></canvas>
+                        <div class="anim-label">পোলার ভেক্টর — সরলরেখা বরাবর সুনির্দিষ্ট দিকে ক্রিয়াশীল</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SUMMARY CHART ===== -->
+    <section class="summary-section" id="summary">
+        <h2 class="summary-title">📋 সব ভেক্টর এক নজরে</h2>
+        <p class="summary-subtitle">১৬টি ভেক্টরের সংক্ষিপ্ত সারণি</p>
+
+        <div class="summary-grid" id="summaryGrid">
+            <!-- Filled by JS -->
+        </div>
+    </section>
+</div>
+
+<footer>
+    <p>HSC পদার্থবিজ্ঞান — প্রথম পত্র | অধ্যায় ২: ভেক্টর</p>
+</footer>
+
+<script>
+// ============ CARD TOGGLE ============
+function toggleCard(header) {
+    const card = header.closest('.vector-card');
+    card.classList.toggle('open');
+}
+
+// ============ CATEGORY FILTER ============
+document.querySelectorAll('.cat-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const cat = btn.dataset.cat;
+        document.querySelectorAll('.category-section').forEach(sec => {
+            if (cat === 'all') {
+                sec.style.display = '';
+            } else {
+                sec.style.display = sec.dataset.category === cat ? '' : 'none';
+            }
+        });
+    });
+});
+
+// ============ HERO BACKGROUND ============
+(function() {
+    const canvas = document.getElementById('heroBg');
+    const ctx = canvas.getContext('2d');
+    let w, h, arrows = [], animId;
+
+    function resize() {
+        w = canvas.width = canvas.offsetWidth * window.devicePixelRatio;
+        h = canvas.height = canvas.offsetHeight * window.devicePixelRatio;
+        ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    }
+
+    function init() {
+        resize();
+        const realW = canvas.offsetWidth;
+        const realH = canvas.offsetHeight;
+        arrows = [];
+        for (let i = 0; i < 25; i++) {
+            arrows.push({
+                x: Math.random() * realW,
+                y: Math.random() * realH,
+                len: 30 + Math.random() * 50,
+                angle: Math.random() * Math.PI * 2,
+                speed: 0.2 + Math.random() * 0.5,
+                rotSpeed: (Math.random() - 0.5) * 0.01,
+                alpha: 0.05 + Math.random() * 0.1
+            });
+        }
+    }
+
+    function drawArrow(x, y, len, angle, alpha) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(angle);
+        ctx.strokeStyle = `rgba(96, 165, 250, ${alpha})`;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(len, 0);
+        ctx.moveTo(len, 0);
+        ctx.lineTo(len - 8, -5);
+        ctx.moveTo(len, 0);
+        ctx.lineTo(len - 8, 5);
+        ctx.stroke();
+        ctx.restore();
+    }
+
+    function animate() {
+        const realW = canvas.offsetWidth;
+        const realH = canvas.offsetHeight;
+        ctx.clearRect(0, 0, realW, realH);
+        arrows.forEach(a => {
+            a.x += Math.cos(a.angle) * a.speed;
+            a.y += Math.sin(a.angle) * a.speed;
+            a.angle += a.rotSpeed;
+            if (a.x > realW + 60) a.x = -60;
+            if (a.x < -60) a.x = realW + 60;
+            if (a.y > realH + 60) a.y = -60;
+            if (a.y < -60) a.y = realH + 60;
+            drawArrow(a.x, a.y, a.len, a.angle, a.alpha);
+        });
+        animId = requestAnimationFrame(animate);
+    }
+
+    init();
+    animate();
+    window.addEventListener('resize', () => {
+        cancelAnimationFrame(animId);
+        init();
+        animate();
+    });
+})();
+
+// ============ DRAWING UTILITIES ============
+function getCtx(id, bgColor) {
+    const canvas = document.getElementById(id);
+    if (!canvas) return null;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (bgColor) {
+        ctx.fillStyle = bgColor;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+    return { ctx, canvas };
+}
+
+function drawVectorArrow(ctx, x1, y1, x2, y2, color, lineWidth, label, labelOffset) {
+    const headLen = 12;
+    const angle = Math.atan2(y2 - y1, x2 - x1);
+    
+    ctx.strokeStyle = color;
+    ctx.lineWidth = lineWidth || 2.5;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+    
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(x2, y2);
+    ctx.lineTo(x2 - headLen * Math.cos(angle - Math.PI/6), y2 - headLen * Math.sin(angle - Math.PI/6));
+    ctx.lineTo(x2 - headLen * Math.cos(angle + Math.PI/6), y2 - headLen * Math.sin(angle + Math.PI/6));
+    ctx.closePath();
+    ctx.fill();
+    
+    if (label) {
+        const offX = labelOffset ? labelOffset.x : 0;
+        const offY = labelOffset ? labelOffset.y : -15;
+        const mx = (x1 + x2) / 2 + offX;
+        const my = (y1 + y2) / 2 + offY;
+        ctx.fillStyle = color;
+        ctx.font = 'bold 14px "Noto Sans Bengali", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(label, mx, my);
+    }
+}
+
+function drawDot(ctx, x, y, r, color, label, labelPos) {
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+    if (label) {
+        ctx.fillStyle = color;
+        ctx.font = 'bold 13px "Noto Sans Bengali", sans-serif';
+        ctx.textAlign = labelPos === 'left' ? 'right' : labelPos === 'right' ? 'left' : 'center';
+        const offX = labelPos === 'left' ? -10 : labelPos === 'right' ? 10 : 0;
+        const offY = labelPos === 'top' ? -12 : labelPos === 'bottom' ? 18 : 4;
+        ctx.fillText(label, x + offX, y + offY);
+    }
+}
+
+function drawAxes(ctx, ox, oy, xLen, yLen, xLabel, yLabel) {
+    ctx.strokeStyle = '#334155';
+    ctx.lineWidth = 1;
+    
+    // X axis
+    ctx.beginPath();
+    ctx.moveTo(ox, oy);
+    ctx.lineTo(ox + xLen, oy);
+    ctx.stroke();
+    ctx.fillStyle = '#64748b';
+    ctx.beginPath();
+    ctx.moveTo(ox + xLen, oy);
+    ctx.lineTo(ox + xLen - 8, oy - 4);
+    ctx.lineTo(ox + xLen - 8, oy + 4);
+    ctx.closePath();
+    ctx.fill();
+    
+    // Y axis
+    ctx.beginPath();
+    ctx.moveTo(ox, oy);
+    ctx.lineTo(ox, oy - yLen);
+    ctx.stroke();
+    ctx.fillStyle = '#64748b';
+    ctx.beginPath();
+    ctx.moveTo(ox, oy - yLen);
+    ctx.lineTo(ox - 4, oy - yLen + 8);
+    ctx.lineTo(ox + 4, oy - yLen + 8);
+    ctx.closePath();
+    ctx.fill();
+    
+    ctx.font = '13px "Noto Sans Bengali", sans-serif';
+    ctx.fillStyle = '#64748b';
+    ctx.textAlign = 'center';
+    if (xLabel) ctx.fillText(xLabel, ox + xLen - 5, oy + 20);
+    if (yLabel) ctx.fillText(yLabel, ox - 18, oy - yLen + 10);
+    
+    // O label
+    ctx.fillText('O', ox - 14, oy + 5);
+}
+
+function drawDashedLine(ctx, x1, y1, x2, y2, color) {
+    ctx.save();
+    ctx.strokeStyle = color || '#475569';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+    ctx.restore();
+}
+
+// ============ DRAW ALL STATIC DIAGRAMS ============
+function drawAllDiagrams() {
+    // --- Free Vector ---
+    (function() {
+        const r = getCtx('freeVectorCanvas');
+        if (!r) return;
+        const {ctx, canvas} = r;
+        const w = canvas.width, h = canvas.height;
+        
+        drawVectorArrow(ctx, 60, 80, 250, 80, '#60a5fa', 3, 'A⃗', {x:0, y:-12});
+        drawVectorArrow(ctx, 150, 160, 340, 160, '#60a5fa', 3, 'A⃗', {x:0, y:-12});
+        drawVectorArrow(ctx, 350, 120, 540, 120, '#60a5fa', 3, 'A⃗', {x:0, y:-12});
+        
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '12px "Noto Sans Bengali", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('পাদবিন্দু ভিন্ন, কিন্তু ভেক্টর একই!', w/2, h - 15);
+        
+        // Small dots at start
+        drawDot(ctx, 60, 80, 4, '#f59e0b');
+        drawDot(ctx, 150, 160, 4, '#f59e0b');
+        drawDot(ctx, 350, 120, 4, '#f59e0b');
+    })();
+    
+    // --- Localized Vector ---
+    (function() {
+        const r = getCtx('localizedCanvas');
+        if (!r) return;
+        const {ctx, canvas} = r;
+        const ox = 80, oy = 230;
+        
+        drawAxes(ctx, ox, oy, 450, 200, 'X', 'Y');
+        drawVectorArrow(ctx, ox, oy, ox + 200, oy - 140, '#ec4899', 3, 'OP⃗ = r⃗', {x: -50, y: -5});
+        drawDot(ctx, ox, oy, 5, '#f59e0b');
+        drawDot(ctx, ox + 200, oy - 140, 5, '#60a5fa', 'P', 'right');
+        
+        // Show "locked" indicator
+        ctx.fillStyle = '#ef4444';
+        ctx.font = 'bold 11px "Noto Sans Bengali", sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('🔒 পাদবিন্দু O-তে স্থির', ox + 10, oy + 25);
+    })();
+    
+    // --- Like Vectors ---
+    (function() {
+        const r = getCtx('likeCanvas');
+        if (!r) return;
+        const {ctx} = r;
+        
+        drawVectorArrow(ctx, 80, 65, 320, 65, '#60a5fa', 3, 'A⃗', {x:0, y:-12});
+        drawVectorArrow(ctx, 120, 135, 280, 135, '#f59e0b', 3, 'B⃗', {x:0, y:-12});
+        
+        // Direction indicator
+        ctx.fillStyle = '#22c55e';
+        ctx.font = '12px "Noto Sans Bengali", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('একই দিক →', 450, 100);
+    })();
+    
+    // --- Unlike Vectors ---
+    (function() {
+        const r = getCtx('unlikeCanvas');
+        if (!r) return;
+        const {ctx} = r;
+        
+        drawVectorArrow(ctx, 100, 65, 340, 65, '#60a5fa', 3, 'A⃗', {x:0, y:-12});
+        drawVectorArrow(ctx, 440, 135, 200, 135, '#ef4444', 3, 'B⃗', {x:0, y:-12});
+        
+        ctx.fillStyle = '#f59e0b';
+        ctx.font = '12px "Noto Sans Bengali", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('← বিপরীত দিক →', 300, 180);
+    })();
+    
+    // --- Equal Vectors ---
+    (function() {
+        const r = getCtx('equalCanvas');
+        if (!r) return;
+        const {ctx} = r;
+        
+        drawVectorArrow(ctx, 80, 65, 280, 65, '#60a5fa', 3, 'A⃗', {x:0, y:-12});
+        drawVectorArrow(ctx, 200, 140, 400, 140, '#60a5fa', 3, 'B⃗', {x:0, y:-12});
+        
+        // Length marks
+        ctx.fillStyle = '#22c55e';
+        ctx.font = '11px "Noto Sans Bengali", sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('|A⃗| = |B⃗| = 200 একক', 420, 65);
+        ctx.fillText('একই দিক ✓', 420, 85);
+        ctx.fillText('∴ A⃗ = B⃗', 420, 110);
+    })();
+    
+    // --- Negative Vector ---
+    (function() {
+        const r = getCtx('negativeCanvas');
+        if (!r) return;
+        const {ctx} = r;
+        
+        drawVectorArrow(ctx, 80, 80, 300, 80, '#60a5fa', 3, 'A⃗ (P→Q)', {x:0, y:-15});
+        drawVectorArrow(ctx, 500, 140, 280, 140, '#ef4444', 3, '−A⃗ (Q→P)', {x:0, y:-15});
+        
+        // Labels
+        drawDot(ctx, 80, 80, 4, '#f59e0b', 'P', 'left');
+        drawDot(ctx, 300, 80, 4, '#f59e0b', 'Q', 'right');
+        drawDot(ctx, 500, 140, 4, '#f59e0b', 'Q', 'right');
+        drawDot(ctx, 280, 140, 4, '#f59e0b', 'P', 'left');
+    })();
+    
+    // --- Collinear Vectors ---
+    (function() {
+        const r = getCtx('collinearCanvas');
+        if (!r) return;
+        const {ctx} = r;
+        
+        drawVectorArrow(ctx, 50, 55, 220, 55, '#60a5fa', 3, 'A⃗', {x:0, y:-12});
+        drawVectorArrow(ctx, 100, 100, 330, 100, '#f59e0b', 3, 'B⃗', {x:0, y:-12});
+        drawVectorArrow(ctx, 180, 145, 400, 145, '#10b981', 3, 'C⃗', {x:0, y:-12});
+        
+        // Parallel lines indicator
+        drawDashedLine(ctx, 430, 40, 430, 170, '#475569');
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '11px "Noto Sans Bengali", sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('সমান্তরাল / একই রেখায়', 440, 100);
+    })();
+    
+    // --- Coplanar Vectors ---
+    (function() {
+        const r = getCtx('coplanarCanvas');
+        if (!r) return;
+        const {ctx, canvas} = r;
+        
+        // Draw a plane-like background
+        ctx.fillStyle = 'rgba(139, 92, 246, 0.05)';
+        ctx.strokeStyle = 'rgba(139, 92, 246, 0.2)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(40, 220);
+        ctx.lineTo(200, 30);
+        ctx.lineTo(560, 30);
+        ctx.lineTo(400, 220);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '11px "Noto Sans Bengali", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('একই সমতল', 300, 235);
+        
+        drawVectorArrow(ctx, 120, 160, 250, 80, '#60a5fa', 3, 'A⃗', {x:-20, y:0});
+        drawVectorArrow(ctx, 200, 180, 380, 120, '#f59e0b', 3, 'B⃗', {x:0, y:18});
+        drawVectorArrow(ctx, 300, 100, 480, 60, '#10b981', 3, 'C⃗', {x:0, y:-12});
+    })();
+    
+    // --- Proper Vector ---
+    (function() {
+        const r = getCtx('properCanvas');
+        if (!r) return;
+        const {ctx} = r;
+        
+        drawVectorArrow(ctx, 50, 80, 200, 80, '#60a5fa', 3, '5N →', {x:0, y:-12});
+        drawVectorArrow(ctx, 250, 80, 480, 80, '#10b981', 3, '10 m/s →', {x:0, y:-12});
+        
+        ctx.fillStyle = '#22c55e';
+        ctx.font = 'bold 12px "Noto Sans Bengali", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('মান ≠ 0 ✓ → সঠিক ভেক্টর', 300, 130);
+    })();
+    
+    // --- Null Vector ---
+    (function() {
+        const r = getCtx('nullCanvas');
+        if (!r) return;
+        const {ctx} = r;
+        
+        drawVectorArrow(ctx, 80, 100, 280, 100, '#60a5fa', 3, 'A⃗', {x:0, y:-15});
+        drawVectorArrow(ctx, 280, 100, 80, 100, '#ef4444', 2, '−A⃗', {x:0, y:20});
+        
+        drawDot(ctx, 400, 100, 8, '#f59e0b');
+        ctx.fillStyle = '#f59e0b';
+        ctx.font = 'bold 16px "Noto Sans Bengali", sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('= 0⃗ (নাল ভেক্টর)', 415, 106);
+        
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '11px "Noto Sans Bengali", sans-serif';
+        ctx.fillText('পাদবিন্দু = শীর্ষবিন্দু = একই বিন্দু', 350, 145);
+        ctx.fillText('কোনো সুনির্দিষ্ট দিক নেই', 350, 165);
+    })();
+    
+    // --- Unit Vector ---
+    (function() {
+        const r = getCtx('unitCanvas');
+        if (!r) return;
+        const {ctx} = r;
+        
+        // Full vector
+        drawVectorArrow(ctx, 50, 110, 350, 110, '#60a5fa', 3, 'A⃗ = 5â', {x:0, y:-15});
+        
+        // Segments
+        const segLen = 60;
+        for (let i = 1; i < 5; i++) {
+            const x = 50 + i * segLen;
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(x, 100);
+            ctx.lineTo(x, 120);
+            ctx.stroke();
+        }
+        
+        // Unit vector
+        drawVectorArrow(ctx, 50, 170, 50 + segLen, 170, '#f59e0b', 3, 'â (মান = 1)', {x:30, y:-12});
+        
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '11px "Noto Sans Bengali", sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('â = A⃗ / |A⃗| = A⃗ / 5', 400, 140);
+    })();
+    
+    // --- Reciprocal Vector ---
+    (function() {
+        const r = getCtx('reciprocalCanvas');
+        if (!r) return;
+        const {ctx} = r;
+        
+        drawVectorArrow(ctx, 50, 70, 400, 70, '#60a5fa', 3, 'A⃗ = 7î', {x:0, y:-12});
+        drawVectorArrow(ctx, 50, 140, 100, 140, '#f59e0b', 3, 'B⃗ = (1/7)î', {x:60, y:-12});
+        
+        ctx.fillStyle = '#22c55e';
+        ctx.font = '12px "Noto Sans Bengali", sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('একই দিক, মান পরস্পরের reciprocal', 200, 175);
+    })();
+    
+    // --- Position Vector ---
+    (function() {
+        const r = getCtx('positionCanvas');
+        if (!r) return;
+        const {ctx} = r;
+        const ox = 80, oy = 250;
+        
+        drawAxes(ctx, ox, oy, 450, 220, 'X', 'Y');
+        
+        const px = ox + 250, py = oy - 150;
+        drawVectorArrow(ctx, ox, oy, px, py, '#ec4899', 3, 'r⃗ = OP⃗', {x: -45, y: 0});
+        drawDot(ctx, ox, oy, 5, '#f59e0b');
+        drawDot(ctx, px, py, 6, '#60a5fa', 'P', 'right');
+        
+        // Dashed projections
+        drawDashedLine(ctx, px, py, px, oy, '#475569');
+        drawDashedLine(ctx, px, py, ox, py, '#475569');
+    })();
+    
+    // --- Displacement Vector ---
+    (function() {
+        const r = getCtx('displacementCanvas');
+        if (!r) return;
+        const {ctx} = r;
+        const ox = 80, oy = 250;
+        
+        drawAxes(ctx, ox, oy, 450, 220, 'X', 'Y');
+        
+        const ix = ox + 120, iy = oy - 80;
+        const fx = ox + 350, fy = oy - 170;
+        
+        drawVectorArrow(ctx, ox, oy, ix, iy, '#64748b', 2, 'r⃗ᵢ', {x: -25, y: 5});
+        drawVectorArrow(ctx, ox, oy, fx, fy, '#64748b', 2, 'r⃗f', {x: 10, y: -5});
+        drawVectorArrow(ctx, ix, iy, fx, fy, '#22c55e', 3, 'Δr⃗', {x: 10, y: 15});
+        
+        drawDot(ctx, ox, oy, 5, '#f59e0b');
+        drawDot(ctx, ix, iy, 5, '#ec4899', 'আদি', 'left');
+        drawDot(ctx, fx, fy, 5, '#60a5fa', 'শেষ', 'right');
+    })();
+    
+    // --- Axial Vector ---
+    (function() {
+        const r = getCtx('axialCanvas');
+        if (!r) return;
+        const {ctx, canvas} = r;
+        const cx = 250, cy = 160;
+        
+        // Draw rotation circle
+        ctx.strokeStyle = 'rgba(139, 92, 246, 0.3)';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.ellipse(cx, cy, 80, 35, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        // Rotation arrows on circle
+        const arrowAngles = [0, Math.PI/2, Math.PI, Math.PI*1.5];
+        arrowAngles.forEach(a => {
+            const rx = cx + 80 * Math.cos(a);
+            const ry = cy + 35 * Math.sin(a);
+            const tx = -Math.sin(a) * 12;
+            const ty = Math.cos(a) * 5;
+            ctx.fillStyle = '#a78bfa';
+            ctx.beginPath();
+            ctx.moveTo(rx + tx, ry + ty);
+            ctx.lineTo(rx + tx - 6 * Math.cos(a + 0.5), ry + ty - 3 * Math.sin(a + 0.5));
+            ctx.lineTo(rx + tx + 6 * Math.cos(a - 0.5), ry + ty + 3 * Math.sin(a - 0.5));
+            ctx.closePath();
+            ctx.fill();
+        });
+        
+        // Axial vector (upward)
+        drawVectorArrow(ctx, cx, cy, cx, cy - 110, '#8b5cf6', 3, 'ω⃗ (অক্ষীয়)', {x: 60, y: 30});
+        
+        drawDot(ctx, cx, cy, 4, '#f59e0b');
+        
+        // Right hand rule note
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '11px "Noto Sans Bengali", sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('🤚 ডান-হাত নিয়ম:', 400, 100);
+        ctx.fillText('আঙুল ঘূর্ণনের দিকে', 400, 120);
+        ctx.fillText('→ বুড়ো আঙুল = ω⃗ এর দিক', 400, 140);
+        
+        ctx.fillStyle = '#a78bfa';
+        ctx.font = '11px "Noto Sans Bengali", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('ঘূর্ণন', cx + 100, cy + 10);
+    })();
+    
+    // --- Polar Vector ---
+    (function() {
+        const r = getCtx('polarCanvas');
+        if (!r) return;
+        const {ctx} = r;
+        
+        // Force vector
+        drawVectorArrow(ctx, 50, 110, 200, 110, '#60a5fa', 3, 'F⃗ (বল)', {x:0, y:-12});
+        
+        // Velocity vector
+        drawVectorArrow(ctx, 230, 110, 380, 50, '#10b981', 3, 'v⃗ (বেগ)', {x:0, y:-12});
+        
+        // Acceleration
+        drawVectorArrow(ctx, 400, 160, 550, 160, '#f59e0b', 3, 'a⃗ (ত্বরণ)', {x:0, y:-15});
+        
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '12px "Noto Sans Bengali", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('সরলরেখা বরাবর ক্রিয়াশীল সাধারণ ভেক্টর', 300, 200);
+    })();
+}
+
+// ============ ANIMATIONS ============
+function animFreeVector() {
+    const r = getCtx('freeVectorCanvas');
+    if (!r) return;
+    const {ctx, canvas} = r;
+    const w = canvas.width, h = canvas.height;
+    let step = 0;
+    const totalSteps = 120;
+    
+    const positions = [
+        {x: 80, y: 70},
+        {x: 200, y: 150},
+        {x: 350, y: 100},
+        {x: 100, y: 180}
+    ];
+    let posIdx = 0;
+    
+    function frame() {
+        ctx.clearRect(0, 0, w, h);
+        step++;
+        
+        const t = (step % 60) / 60;
+        const fromPos = positions[posIdx % positions.length];
+        const toPos = positions[(posIdx + 1) % positions.length];
+        
+        // Interpolate
+        const cx = fromPos.x + (toPos.x - fromPos.x) * t;
+        const cy = fromPos.y + (toPos.y - fromPos.y) * t;
+        
+        // Draw ghost vectors
+        positions.forEach((p, i) => {
+            if (i !== posIdx % positions.length) {
+                drawVectorArrow(ctx, p.x, p.y, p.x + 180, p.y, 'rgba(96,165,250,0.15)', 2);
+            }
+        });
+        
+        // Draw moving vector
+        drawVectorArrow(ctx, cx, cy, cx + 180, cy, '#60a5fa', 3, 'A⃗', {x:0, y:-12});
+        drawDot(ctx, cx, cy, 5, '#f59e0b');
+        
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '12px "Noto Sans Bengali", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('পাদবিন্দু যেখানেই হোক — ভেক্টর একই!', w/2, h - 15);
+        
+        if (step % 60 === 0) posIdx++;
+        
+        if (step < totalSteps * 2) {
+            requestAnimationFrame(frame);
+        } else {
+            drawAllDiagrams();
+        }
+    }
+    frame();
+}
+
+function animLocalized() {
+    const r = getCtx('localizedCanvas');
+    if (!r) return;
+    const {ctx, canvas} = r;
+    const ox = 80, oy = 230;
+    let angle = 0;
+    let step = 0;
+    
+    function frame() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        step++;
+        angle += 0.03;
+        
+        drawAxes(ctx, ox, oy, 450, 200, 'X', 'Y');
+        
+        const px = ox + 200 * Math.cos(angle);
+        const py = oy - 150 * Math.abs(Math.sin(angle));
+        
+        drawVectorArrow(ctx, ox, oy, px, py, '#ec4899', 3, 'r⃗', {x: -25, y: 0});
+        drawDot(ctx, ox, oy, 6, '#f59e0b');
+        drawDot(ctx, px, py, 5, '#60a5fa', 'P', 'right');
+        
+        // Trace
+        ctx.strokeStyle = 'rgba(236,72,153,0.15)';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([3,3]);
+        ctx.beginPath();
+        ctx.ellipse(ox + 100, oy - 75, 200, 150, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        ctx.fillStyle = '#ef4444';
+        ctx.font = 'bold 11px "Noto Sans Bengali", sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('🔒 মূলবিন্দু O সবসময় স্থির!', ox + 10, oy + 25);
+        
+        if (step < 200) {
+            requestAnimationFrame(frame);
+        } else {
+            // Redraw static
+            const r2 = getCtx('localizedCanvas');
+            if (!r2) return;
+            const {ctx: c2} = r2;
+            drawAxes(c2, ox, oy, 450, 200, 'X', 'Y');
+            drawVectorArrow(c2, ox, oy, ox + 200, oy - 140, '#ec4899', 3, 'OP⃗ = r⃗', {x: -50, y: 0});
+            drawDot(c2, ox, oy, 5, '#f59e0b');
+            drawDot(c2, ox + 200, oy - 140, 5, '#60a5fa', 'P', 'right');
+            c2.fillStyle = '#ef4444';
+            c2.font = 'bold 11px "Noto Sans Bengali", sans-serif';
+            c2.textAlign = 'left';
+            c2.fillText('🔒 পাদবিন্দু O-তে স্থির', ox + 10, oy + 25);
+        }
+    }
+    frame();
+}
+
+function animNegative() {
+    const r = getCtx('negativeCanvas');
+    if (!r) return;
+    const {ctx, canvas} = r;
+    let step = 0;
+    
+    function frame() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        step++;
+        
+        const t = Math.min(step / 60, 1);
+        
+        // Original vector
+        drawVectorArrow(ctx, 100, 80, 350, 80, '#60a5fa', 3, 'A⃗', {x:0, y:-15});
+        drawDot(ctx, 100, 80, 4, '#f59e0b', 'P', 'left');
+        drawDot(ctx, 350, 80, 4, '#f59e0b', 'Q', 'right');
+        
+        if (t > 0) {
+            // Flip animation
+            const endX = 350 - (350 - 100) * t;
+            const startX = 100 + (350 - 100) * t;
+            const alpha = t;
+            
+            ctx.globalAlpha = alpha;
+            drawVectorArrow(ctx, startX, 140, endX, 140, '#ef4444', 3, '−A⃗', {x:0, y:-15});
+            drawDot(ctx, startX, 140, 4, '#f59e0b', 'Q', 'right');
+            drawDot(ctx, endX, 140, 4, '#f59e0b', 'P', 'left');
+            ctx.globalAlpha = 1;
+        }
+        
+        if (step < 80) {
+            requestAnimationFrame(frame);
+        }
+    }
+    frame();
+}
+
+function animNull() {
+    const r = getCtx('nullCanvas');
+    if (!r) return;
+    const {ctx, canvas} = r;
+    let step = 0;
+    
+    function frame() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        step++;
+        
+        const t = Math.min(step / 80, 1);
+        const baseX = 80;
+        const vecLen = 200;
+        
+        // A vector
+        drawVectorArrow(ctx, baseX, 90, baseX + vecLen, 90, '#60a5fa', 3, 'A⃗', {x:0, y:-15});
+        
+        // -A vector slides in
+        const negStart = baseX + vecLen;
+        const negEnd = negStart - vecLen * t;
+        
+        if (t > 0) {
+            drawVectorArrow(ctx, negStart, 90, negEnd, 90, '#ef4444', 2.5, '−A⃗', {x:0, y:18});
+        }
+        
+        // Result
+        if (t >= 1) {
+            drawDot(ctx, baseX, 90, 10, 'rgba(245,158,11,0.5)');
+            drawDot(ctx, baseX, 90, 5, '#f59e0b');
+            
+            ctx.fillStyle = '#f59e0b';
+            ctx.font = 'bold 18px "Noto Sans Bengali", sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText('= 0⃗', baseX + 20, 90 + 6);
+            
+            ctx.font = '12px "Noto Sans Bengali", sans-serif';
+            ctx.fillStyle = '#94a3b8';
+            ctx.fillText('A⃗ + (−A⃗) = 0⃗ → নাল ভেক্টর!', 320, 90);
+            ctx.fillText('দিক নেই, মান শূন্য, পাদবিন্দু = শীর্ষবিন্দু', 320, 115);
+        }
+        
+        if (step < 120) {
+            requestAnimationFrame(frame);
+        }
+    }
+    frame();
+}
+
+function animUnit() {
+    const r = getCtx('unitCanvas');
+    if (!r) return;
+    const {ctx, canvas} = r;
+    let step = 0;
+    const segLen = 60;
+    
+    function frame() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        step++;
+        
+        const t = Math.min(step / 60, 1);
+        
+        // Full vector with segments
+        const fullLen = segLen * 5;
+        drawVectorArrow(ctx, 50, 90, 50 + fullLen, 90, '#60a5fa', 3, 'A⃗ = 5â', {x:0, y:-15});
+        
+        // Tick marks
+        for (let i = 1; i < 5; i++) {
+            ctx.strokeStyle = '#64748b';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(50 + i * segLen, 80);
+            ctx.lineTo(50 + i * segLen, 100);
+            ctx.stroke();
+        }
+        
+        // Highlight one segment
+        if (t > 0) {
+            const highlight = Math.min(t * 2, 1);
+            ctx.globalAlpha = highlight;
+            
+            // Box around first segment
+            ctx.strokeStyle = '#f59e0b';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([4,2]);
+            ctx.strokeRect(47, 75, segLen + 6, 30);
+            ctx.setLineDash([]);
+            
+            drawVectorArrow(ctx, 50, 160, 50 + segLen, 160, '#f59e0b', 3, 'â (একক ভেক্টর, মান = 1)', {x:100, y:-12});
+            
+            ctx.globalAlpha = 1;
+        }
+        
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '11px "Noto Sans Bengali", sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('â = A⃗ / |A⃗| = A⃗ / 5', 400, 100);
+        
+        if (step < 80) {
+            requestAnimationFrame(frame);
+        }
+    }
+    frame();
+}
+
+function animPosition() {
+    const r = getCtx('positionCanvas');
+    if (!r) return;
+    const {ctx, canvas} = r;
+    const ox = 80, oy = 250;
+    let angle = 0;
+    let step = 0;
+    
+    function frame() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        step++;
+        angle += 0.025;
+        
+        drawAxes(ctx, ox, oy, 450, 220, 'X', 'Y');
+        
+        const radius = 150;
+        const px = ox + radius * Math.cos(angle) + 100;
+        const py = oy - radius * Math.abs(Math.sin(angle)) - 20;
+        
+        // Trace path
+        ctx.strokeStyle = 'rgba(96,165,250,0.1)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        for (let a = 0; a < Math.PI * 2; a += 0.05) {
+            const tx = ox + radius * Math.cos(a) + 100;
+            const ty = oy - radius * Math.abs(Math.sin(a)) - 20;
+            if (a === 0) ctx.moveTo(tx, ty);
+            else ctx.lineTo(tx, ty);
+        }
+        ctx.stroke();
+        
+        drawVectorArrow(ctx, ox, oy, px, py, '#ec4899', 3, 'r⃗', {x: -25, y: 0});
+        drawDot(ctx, ox, oy, 5, '#f59e0b');
+        drawDot(ctx, px, py, 6, '#60a5fa', 'P', 'right');
+        
+        drawDashedLine(ctx, px, py, px, oy, '#475569');
+        drawDashedLine(ctx, px, py, ox, py, '#475569');
+        
+        if (step < 250) {
+            requestAnimationFrame(frame);
+        } else {
+            // Redraw static
+            const r2 = getCtx('positionCanvas');
+            if (!r2) return;
+            const {ctx:c} = r2;
+            drawAxes(c, ox, oy, 450, 220, 'X', 'Y');
+            const fpx = ox + 250, fpy = oy - 150;
+            drawVectorArrow(c, ox, oy, fpx, fpy, '#ec4899', 3, 'r⃗ = OP⃗', {x: -45, y: 0});
+            drawDot(c, ox, oy, 5, '#f59e0b');
+            drawDot(c, fpx, fpy, 6, '#60a5fa', 'P', 'right');
+            drawDashedLine(c, fpx, fpy, fpx, oy, '#475569');
+            drawDashedLine(c, fpx, fpy, ox, fpy, '#475569');
+        }
+    }
+    frame();
+}
+
+function animDisplacement() {
+    const r = getCtx('displacementCanvas');
+    if (!r) return;
+    const {ctx, canvas} = r;
+    const ox = 80, oy = 250;
+    let step = 0;
+    
+    const ix = ox + 120, iy = oy - 80;
+    const fx = ox + 350, fy = oy - 170;
+    
+    function frame() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        step++;
+        
+        const t = Math.min(step / 80, 1);
+        
+        drawAxes(ctx, ox, oy, 450, 220, 'X', 'Y');
+        
+        // r_i
+        drawVectorArrow(ctx, ox, oy, ix, iy, '#64748b', 2, 'r⃗ᵢ', {x: -25, y: 5});
+        drawDot(ctx, ix, iy, 5, '#ec4899', 'আদি', 'left');
+        
+        // r_f grows in
+        const cfx = ix + (fx - ix) * t;
+        const cfy = iy + (fy - iy) * t;
+        
+        if (t > 0.1) {
+            drawVectorArrow(ctx, ox, oy, ox + (fx - ox) * t, oy + (fy - oy) * t, '#64748b', 2, 'r⃗f', {x: 10, y: -5});
+        }
+        
+        if (t >= 1) {
+            drawDot(ctx, fx, fy, 5, '#60a5fa', 'শেষ', 'right');
+            drawVectorArrow(ctx, ix, iy, fx, fy, '#22c55e', 3.5, 'Δr⃗ = r⃗f − r⃗ᵢ', {x: 15, y: 18});
+        }
+        
+        drawDot(ctx, ox, oy, 5, '#f59e0b');
+        
+        if (step < 120) {
+            requestAnimationFrame(frame);
+        }
+    }
+    frame();
+}
+
+function animAxial() {
+    const r = getCtx('axialCanvas');
+    if (!r) return;
+    const {ctx, canvas} = r;
+    const cx = 250, cy = 160;
+    let angle = 0;
+    let step = 0;
+    
+    function frame() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        step++;
+        angle += 0.04;
+        
+        // Rotation circle
+        ctx.strokeStyle = 'rgba(139, 92, 246, 0.3)';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.ellipse(cx, cy, 80, 35, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        // Rotating dot
+        const dotX = cx + 80 * Math.cos(angle);
+        const dotY = cy + 35 * Math.sin(angle);
+        drawDot(ctx, dotX, dotY, 5, '#a78bfa');
+        
+        // Trail
+        ctx.strokeStyle = 'rgba(167,139,250,0.3)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        for (let a = angle - 1.5; a < angle; a += 0.05) {
+            const tx = cx + 80 * Math.cos(a);
+            const ty = cy + 35 * Math.sin(a);
+            if (a === angle - 1.5) ctx.moveTo(tx, ty);
+            else ctx.lineTo(tx, ty);
+        }
+        ctx.stroke();
+        
+        // Axial vector (pulsing)
+        const pulse = 1 + 0.05 * Math.sin(step * 0.1);
+        const vecLen = 110 * pulse;
+        drawVectorArrow(ctx, cx, cy, cx, cy - vecLen, '#8b5cf6', 3, 'ω⃗', {x: 20, y: 30});
+        
+        drawDot(ctx, cx, cy, 4, '#f59e0b');
+        
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '11px "Noto Sans Bengali", sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('🤚 ডান-হাত নিয়ম:', 400, 100);
+        ctx.fillText('আঙুল ঘূর্ণনের দিকে', 400, 120);
+        ctx.fillText('→ বুড়ো আঙুল = ω⃗ এর দিক ↑', 400, 140);
+        
+        if (step < 200) {
+            requestAnimationFrame(frame);
+        } else {
+            // Redraw static version
+            const r2 = getCtx('axialCanvas');
+            if(!r2) return;
+            const {ctx:c} = r2;
+            c.strokeStyle = 'rgba(139, 92, 246, 0.3)';
+            c.lineWidth = 1.5;
+            c.setLineDash([5, 5]);
+            c.beginPath();
+            c.ellipse(cx, cy, 80, 35, 0, 0, Math.PI * 2);
+            c.stroke();
+            c.setLineDash([]);
+            const arrowAngles2 = [0, Math.PI/2, Math.PI, Math.PI*1.5];
+            arrowAngles2.forEach(a => {
+                const rx = cx + 80 * Math.cos(a);
+                const ry = cy + 35 * Math.sin(a);
+                const tx = -Math.sin(a) * 12;
+                const ty = Math.cos(a) * 5;
+                c.fillStyle = '#a78bfa';
+                c.beginPath();
+                c.moveTo(rx + tx, ry + ty);
+                c.lineTo(rx + tx - 6 * Math.cos(a + 0.5), ry + ty - 3 * Math.sin(a + 0.5));
+                c.lineTo(rx + tx + 6 * Math.cos(a - 0.5), ry + ty + 3 * Math.sin(a - 0.5));
+                c.closePath();
+                c.fill();
+            });
+            drawVectorArrow(c, cx, cy, cx, cy - 110, '#8b5cf6', 3, 'ω⃗ (অক্ষীয়)', {x: 60, y: 30});
+            drawDot(c, cx, cy, 4, '#f59e0b');
+            c.fillStyle = '#94a3b8';
+            c.font = '11px "Noto Sans Bengali", sans-serif';
+            c.textAlign = 'left';
+            c.fillText('🤚 ডান-হাত নিয়ম:', 400, 100);
+            c.fillText('আঙুল ঘূর্ণনের দিকে', 400, 120);
+            c.fillText('→ বুড়ো আঙুল = ω⃗ এর দিক', 400, 140);
+            c.fillStyle = '#a78bfa';
+            c.font = '11px "Noto Sans Bengali", sans-serif';
+            c.textAlign = 'center';
+            c.fillText('ঘূর্ণন', cx + 100, cy + 10);
+        }
+    }
+    frame();
+}
+
+// ============ SUMMARY CHART DATA ============
+const summaryData = [
+    { num: '০১', name: 'স্বাধীন ভেক্টর', en: 'Free Vector', desc: 'পাদবিন্দু ইচ্ছেমতো পছন্দ করা যায়', cat: 'property', color: '#60a5fa' },
+    { num: '০২', name: 'সীমাবদ্ধ ভেক্টর', en: 'Localized Vector', desc: 'পাদবিন্দু নির্দিষ্ট, সরানো যায় না', cat: 'property', color: '#60a5fa' },
+    { num: '০৩', name: 'সদৃশ ভেক্টর', en: 'Like Vectors', desc: 'একই দিকে ক্রিয়াশীল, মান ভিন্ন হতে পারে', cat: 'direction', color: '#f59e0b' },
+    { num: '০৪', name: 'বিসদৃশ ভেক্টর', en: 'Unlike Vectors', desc: 'বিপরীত দিকে ক্রিয়াশীল', cat: 'direction', color: '#f59e0b' },
+    { num: '০৫', name: 'সমান ভেক্টর', en: 'Equal Vectors', desc: 'মান সমান ও দিক একই', cat: 'direction', color: '#f59e0b' },
+    { num: '০৬', name: 'ঋণাত্মক ভেক্টর', en: 'Negative Vector', desc: 'সমমান, বিপরীত দিক', cat: 'direction', color: '#f59e0b' },
+    { num: '০৭', name: 'সমরেখ ভেক্টর', en: 'Collinear Vectors', desc: 'একই সরলরেখায় বা সমান্তরালে', cat: 'direction', color: '#f59e0b' },
+    { num: '০৮', name: 'সমতলীয় ভেক্টর', en: 'Coplanar Vectors', desc: 'একই সমতলে অবস্থিত', cat: 'direction', color: '#f59e0b' },
+    { num: '০৯', name: 'সঠিক ভেক্টর', en: 'Proper Vector', desc: 'মান ≠ 0', cat: 'value', color: '#10b981' },
+    { num: '১০', name: 'নাল ভেক্টর', en: 'Null Vector', desc: 'মান = 0, দিক অনির্দিষ্ট', cat: 'value', color: '#10b981' },
+    { num: '১১', name: 'একক ভেক্টর', en: 'Unit Vector', desc: 'মান = 1, â = A⃗/|A⃗|', cat: 'value', color: '#10b981' },
+    { num: '১২', name: 'অবস্থান ভেক্টর', en: 'Position Vector', desc: 'মূলবিন্দু থেকে বিন্দুর অবস্থান, r⃗ = OP⃗', cat: 'position', color: '#ec4899' },
+    { num: '১৩', name: 'সরণ ভেক্টর', en: 'Displacement Vector', desc: 'Δr⃗ = r⃗f − r⃗i', cat: 'position', color: '#ec4899' },
+    { num: '১৪', name: 'বিপ্রতীপ ভেক্টর', en: 'Reciprocal Vector', desc: 'মান পরস্পরের reciprocal, একই দিক', cat: 'value', color: '#10b981' },
+    { num: '১৫', name: 'অক্ষীয় ভেক্টর', en: 'Axial Vector', desc: 'ঘূর্ণন অক্ষ বরাবর, ডান-হাত নিয়ম', cat: 'special', color: '#8b5cf6' },
+    { num: '১৬', name: 'পোলার ভেক্টর', en: 'Polar Vector', desc: 'রৈখিক, সুনির্দিষ্ট দিকে ক্রিয়াশীল', cat: 'special', color: '#8b5cf6' },
+];
+
+const catLabels = {
+    property: 'ধর্ম',
+    direction: 'দিক',
+    value: 'মান',
+    position: 'অবস্থান',
+    special: 'বিশেষ'
+};
+
+function buildSummary() {
+    const grid = document.getElementById('summaryGrid');
+    grid.innerHTML = '';
+    summaryData.forEach(d => {
+        const item = document.createElement('div');
+        item.className = 'summary-item';
+        item.innerHTML = `
+            <div class="summary-num" style="background: ${d.color}22; color: ${d.color};">${d.num}</div>
+            <div class="summary-info">
+                <h4>${d.name}</h4>
+                <div class="en-name">${d.en}</div>
+                <p>${d.desc}</p>
+                <span class="summary-tag" style="background: ${d.color}22; color: ${d.color};">${catLabels[d.cat]}</span>
+            </div>
+        `;
+        grid.appendChild(item);
+    });
+}
+
+// ============ INIT ============
+window.addEventListener('DOMContentLoaded', () => {
+    drawAllDiagrams();
+    buildSummary();
+});
+
+// Redraw on resize
+window.addEventListener('resize', () => {
+    drawAllDiagrams();
+});
+</script>
+</body>
+</html>

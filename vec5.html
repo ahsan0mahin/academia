@@ -1,0 +1,2349 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ভেক্টর নোটস | Vector Notes - HSC Physics</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --bg: #0a0e1a;
+            --card-bg: #111827;
+            --card-border: #1e293b;
+            --accent: #3b82f6;
+            --accent2: #8b5cf6;
+            --accent3: #06b6d4;
+            --accent4: #10b981;
+            --accent5: #f59e0b;
+            --accent6: #ef4444;
+            --accent7: #ec4899;
+            --text: #e2e8f0;
+            --text-dim: #94a3b8;
+            --text-bright: #f8fafc;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans Bengali', 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        /* Language Toggle */
+        .lang-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+
+        .lang-btn {
+            padding: 10px 20px;
+            border: none;
+            background: transparent;
+            color: var(--text-dim);
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .lang-btn.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        .lang-btn:hover:not(.active) {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--text);
+        }
+
+        .bn { display: block; }
+        .en { display: none; }
+        body.english .bn { display: none; }
+        body.english .en { display: block; }
+        span.bn, span.en { display: inline; }
+        body.english span.bn { display: none; }
+        body.english span.en { display: inline; }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 100px 20px 60px;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero h1 {
+            font-size: 2.8em;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .hero .subtitle {
+            font-size: 1.2em;
+            color: var(--text-dim);
+        }
+
+        .hero .chapter-info {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 8px 24px;
+            background: rgba(59,130,246,0.1);
+            border: 1px solid rgba(59,130,246,0.2);
+            border-radius: 100px;
+            font-size: 0.9em;
+            color: var(--accent);
+        }
+
+        /* Category Section */
+        .category-section {
+            max-width: 1100px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 30px;
+            padding: 20px 28px;
+            background: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(139,92,246,0.08));
+            border: 1px solid rgba(59,130,246,0.15);
+            border-radius: 16px;
+        }
+
+        .category-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .category-header h2 {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: var(--text-bright);
+        }
+
+        .category-header p {
+            font-size: 0.95em;
+            color: var(--text-dim);
+            margin-top: 4px;
+        }
+
+        /* Vector Cards */
+        .vector-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            margin-bottom: 24px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .vector-card:hover {
+            border-color: rgba(59,130,246,0.3);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+        }
+
+        .card-header {
+            padding: 24px 28px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .card-number {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .card-title-area {
+            flex: 1;
+        }
+
+        .card-title {
+            font-size: 1.25em;
+            font-weight: 600;
+            color: var(--text-bright);
+        }
+
+        .card-title-en {
+            font-size: 0.9em;
+            color: var(--text-dim);
+            font-weight: 400;
+        }
+
+        .card-expand {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s;
+            color: var(--text-dim);
+            font-size: 18px;
+        }
+
+        .vector-card.open .card-expand {
+            transform: rotate(180deg);
+        }
+
+        .card-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .vector-card.open .card-body {
+            max-height: 3000px;
+        }
+
+        .card-content {
+            padding: 0 28px 28px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            padding: 20px 24px;
+            background: rgba(59, 130, 246, 0.06);
+            border-left: 4px solid var(--accent);
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 20px;
+        }
+
+        .definition-box .label {
+            font-size: 0.8em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .definition-box p {
+            font-size: 1em;
+            line-height: 1.9;
+        }
+
+        /* Example Box */
+        .example-box {
+            padding: 16px 20px;
+            background: rgba(16, 185, 129, 0.06);
+            border-left: 4px solid var(--success);
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 20px;
+        }
+
+        .example-box .label {
+            font-size: 0.8em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--success);
+            margin-bottom: 6px;
+        }
+
+        /* Key Point */
+        .key-point {
+            padding: 16px 20px;
+            background: rgba(245, 158, 11, 0.06);
+            border-left: 4px solid var(--warning);
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 20px;
+        }
+
+        .key-point .label {
+            font-size: 0.8em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--warning);
+            margin-bottom: 6px;
+        }
+
+        /* Formula */
+        .formula-box {
+            display: inline-block;
+            padding: 12px 24px;
+            background: rgba(139, 92, 246, 0.08);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 12px;
+            font-size: 1.2em;
+            font-weight: 500;
+            margin: 10px 0;
+            color: var(--accent2);
+        }
+
+        /* Animation Canvas */
+        .animation-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin: 20px auto;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .animation-container canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .anim-label {
+            text-align: center;
+            padding: 10px;
+            font-size: 0.85em;
+            color: var(--text-dim);
+        }
+
+        .play-btn {
+            position: absolute;
+            bottom: 50px;
+            right: 16px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: none;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(59,130,246,0.4);
+            transition: transform 0.2s;
+            z-index: 5;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Mega Chart */
+        .mega-chart {
+            max-width: 1100px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .mega-chart h2 {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+        }
+
+        .chart-item {
+            padding: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            transition: all 0.3s;
+        }
+
+        .chart-item:hover {
+            border-color: rgba(59,130,246,0.3);
+            transform: translateY(-2px);
+        }
+
+        .chart-item .ci-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .chart-item .ci-title {
+            font-weight: 600;
+            font-size: 1.05em;
+            color: var(--text-bright);
+            margin-bottom: 6px;
+        }
+
+        .chart-item .ci-def {
+            font-size: 0.9em;
+            color: var(--text-dim);
+            line-height: 1.7;
+        }
+
+        .chart-item .ci-symbol {
+            margin-top: 10px;
+            padding: 6px 14px;
+            background: rgba(139,92,246,0.1);
+            border-radius: 8px;
+            display: inline-block;
+            font-size: 0.9em;
+            color: var(--accent2);
+        }
+
+        /* Tips Section */
+        .memory-tips {
+            max-width: 1100px;
+            margin: 40px auto 60px;
+            padding: 0 20px;
+        }
+
+        .tip-card {
+            padding: 24px 28px;
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.06), rgba(139, 92, 246, 0.06));
+            border: 1px solid rgba(236, 72, 153, 0.15);
+            border-radius: 16px;
+            margin-bottom: 16px;
+        }
+
+        .tip-card h4 {
+            color: var(--accent7);
+            margin-bottom: 8px;
+            font-size: 1.05em;
+        }
+
+        .tip-card p {
+            color: var(--text-dim);
+            line-height: 1.8;
+        }
+
+        /* Scroll to top */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: white;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(59,130,246,0.4);
+            z-index: 999;
+            transition: transform 0.2s;
+        }
+
+        .scroll-top:hover { transform: scale(1.1); }
+        .scroll-top.show { display: flex; }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid var(--card-border);
+            color: var(--text-dim);
+            font-size: 0.9em;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .hero h1 { font-size: 1.8em; }
+            .card-header { padding: 18px 20px; gap: 12px; }
+            .card-content { padding: 0 20px 20px; }
+            .category-header { padding: 16px 20px; flex-direction: column; text-align: center; }
+            .chart-grid { grid-template-columns: 1fr; }
+            .lang-toggle { top: 10px; right: 10px; }
+            .lang-btn { padding: 8px 14px; font-size: 12px; }
+        }
+
+        /* arrow-vector svg styling */
+        .vec-arrow { stroke-width: 2.5; fill: none; }
+        .vec-head { fill: currentColor; }
+
+        /* Mnemonic highlight */
+        .mn-highlight {
+            color: var(--accent5);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Language Toggle -->
+<div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('bn')">বাংলা</button>
+    <button class="lang-btn" onclick="setLang('en')">English</button>
+</div>
+
+<!-- Scroll to Top -->
+<button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- Hero -->
+<section class="hero">
+    <h1>
+        <span class="bn">কতিপয় ভেক্টর</span>
+        <span class="en">Types of Vectors</span>
+    </h1>
+    <p class="subtitle">
+        <span class="bn">HSC পদার্থবিজ্ঞান — প্রথম পত্র — অধ্যায় ২</span>
+        <span class="en">HSC Physics — Paper 1 — Chapter 2</span>
+    </p>
+    <div class="chapter-info">
+        <span class="bn">পর্ব ২.৪ — মোট ১৬ প্রকার ভেক্টর</span>
+        <span class="en">Section 2.4 — Total 16 Types of Vectors</span>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--    CATEGORY 1: POSITION/FREEDOM BASED        -->
+<!-- ============================================ -->
+<section class="category-section">
+    <div class="category-header">
+        <div class="category-icon" style="background:rgba(59,130,246,0.15); color:var(--accent);">📍</div>
+        <div>
+            <h2>
+                <span class="bn">ক. অবস্থান ও স্বাধীনতা ভিত্তিক ভেক্টর</span>
+                <span class="en">A. Position & Freedom Based Vectors</span>
+            </h2>
+            <p>
+                <span class="bn">ভেক্টরের পাদবিন্দু কোথায় — সেটা কি ইচ্ছেমতো বসানো যায়?</span>
+                <span class="en">Where is the tail of the vector — can it be placed anywhere?</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- 1. Free Vector -->
+    <div class="vector-card" id="card1">
+        <div class="card-header" onclick="toggleCard('card1')">
+            <div class="card-number" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">১</div>
+            <div class="card-title-area">
+                <div class="card-title">
+                    <span class="bn">স্বাধীন ভেক্টর</span>
+                    <span class="en">Free Vector</span>
+                </div>
+                <div class="card-title-en">Free Vector</div>
+            </div>
+            <div class="card-expand">▼</div>
+        </div>
+        <div class="card-body">
+            <div class="card-content">
+                <div class="definition-box">
+                    <div class="label">
+                        <span class="bn">🔖 সংজ্ঞা</span>
+                        <span class="en">🔖 Definition</span>
+                    </div>
+                    <p>
+                        <span class="bn">কোনো ভেক্টর রাশির <strong>পাদবিন্দু</strong> (tail) কোথায় হবে তা যদি <strong>ইচ্ছেমতো পছন্দ</strong> করা যায়, তবে সেই ভেক্টরকে <strong>স্বাধীন ভেক্টর</strong> বলে।</span>
+                        <span class="en">If the <strong>tail point</strong> of a vector can be <strong>chosen freely</strong> (placed anywhere), then that vector is called a <strong>Free Vector</strong>.</span>
+                    </p>
+                </div>
+                <div class="example-box">
+                    <div class="label">
+                        <span class="bn">💡 উদাহরণ</span>
+                        <span class="en">💡 Example</span>
+                    </div>
+                    <p>
+                        <span class="bn">5 N মানের পূর্বমুখী বল — এটা যেকোনো জায়গা থেকে আঁকলেও একই ভেক্টর বোঝায়। পাদবিন্দু যেখানেই হোক, মান ও দিক একই থাকলেই হলো।</span>
+                        <span class="en">A 5 N eastward force — no matter where you draw it from, it represents the same vector. As long as the magnitude and direction are the same, the tail can be anywhere.</span>
+                    </p>
+                </div>
+                <div class="key-point">
+                    <div class="label">
+                        <span class="bn">🧠 মনে রাখো</span>
+                        <span class="en">🧠 Remember</span>
+                    </div>
+                    <p>
+                        <span class="bn"><strong>স্বাধীন</strong> = মুক্ত = পাদবিন্দু <strong>যেকোনো জায়গায়</strong> বসাতে পারো। ভেক্টরকে শুধু "সরিয়ে" (translate) নিয়ে গেলে একই ভেক্টর থাকে।</span>
+                        <span class="en"><strong>Free</strong> = the tail can be placed <strong>anywhere</strong>. If you "translate" (slide) the vector, it remains the same vector.</span>
+                    </p>
+                </div>
+                <div class="animation-container" id="anim-free">
+                    <canvas id="canvas-free" width="500" height="250"></canvas>
+                    <button class="play-btn" onclick="restartAnim('free')" title="Replay">▶</button>
+                    <div class="anim-label">
+                        <span class="bn">▲ দুটি ভেক্টর একই মান ও দিক — পাদবিন্দু ভিন্ন — তবুও সমান (স্বাধীন ভেক্টর)</span>
+                        <span class="en">▲ Two vectors same magnitude & direction — different tails — still equal (Free Vectors)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Localized Vector -->
+    <div class="vector-card" id="card2">
+        <div class="card-header" onclick="toggleCard('card2')">
+            <div class="card-number" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">২</div>
+            <div class="card-title-area">
+                <div class="card-title">
+                    <span class="bn">সীমাবদ্ধ ভেক্টর</span>
+                    <span class="en">Localized Vector</span>
+                </div>
+                <div class="card-title-en">Localized Vector</div>
+            </div>
+            <div class="card-expand">▼</div>
+        </div>
+        <div class="card-body">
+            <div class="card-content">
+                <div class="definition-box">
+                    <div class="label">
+                        <span class="bn">🔖 সংজ্ঞা</span>
+                        <span class="en">🔖 Definition</span>
+                    </div>
+                    <p>
+                        <span class="bn">কোনো ভেক্টরের পাদবিন্দু যদি <strong>ইচ্ছেমতো পছন্দ করতে দেওয়া না হয়</strong> অর্থাৎ একটি <strong>নির্দিষ্ট বিন্দুকে</strong> পাদবিন্দু হিসেবে ঠিক করে রাখা হয়, তাহলে সেই ভেক্টরকে <strong>সীমাবদ্ধ ভেক্টর</strong> বলে।</span>
+                        <span class="en">If the tail of a vector <strong>cannot be placed freely</strong> — it must start from a <strong>specific fixed point</strong> — then that vector is called a <strong>Localized Vector</strong>.</span>
+                    </p>
+                </div>
+                <div class="example-box">
+                    <div class="label">
+                        <span class="bn">💡 উদাহরণ</span>
+                        <span class="en">💡 Example</span>
+                    </div>
+                    <p>
+                        <span class="bn"><strong>অবস্থান ভেক্টর</strong> সবসময় মূলবিন্দু (O) থেকে শুরু হয়। লন রোলারকে টানার বল সবসময় হাতলের নির্দিষ্ট বিন্দু থেকে আঁকতে হয়।</span>
+                        <span class="en"><strong>Position vector</strong> always starts from origin (O). The pulling force on a lawn roller must be drawn from the specific point on the handle.</span>
+                    </p>
+                </div>
+                <div class="key-point">
+                    <div class="label">
+                        <span class="bn">🧠 মনে রাখো</span>
+                        <span class="en">🧠 Remember</span>
+                    </div>
+                    <p>
+                        <span class="bn"><strong>সীমাবদ্ধ</strong> = বাঁধা = পাদবিন্দু <strong>নির্দিষ্ট</strong>। "Localized" মানে "স্থান-নির্দিষ্ট"।<br>
+                        🔗 স্বাধীন ভেক্টরের ঠিক <strong>বিপরীত</strong> ধারণা।</span>
+                        <span class="en"><strong>Localized</strong> = fixed = tail is at a <strong>specific point</strong>.<br>
+                        🔗 Exact <strong>opposite</strong> concept of Free Vector.</span>
+                    </p>
+                </div>
+                <div class="animation-container" id="anim-localized">
+                    <canvas id="canvas-localized" width="500" height="280"></canvas>
+                    <button class="play-btn" onclick="restartAnim('localized')" title="Replay">▶</button>
+                    <div class="anim-label">
+                        <span class="bn">▲ অবস্থান ভেক্টর — সবসময় O থেকে শুরু (সরানো যায় না)</span>
+                        <span class="en">▲ Position vector — always starts from O (cannot be moved)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--    CATEGORY 2: DIRECTION BASED               -->
+<!-- ============================================ -->
+<section class="category-section">
+    <div class="category-header">
+        <div class="category-icon" style="background:rgba(16,185,129,0.15); color:var(--accent4);">🧭</div>
+        <div>
+            <h2>
+                <span class="bn">খ. দিক ভিত্তিক ভেক্টর</span>
+                <span class="en">B. Direction Based Vectors</span>
+            </h2>
+            <p>
+                <span class="bn">ভেক্টরগুলো কোন দিকে দেখাচ্ছে — একই দিকে, বিপরীত দিকে, নাকি অন্যভাবে?</span>
+                <span class="en">Which direction are the vectors pointing — same, opposite, or otherwise?</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- 3. Like Vectors -->
+    <div class="vector-card" id="card3">
+        <div class="card-header" onclick="toggleCard('card3')">
+            <div class="card-number" style="background: linear-gradient(135deg, #10b981, #059669);">৩</div>
+            <div class="card-title-area">
+                <div class="card-title">
+                    <span class="bn">সদৃশ ভেক্টর</span>
+                    <span class="en">Like Vectors</span>
+                </div>
+                <div class="card-title-en">Like / Parallel Vectors</div>
+            </div>
+            <div class="card-expand">▼</div>
+        </div>
+        <div class="card-body">
+            <div class="card-content">
+                <div class="definition-box">
+                    <div class="label">
+                        <span class="bn">🔖 সংজ্ঞা</span>
+                        <span class="en">🔖 Definition</span>
+                    </div>
+                    <p>
+                        <span class="bn">সমজাতীয় দুই বা ততোধিক ভেক্টর যদি <strong>একই দিকে</strong> ক্রিয়া করে, তবে তাদেরকে <strong>সদৃশ ভেক্টর</strong> বা <strong>সমান্তরাল ভেক্টর</strong> বলে।</span>
+                        <span class="en">If two or more vectors of the <strong>same type</strong> act in the <strong>same direction</strong>, they are called <strong>Like Vectors</strong> or <strong>Parallel Vectors</strong>.</span>
+                    </p>
+                </div>
+                <div class="key-point">
+                    <div class="label">
+                        <span class="bn">🧠 মনে রাখো</span>
+                        <span class="en">🧠 Remember</span>
+                    </div>
+                    <p>
+                        <span class="bn"><strong>সদৃশ</strong> = "দেখতে একই রকম দিক" = একই দিকে তীর। মান ভিন্ন হতে পারে, কিন্তু <strong>দিক অবশ্যই একই</strong>।</span>
+                        <span class="en"><strong>Like</strong> = same direction arrows. Magnitudes can differ, but <strong>direction must be the same</strong>.</span>
+                    </p>
+                </div>
+                <div class="animation-container" id="anim-like">
+                    <canvas id="canvas-like" width="500" height="200"></canvas>
+                    <button class="play-btn" onclick="restartAnim('like')" title="Replay">▶</button>
+                    <div class="anim-label">
+                        <span class="bn">▲ A⃗ ও B⃗ — ভিন্ন মান, কিন্তু একই দিক = সদৃশ ভেক্টর</span>
+                        <span class="en">▲ A⃗ & B⃗ — different magnitudes, same direction = Like Vectors</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Unlike Vectors -->
+    <div class="vector-card" id="card4">
+        <div class="card-header" onclick="toggleCard('card4')">
+            <div class="card-number" style="background: linear-gradient(135deg, #ef4444, #dc2626);">৪</div>
+            <div class="card-title-area">
+                <div class="card-title">
+                    <span class="bn">বিসদৃশ ভেক্টর</span>
+                    <span class="en">Unlike Vectors</span>
+                </div>
+                <div class="card-title-en">Unlike Vectors</div>
+            </div>
+            <div class="card-expand">▼</div>
+        </div>
+        <div class="card-body">
+            <div class="card-content">
+                <div class="definition-box">
+                    <div class="label">
+                        <span class="bn">🔖 সংজ্ঞা</span>
+                        <span class="en">🔖 Definition</span>
+                    </div>
+                    <p>
+                        <span class="bn">সমজাতীয় দুটি ভেক্টর যদি <strong>বিপরীত দিকে</strong> ক্রিয়া করে, তবে তাদেরকে <strong>বিসদৃশ ভেক্টর</strong> বলে।</span>
+                        <span class="en">If two vectors of the <strong>same type</strong> act in <strong>opposite directions</strong>, they are called <strong>Unlike Vectors</strong>.</span>
+                    </p>
+                </div>
+                <div class="key-point">
+                    <div class="label">
+                        <span class="bn">🧠 মনে রাখো</span>
+                        <span class="en">🧠 Remember</span>
+                    </div>
+                    <p>
+                        <span class="bn"><strong>বিসদৃশ</strong> = বিপরীত দিকে তীর। সদৃশের ঠিক <strong>উল্টো</strong>। তবে দুটোই <strong>সমান্তরাল</strong> (একই রেখা বরাবর বা সমান্তরাল রেখায়), শুধু দিক উল্টো।</span>
+                        <span class="en"><strong>Unlike</strong> = arrows point in opposite directions. Exact <strong>opposite</strong> of Like Vectors. Both are still parallel, just opposite in direction.</span>
+                    </p>
+                </div>
+                <div class="animation-container" id="anim-unlike">
+                    <canvas id="canvas-unlike" width="500" height="200"></canvas>
+                    <button class="play-btn" onclick="restartAnim('unlike')" title="Replay">▶</button>
+                    <div class="anim-label">
+                        <span class="bn">▲ A⃗ ও B⃗ — বিপরীত দিক = বিসদৃশ ভেক্টর</span>
+                        <span class="en">▲ A⃗ & B⃗ — opposite directions = Unlike Vectors</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. Collinear Vectors -->
+    <div class="vector-card" id="card7">
+        <div class="card-header" onclick="toggleCard('card7')">
+            <div class="card-number" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">৭</div>
+            <div class="card-title-area">
+                <div class="card-title">
+                    <span class="bn">সমরেখ ভেক্টর</span>
+                    <span class="en">Collinear Vectors</span>
+                </div>
+                <div class="card-title-en">Collinear Vectors</div>
+            </div>
+            <div class="card-expand">▼</div>
+        </div>
+        <div class="card-body">
+            <div class="card-content">
+                <div class="definition-box">
+                    <div class="label">
+                        <span class="bn">🔖 সংজ্ঞা</span>
+                        <span class="en">🔖 Definition</span>
+                    </div>
+                    <p>
+                        <span class="bn">দুই বা ততোধিক ভেক্টর যদি <strong>একই সরলরেখা বরাবর</strong> বা <strong>পরস্পর সমান্তরালে</strong> ক্রিয়া করে, তবে তাদেরকে <strong>সমরেখ ভেক্টর</strong> বলে।</span>
+                        <span class="en">If two or more vectors act <strong>along the same straight line</strong> or are <strong>parallel to each other</strong>, they are called <strong>Collinear Vectors</strong>.</span>
+                    </p>
+                </div>
+                <div class="key-point">
+                    <div class="label">
+                        <span class="bn">🧠 মনে রাখো</span>
+                        <span class="en">🧠 Remember</span>
+                    </div>
+                    <p>
+                        <span class="bn">"Co-linear" = "একই রেখায়"। সদৃশ ও বিসদৃশ ভেক্টর — দুটোই সমরেখ ভেক্টরের <strong>বিশেষ ক্ষেত্র</strong>। সমরেখ ভেক্টর একই দিকে বা বিপরীত দিকে — দুটোই হতে পারে।</span>
+                        <span class="en">"Co-linear" = "on the same line". Both Like and Unlike vectors are <strong>special cases</strong> of Collinear Vectors. They can be in the same or opposite directions.</span>
+                    </p>
+                </div>
+                <div class="animation-container" id="anim-collinear">
+                    <canvas id="canvas-collinear" width="500" height="220"></canvas>
+                    <button class="play-btn" onclick="restartAnim('collinear')" title="Replay">▶</button>
+                    <div class="anim-label">
+                        <span class="bn">▲ A⃗, B⃗, C⃗ — একই রেখায় বা সমান্তরালে = সমরেখ ভেক্টর</span>
+                        <span class="en">▲ A⃗, B⃗, C⃗ — on same line or parallel = Collinear Vectors</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 8. Coplanar Vectors -->
+    <div class="vector-card" id="card8">
+        <div class="card-header" onclick="toggleCard('card8')">
+            <div class="card-number" style="background: linear-gradient(135deg, #f59e0b, #d97706);">৮</div>
+            <div class="card-title-area">
+                <div class="card-title">
+                    <span class="bn">সমতলীয় ভেক্টর</span>
+                    <span class="en">Coplanar Vectors</span>
+                </div>
+                <div class="card-title-en">Coplanar Vectors</div>
+            </div>
+            <div class="card-expand">▼</div>
+        </div>
+        <div class="card-body">
+            <div class="card-content">
+                <div class="definition-box">
+                    <div class="label">
+                        <span class="bn">🔖 সংজ্ঞা</span>
+                        <span class="en">🔖 Definition</span>
+                    </div>
+                    <p>
+                        <span class="bn">দুই বা ততোধিক ভেক্টর যদি <strong>একই সমতলে</strong> অবস্থিত হয়, তবে তাদেরকে <strong>সমতলীয় ভেক্টর</strong> বলে।</span>
+                        <span class="en">If two or more vectors lie on the <strong>same plane</strong>, they are called <strong>Coplanar Vectors</strong>.</span>
+                    </p>
+                </div>
+                <div class="key-point">
+                    <div class="label">
+                        <span class="bn">🧠 মনে রাখো</span>
+                        <span class="en">🧠 Remember</span>
+                    </div>
+                    <p>
+                        <span class="bn">"Co-planar" = "একই plane-এ"। যেকোনো দুটি ভেক্টর <strong>সবসময়ই সমতলীয়</strong> (কারণ দুটি সরলরেখা দিয়ে সবসময় একটি সমতল তৈরি করা যায়)। তিন বা ততোধিক ভেক্টরের ক্ষেত্রে প্রশ্ন আসে — এরা একই সমতলে আছে কিনা।</span>
+                        <span class="en">"Co-planar" = "on the same plane". Any two vectors are <strong>always coplanar</strong>. The question arises for three or more vectors — whether they all lie on the same plane.</span>
+                    </p>
+                </div>
+                <div class="animation-container" id="anim-coplanar">
+                    <canvas id="canvas-coplanar" width="500" height="250"></canvas>
+                    <button class="play-btn" onclick="restartAnim('coplanar')" title="Replay">▶</button>
+                    <div class="anim-label">
+                        <span class="bn">▲ A⃗, B⃗, C⃗ — একই সমতলে বিভিন্ন দিকে = সমতলীয় ভেক্টর</span>
+                        <span class="en">▲ A⃗, B⃗, C⃗ — different directions on same plane = Coplanar Vectors</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--    CATEGORY 3: MAGNITUDE BASED               -->
+<!-- ============================================ -->
+<section class="category-section">
+    <div class="category-header">
+        <div class="category-icon" style="background:rgba(139,92,246,0.15); color:var(--accent2);">📏</div>
+        <div>
+            <h2>
+                <span class="bn">গ. মান ভিত্তিক ভেক্টর</span>
+                <span class="en">C. Magnitude Based Vectors</span>
+            </h2>
+            <p>
+                <span class="bn">ভেক্টরের মান (সংখ্যাগত মান) কত — সমান, একক, শূন্য, নাকি বিপরীত সংখ্যা?</span>
+                <span class="en">What is the magnitude — equal, unit, zero, or reciprocal?</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- 5. Equal Vectors -->
+    <div class="vector-card" id="card5">
+        <div class="card-header" onclick="toggleCard('card5')">
+            <div class="card-number" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">৫</div>
+            <div class="card-title-area">
+                <div class="card-title">
+                    <span class="bn">সমান ভেক্টর</span>
+                    <span class="en">Equal Vectors</span>
+                </div>
+                <div class="card-title-en">Equal Vectors</div>
+            </div>
+            <div class="card-expand">▼</div>
+        </div>
+        <div class="card-body">
+            <div class="card-content">
+                <div class="definition-box">
+                    <div class="label">
+                        <span class="bn">🔖 সংজ্ঞা</span>
+                        <span class="en">🔖 Definition</span>
+                    </div>
+                    <p>
+                        <span class="bn">সমজাতীয় দুটি ভেক্টরের <strong>মান যদি সমান</strong> হয় আর তাদের <strong>দিক যদি একই</strong> দিকে হয়, তবে তাদেরকে <strong>সমান ভেক্টর</strong> বলে।</span>
+                        <span class="en">If two vectors of the same type have <strong>equal magnitudes</strong> and the <strong>same direction</strong>, they are called <strong>Equal Vectors</strong>.</span>
+                    </p>
+                </div>
+                <div class="formula-box">A⃗ = B⃗ ⟹ |A⃗| = |B⃗| এবং দিক একই</div>
+                <div class="key-point">
+                    <div class="label">
+                        <span class="bn">🧠 মনে রাখো</span>
+                        <span class="en">🧠 Remember</span>
+                    </div>
+                    <p>
+                        <span class="bn">সমান ভেক্টর হতে হলে <strong>দুটি শর্ত</strong> পূরণ করতে হবে: ① মান সমান ② দিক একই।<br>পাদবিন্দু কোথায় তা <strong>গুরুত্বপূর্ণ নয়</strong>।<br>
+                        🔗 সদৃশ ভেক্টরের সাথে পার্থক্য: সদৃশে শুধু দিক একই হলেই হয়, মান সমান না হলেও চলে।</span>
+                        <span class="en">For Equal Vectors, <strong>two conditions</strong>: ① Same magnitude ② Same direction.<br>Tail position <strong>doesn't matter</strong>.<br>
+                        🔗 Unlike Like Vectors, Equal Vectors require BOTH magnitude AND direction to match.</span>
+                    </p>
+                </div>
+                <div class="animation-container" id="anim-equal">
+                    <canvas id="canvas-equal" width="500" height="200"></canvas>
+                    <button class="play-btn" onclick="restartAnim('equal')" title="Replay">▶</button>
+                    <div class="anim-label">
+                        <span class="bn">▲ A⃗ = B⃗ — সমান দৈর্ঘ্য, সমান দিক, ভিন্ন পাদবিন্দু</span>
+                        <span class="en">▲ A⃗ = B⃗ — same length, same direction, different tails</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. Negative Vector -->
+    <div class="vector-card" id="card6">
+        <div class="card-header" onclick="toggleCard('card6')">
+            <div class="card-number" style="background: linear-gradient(135deg, #ef4444, #dc2626);">৬</div>
+            <div class="card-title-area">
+                <div class="card-title">
+                    <span class="bn">ঋণাত্মক / বিপরীত ভেক্টর</span>
+                    <span class="en">Negative Vector</span>
+                </div>
+                <div class="card-title-en">Negative Vector</div>
+            </div>
+            <div class="card-expand">▼</div>
+        </div>
+        <div class="card-body">
+            <div class="card-content">
+                <div class="definition-box">
+                    <div class="label">
+                        <span class="bn">🔖 সংজ্ঞা</span>
+                        <span class="en">🔖 Definition</span>
+                    </div>
+                    <p>
+                        <span class="bn">নির্দিষ্ট দিক বরাবর কোনো ভেক্টরকে ধনাত্মক ধরলে, তার <strong>বিপরীত দিকে সমমানের</strong> সমজাতীয় ভেক্টরকে <strong>ঋণাত্মক ভেক্টর</strong> বা <strong>বিপরীত ভেক্টর</strong> বলে।</span>
+                        <span class="en">If a vector in a certain direction is taken as positive, then a vector of the <strong>same magnitude in the opposite direction</strong> is called a <strong>Negative Vector</strong>.</span>
+                    </p>
+                </div>
+                <div class="formula-box">PQ⃗ = A⃗ হলে, QP⃗ = −A⃗</div>
+                <div class="key-point">
+                    <div class="label">
+                        <span class="bn">🧠 মনে রাখো</span>
+                        <span class="en">🧠 Remember</span>
+                    </div>
+                    <p>
+                        <span class="bn">ঋণাত্মক ভেক্টর = <strong>তীর ঘুরিয়ে দাও</strong>! মান একই, শুধু দিক উল্টো। P→Q ধনাত্মক হলে Q→P ঋণাত্মক।</span>
+                        <span class="en">Negative vector = <strong>flip the arrow</strong>! Same magnitude, opposite direction. If P→Q is positive, Q→P is negative.</span>
+                    </p>
+                </div>
+                <div class="animation-container" id="anim-negative">
+                    <canvas id="canvas-negative" width="500" height="200"></canvas>
+                    <button class="play-btn" onclick="restartAnim('negative')" title="Replay">▶</button>
+                    <div class="anim-label">
+                        <span class="bn">▲ A⃗ ও −A⃗ — সমান মান, বিপরীত দিক</span>
+                        <span class="en">▲ A⃗ and −A⃗ — same magnitude, opposite direction</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 9. Proper Vector -->
+    <div class="vector-card" id="card9">
+        <div class="card-header" onclick="toggleCard('card9')">
+            <div class="card-number" style="background: linear-gradient(135deg, #10b981, #059669);">৯</div>
+            <div class="card-title-area">
+                <div class="card-title">
+                    <span class="bn">সঠিক ভেক্টর</span>
+                    <span class="en">Proper Vector</span>
+                </div>
+                <div class="card-title-en">Proper Vector</div>
+            </div>
+            <div class="card-expand">▼</div>
+        </div>
+        <div class="card-body">
+            <div class="card-content">
+                <div class="definition-box">
+                    <div class="label">
+                        <span class="bn">🔖 সংজ্ঞা</span>
+                        <span class="en">🔖 Definition</span>
+                    </div>
+                    <p>
+                        <span class="bn">যে সকল ভেক্টরের <strong>মান শূন্য নয়</strong> তাদেরকে <strong>সঠিক ভেক্টর</strong> বলে।</span>
+                        <span class="en">Vectors whose <strong>magnitude is not zero</strong> are called <strong>Proper Vectors</strong>.</span>
+                    </p>
+                </div>
+                <div class="key-point">
+                    <div class="label">
+                        <span class="bn">🧠 মনে রাখো</span>
+                        <span class="en">🧠 Remember</span>
+                    </div>
+                    <p>
+                        <span class="bn">সহজ! মান ≠ 0 হলেই সঠিক ভেক্টর। আমরা সাধারণত যে সব ভেক্টর নিয়ে কাজ করি, প্রায় সবই সঠিক ভেক্টর। নাল ভেক্টর ছাড়া <strong>বাকি সব</strong> সঠিক ভেক্টর।</span>
+                        <span class="en">Simple! If magnitude ≠ 0, it's a Proper Vector. Almost all vectors we deal with are Proper Vectors. <strong>Everything except</strong> the Null Vector is a Proper Vector.</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 10. Null Vector -->
+    <div class="vector-card" id="card10">
+        <div class="card-header" onclick="toggleCard('card10')">
+            <div class="card-number" style="background: linear-gradient(135deg, #6b7280, #4b5563);">১০</div>
+            <div class="card-title-area">
+                <div class="card-title">
+                    <span class="bn">নাল / শূন্য ভেক্টর</span>
+                    <span class="en">Null / Zero Vector</span>
+                </div>
+                <div class="card-title-en">Null Vector / Zero Vector</div>
+            </div>
+            <div class="card-expand">▼</div>
+        </div>
+        <div class="card-body">
+            <div class="card-content">
+                <div class="definition-box">
+                    <div class="label">
+                        <span class="bn">🔖 সংজ্ঞা</span>
+                        <span class="en">🔖 Definition</span>
+                    </div>
+                    <p>
+                        <span class="bn">যে ভেক্টরের <strong>মান শূন্য</strong> তাকে <strong>নাল ভেক্টর</strong> বা <strong>শূন্য ভেক্টর</strong> বলে।</span>
+                        <span class="en">A vector whose <strong>magnitude is zero</strong> is called a <strong>Null Vector</strong> or <strong>Zero Vector</strong>.</span>
+                    </p>
+                </div>
+                <div class="formula-box">A⃗ + (−A⃗) = 0⃗</div>
+                <div class="key-point">
+                    <div class="label">
+                        <span class="bn">🧠 মনে রাখো</span>
+                        <span class="en">🧠 Remember</span>
+                    </div>
+                    <p>
+                        <span class="bn">
+                        ✦ পাদবিন্দু ও শীর্ষবিন্দু <strong>একই বিন্দুতে</strong> — অর্থাৎ ভেক্টরটি একটি "বিন্দু"।<br>
+                        ✦ নাল ভেক্টরের কোনো <strong>সুনির্দিষ্ট দিক নেই</strong>।<br>
+                        ✦ একটি ভেক্টরের সাথে তার ঋণাত্মক ভেক্টর যোগ করলে নাল ভেক্টর পাওয়া যায়।<br>
+                        ✦ সংকেত: <strong>0⃗</strong></span>
+                        <span class="en">
+                        ✦ Tail and head at the <strong>same point</strong> — essentially a "dot".<br>
+                        ✦ Null vector has <strong>no definite direction</strong>.<br>
+                        ✦ Adding a vector to its negative gives the null vector.<br>
+                        ✦ Symbol: <strong>0⃗</strong></span>
+                    </p>
+                </div>
+                <div class="animation-container" id="anim-null">
+                    <canvas id="canvas-null" width="500" height="200"></canvas>
+                    <button class="play-btn" onclick="restartAnim('null')" title="Replay">▶</button>
+                    <div class="anim-label">
+                        <span class="bn">▲ A⃗ + (−A⃗) = 0⃗ — ভেক্টর ও তার বিপরীত যোগ করলে শূন্য হয়</span>
+                        <span class="en">▲ A⃗ + (−A⃗) = 0⃗ — a vector plus its negative equals zero</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 11. Unit Vector -->
+    <div class="vector-card" id="card11">
+        <div class="card-header" onclick="toggleCard('card11')">
+            <div class="card-number" style="background: linear-gradient(135deg, #f59e0b, #d97706);">১১</div>
+            <div class="card-title-area">
+                <div class="card-title">
+                    <span class="bn">একক ভেক্টর</span>
+                    <span class="en">Unit Vector</span>
+                </div>
+                <div class="card-title-en">Unit Vector</div>
+            </div>
+            <div class="card-expand">▼</div>
+        </div>
+        <div class="card-body">
+            <div class="card-content">
+                <div class="definition-box">
+                    <div class="label">
+                        <span class="bn">🔖 সংজ্ঞা</span>
+                        <span class="en">🔖 Definition</span>
+                    </div>
+                    <p>
+                        <span class="bn">কোনো ভেক্টরের <strong>মান যদি একক (1)</strong> হয়, তাহলে তাকে <strong>একক ভেক্টর</strong> বলে।</span>
+                        <span class="en">If the <strong>magnitude of a vector is unity (1)</strong>, it is called a <strong>Unit Vector</strong>.</span>
+                    </p>
+                </div>
+                <div class="formula-box">â = A⃗ / |A⃗| &nbsp;&nbsp; (যেখানে |A⃗| ≠ 0)</div>
+                <div class="example-box">
+                    <div class="label">
+                        <span class="bn">💡 উদাহরণ</span>
+                        <span class="en">💡 Example</span>
+                    </div>
+                    <p>
+                        <span class="bn">A⃗ = 5â হলে, â হলো A⃗ এর দিকে একক ভেক্টর। â এর মান 1, দিক A⃗ এর দিকে।</span>
+                        <span class="en">If A⃗ = 5â, then â is the unit vector in the direction of A⃗. |â| = 1, direction is along A⃗.</span>
+                    </p>
+                </div>
+                <div class="key-point">
+                    <div class="label">
+                        <span class="bn">🧠 মনে রাখো</span>
+                        <span class="en">🧠 Remember</span>
+                    </div>
+                    <p>
+                        <span class="bn">
+                        ✦ একক ভেক্টর = ভেক্টরকে নিজের মান দিয়ে <strong>ভাগ</strong> করলে পাওয়া যায়।<br>
+                        ✦ সংকেত: অক্ষরের ওপরে <strong>হ্যাট (^)</strong> চিহ্ন: â, î, ĵ, k̂<br>
+                        ✦ শুধু <strong>দিক</strong> নির্দেশ করে, মান সবসময় 1।<br>
+                        ✦ যেকোনো ভেক্টর = মান × একক ভেক্টর → A⃗ = |A⃗| × â
+                        </span>
+                        <span class="en">
+                        ✦ Unit vector = vector <strong>divided</strong> by its own magnitude.<br>
+                        ✦ Symbol: <strong>hat (^)</strong> over the letter: â, î, ĵ, k̂<br>
+                        ✦ Indicates only <strong>direction</strong>, magnitude is always 1.<br>
+                        ✦ Any vector = magnitude × unit vector → A⃗ = |A⃗| × â
+                        </span>
+                    </p>
+                </div>
+                <div class="animation-container" id="anim-unit">
+                    <canvas id="canvas-unit" width="500" height="250"></canvas>
+                    <button class="play-btn" onclick="restartAnim('unit')" title="Replay">▶</button>
+                    <div class="anim-label">
+                        <span class="bn">▲ A⃗ = 5â → â হলো একক ভেক্টর (মান = 1)</span>
+                        <span class="en">▲ A⃗ = 5â → â is the unit vector (magnitude = 1)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 14. Reciprocal Vector -->
+    <div class="vector-card" id="card14">
+        <div class="card-header" onclick="toggleCard('card14')">
+            <div class="card-number" style="background: linear-gradient(135deg, #ec4899, #db2777);">১৪</div>
+            <div class="card-title-area">
+                <div class="card-title">
+                    <span class="bn">বিপ্রতীপ / ব্যতিহার ভেক্টর</span>
+                    <span class="en">Reciprocal Vector</span>
+                </div>
+                <div class="card-title-en">Reciprocal Vector</div>
+            </div>
+            <div class="card-expand">▼</div>
+        </div>
+        <div class="card-body">
+            <div class="card-content">
+                <div class="definition-box">
+                    <div class="label">
+                        <span class="bn">🔖 সংজ্ঞা</span>
+                        <span class="en">🔖 Definition</span>
+                    </div>
+                    <p>
+                        <span class="bn">সমজাতীয় দুটি সমান্তরাল ভেক্টরের একটির মান যদি অপরটির <strong>বিপরীত সংখ্যা (reciprocal)</strong> হয়, তবে তাদেরকে <strong>বিপ্রতীপ</strong> বা <strong>ব্যতিহার ভেক্টর</strong> বলে।</span>
+                        <span class="en">If two parallel vectors of the same type have magnitudes that are <strong>reciprocals</strong> of each other, they are called <strong>Reciprocal Vectors</strong>.</span>
+                    </p>
+                </div>
+                <div class="formula-box">A⃗ = 7î, B⃗ = (1/7)î → A⃗ ও B⃗ বিপ্রতীপ ভেক্টর</div>
+                <div class="key-point">
+                    <div class="label">
+                        <span class="bn">🧠 মনে রাখো</span>
+                        <span class="en">🧠 Remember</span>
+                    </div>
+                    <p>
+                        <span class="bn">"Reciprocal" = "উল্টো সংখ্যা"। |A⃗| × |B⃗| = 1 হলেই বিপ্রতীপ। দুটো <strong>একই দিকে</strong> এবং <strong>সমান্তরাল</strong>।</span>
+                        <span class="en">"Reciprocal" = "inverse number". If |A⃗| × |B⃗| = 1, they are reciprocal. They must be <strong>parallel</strong> and in the <strong>same direction</strong>.</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--    CATEGORY 4: DISPLACEMENT/POSITION BASED   -->
+<!-- ============================================ -->
+<section class="category-section">
+    <div class="category-header">
+        <div class="category-icon" style="background:rgba(239,68,68,0.15); color:var(--danger);">📐</div>
+        <div>
+            <h2>
+                <span class="bn">ঘ. অবস্থান ও সরণ ভিত্তিক ভেক্টর</span>
+                <span class="en">D. Position & Displacement Vectors</span>
+            </h2>
+            <p>
+                <span class="bn">কোথায় আছো, কোথায় গেলে — এই তথ্য জানায় যে ভেক্টরগুলো।</span>
+                <span class="en">Vectors that tell you where you are and where you went.</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- 12. Position Vector -->
+    <div class="vector-card" id="card12">
+        <div class="card-header" onclick="toggleCard('card12')">
+            <div class="card-number" style="background: linear-gradient(135deg, #ef4444, #dc2626);">১২</div>
+            <div class="card-title-area">
+                <div class="card-title">
+                    <span class="bn">অবস্থান ভেক্টর</span>
+                    <span class="en">Position Vector</span>
+                </div>
+                <div class="card-title-en">Position Vector / Radius Vector</div>
+            </div>
+            <div class="card-expand">▼</div>
+        </div>
+        <div class="card-body">
+            <div class="card-content">
+                <div class="definition-box">
+                    <div class="label">
+                        <span class="bn">🔖 সংজ্ঞা</span>
+                        <span class="en">🔖 Definition</span>
+                    </div>
+                    <p>
+                        <span class="bn">প্রসঙ্গ কাঠামোর <strong>মূলবিন্দুর (O) সাপেক্ষে</strong> কোনো বিন্দুর অবস্থান যে ভেক্টর দিয়ে নির্দেশ করা হয়, তাকে ঐ বিন্দুর <strong>অবস্থান ভেক্টর</strong> বলে।</span>
+                        <span class="en">The vector that indicates the position of a point <strong>with respect to the origin (O)</strong> of the reference frame is called the <strong>Position Vector</strong> of that point.</span>
+                    </p>
+                </div>
+                <div class="formula-box">OP⃗ = r⃗ (ব্যাসার্ধ ভেক্টর / radius vector)</div>
+                <div class="key-point">
+                    <div class="label">
+                        <span class="bn">🧠 মনে রাখো</span>
+                        <span class="en">🧠 Remember</span>
+                    </div>
+                    <p>
+                        <span class="bn">
+                        ✦ <strong>সবসময় O থেকে শুরু</strong> — তাই এটি একটি <strong>সীমাবদ্ধ ভেক্টর</strong>ও বটে।<br>
+                        ✦ সংকেত: r⃗ (radius vector ও বলা হয়)।<br>
+                        ✦ 2D তে: r⃗ = xî + yĵ<br>
+                        ✦ 3D তে: r⃗ = xî + yĵ + zk̂
+                        </span>
+                        <span class="en">
+                        ✦ <strong>Always starts from O</strong> — hence it's also a <strong>Localized Vector</strong>.<br>
+                        ✦ Symbol: r⃗ (also called radius vector).<br>
+                        ✦ In 2D: r⃗ = xî + yĵ<br>
+                        ✦ In 3D: r⃗ = xî + yĵ + zk̂
+                        </span>
+                    </p>
+                </div>
+                <div class="animation-container" id="anim-position">
+                    <canvas id="canvas-position" width="500" height="300"></canvas>
+                    <button class="play-btn" onclick="restartAnim('position')" title="Replay">▶</button>
+                    <div class="anim-label">
+                        <span class="bn">▲ O থেকে P পর্যন্ত = অবস্থান ভেক্টর r⃗</span>
+                        <span class="en">▲ From O to P = position vector r⃗</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 13. Displacement Vector -->
+    <div class="vector-card" id="card13">
+        <div class="card-header" onclick="toggleCard('card13')">
+            <div class="card-number" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">১৩</div>
+            <div class="card-title-area">
+                <div class="card-title">
+                    <span class="bn">সরণ ভেক্টর</span>
+                    <span class="en">Displacement Vector</span>
+                </div>
+                <div class="card-title-en">Displacement Vector</div>
+            </div>
+            <div class="card-expand">▼</div>
+        </div>
+        <div class="card-body">
+            <div class="card-content">
+                <div class="definition-box">
+                    <div class="label">
+                        <span class="bn">🔖 সংজ্ঞা</span>
+                        <span class="en">🔖 Definition</span>
+                    </div>
+                    <p>
+                        <span class="bn">কোনো বস্তুর <strong>অবস্থান ভেক্টরের পরিবর্তনকে</strong> সরণ ভেক্টর বলে। শেষ অবস্থান ভেক্টর থেকে আদি অবস্থান ভেক্টর বিয়োগ করলে সরণ ভেক্টর পাওয়া যায়।</span>
+                        <span class="en">The <strong>change in position vector</strong> of an object is called the Displacement Vector. It equals the final position vector minus the initial position vector.</span>
+                    </p>
+                </div>
+                <div class="formula-box">Δr⃗ = r⃗<sub>f</sub> − r⃗<sub>i</sub></div>
+                <div class="key-point">
+                    <div class="label">
+                        <span class="bn">🧠 মনে রাখো</span>
+                        <span class="en">🧠 Remember</span>
+                    </div>
+                    <p>
+                        <span class="bn">
+                        ✦ সরণ = <strong>শেষ − আদি</strong> (final − initial)।<br>
+                        ✦ এটি পথের দৈর্ঘ্য নয়, বরং <strong>আদি থেকে শেষ বিন্দু পর্যন্ত সোজা দূরত্ব ও দিক</strong>।<br>
+                        ✦ সরণ ভেক্টর দিয়ে ত্রিভুজ তৈরি হয়: r⃗<sub>i</sub>, r⃗<sub>f</sub>, এবং Δr⃗
+                        </span>
+                        <span class="en">
+                        ✦ Displacement = <strong>final − initial</strong>.<br>
+                        ✦ Not path length — it's the <strong>straight-line distance and direction</strong> from start to end.<br>
+                        ✦ Forms a triangle: r⃗<sub>i</sub>, r⃗<sub>f</sub>, and Δr⃗
+                        </span>
+                    </p>
+                </div>
+                <div class="animation-container" id="anim-displacement">
+                    <canvas id="canvas-displacement" width="500" height="300"></canvas>
+                    <button class="play-btn" onclick="restartAnim('displacement')" title="Replay">▶</button>
+                    <div class="anim-label">
+                        <span class="bn">▲ Δr⃗ = r⃗<sub>f</sub> − r⃗<sub>i</sub> — অবস্থান পরিবর্তন = সরণ</span>
+                        <span class="en">▲ Δr⃗ = r⃗<sub>f</sub> − r⃗<sub>i</sub> — change in position = displacement</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--    CATEGORY 5: SPECIAL VECTORS                -->
+<!-- ============================================ -->
+<section class="category-section">
+    <div class="category-header">
+        <div class="category-icon" style="background:rgba(236,72,153,0.15); color:var(--accent7);">⚡</div>
+        <div>
+            <h2>
+                <span class="bn">ঙ. বিশেষ ভেক্টর</span>
+                <span class="en">E. Special Vectors</span>
+            </h2>
+            <p>
+                <span class="bn">ঘূর্ণন ও দিকের উপর ভিত্তি করে বিশেষ দুটি ভেক্টর</span>
+                <span class="en">Special vectors based on rotation and direction</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- 15. Axial Vector -->
+    <div class="vector-card" id="card15">
+        <div class="card-header" onclick="toggleCard('card15')">
+            <div class="card-number" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">১৫</div>
+            <div class="card-title-area">
+                <div class="card-title">
+                    <span class="bn">অক্ষীয় ভেক্টর</span>
+                    <span class="en">Axial Vector</span>
+                </div>
+                <div class="card-title-en">Axial Vector (Pseudo Vector)</div>
+            </div>
+            <div class="card-expand">▼</div>
+        </div>
+        <div class="card-body">
+            <div class="card-content">
+                <div class="definition-box">
+                    <div class="label">
+                        <span class="bn">🔖 সংজ্ঞা</span>
+                        <span class="en">🔖 Definition</span>
+                    </div>
+                    <p>
+                        <span class="bn">যে ভেক্টর কোনো <strong>ঘূর্ণন অক্ষ বরাবর</strong> ক্রিয়া করে এবং যার দিক <strong>ডান-হাত নিয়মে</strong> (right-hand rule) নির্ধারিত হয়, তাকে <strong>অক্ষীয় ভেক্টর</strong> বলে। একে <strong>Pseudo Vector</strong>-ও বলা হয়।</span>
+                        <span class="en">A vector that acts <strong>along the axis of rotation</strong> and whose direction is determined by the <strong>right-hand rule</strong> is called an <strong>Axial Vector</strong>. Also known as a <strong>Pseudo Vector</strong>.</span>
+                    </p>
+                </div>
+                <div class="example-box">
+                    <div class="label">
+                        <span class="bn">💡 উদাহরণ</span>
+                        <span class="en">💡 Example</span>
+                    </div>
+                    <p>
+                        <span class="bn"><strong>কৌণিক বেগ (ω⃗)</strong>, <strong>কৌণিক ত্বরণ (α⃗)</strong>, <strong>টর্ক (τ⃗)</strong>, <strong>কৌণিক ভরবেগ (L⃗)</strong> — এগুলো সব অক্ষীয় ভেক্টর।</span>
+                        <span class="en"><strong>Angular velocity (ω⃗)</strong>, <strong>angular acceleration (α⃗)</strong>, <strong>torque (τ⃗)</strong>, <strong>angular momentum (L⃗)</strong> — all are axial vectors.</span>
+                    </p>
+                </div>
+                <div class="key-point">
+                    <div class="label">
+                        <span class="bn">🧠 মনে রাখো</span>
+                        <span class="en">🧠 Remember</span>
+                    </div>
+                    <p>
+                        <span class="bn">
+                        ✦ <strong>ঘূর্ণন</strong> সংক্রান্ত রাশি হলেই সাধারণত অক্ষীয় ভেক্টর।<br>
+                        ✦ ডান হাতের আঙুলগুলো ঘূর্ণনের দিকে বাঁকালে <strong>বৃদ্ধাঙুলি</strong> যে দিকে দেখায় — সেটাই ভেক্টরের দিক।<br>
+                        ✦ দুটি ভেক্টরের <strong>ক্রস গুণফল</strong> থেকে অক্ষীয় ভেক্টর পাওয়া যায়।
+                        </span>
+                        <span class="en">
+                        ✦ If it involves <strong>rotation</strong>, it's usually an axial vector.<br>
+                        ✦ Curl fingers of right hand in rotation direction — <strong>thumb</strong> points in vector's direction.<br>
+                        ✦ <strong>Cross product</strong> of two vectors gives an axial vector.
+                        </span>
+                    </p>
+                </div>
+                <div class="animation-container" id="anim-axial">
+                    <canvas id="canvas-axial" width="500" height="280"></canvas>
+                    <button class="play-btn" onclick="restartAnim('axial')" title="Replay">▶</button>
+                    <div class="anim-label">
+                        <span class="bn">▲ ঘূর্ণন অক্ষ বরাবর ভেক্টর — ডান-হাত নিয়ম</span>
+                        <span class="en">▲ Vector along rotation axis — right-hand rule</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 16. Polar Vector -->
+    <div class="vector-card" id="card16">
+        <div class="card-header" onclick="toggleCard('card16')">
+            <div class="card-number" style="background: linear-gradient(135deg, #f59e0b, #d97706);">১৬</div>
+            <div class="card-title-area">
+                <div class="card-title">
+                    <span class="bn">মেরু / পোলার ভেক্টর</span>
+                    <span class="en">Polar Vector</span>
+                </div>
+                <div class="card-title-en">Polar Vector (True Vector)</div>
+            </div>
+            <div class="card-expand">▼</div>
+        </div>
+        <div class="card-body">
+            <div class="card-content">
+                <div class="definition-box">
+                    <div class="label">
+                        <span class="bn">🔖 সংজ্ঞা</span>
+                        <span class="en">🔖 Definition</span>
+                    </div>
+                    <p>
+                        <span class="bn">যে ভেক্টরের একটি <strong>সুনির্দিষ্ট প্রারম্ভিক বা প্রয়োগ বিন্দু</strong> থাকে এবং যা <strong>সরলরৈখিক প্রভাব</strong> নির্দেশ করে, তাকে <strong>মেরু ভেক্টর</strong> বা <strong>পোলার ভেক্টর</strong> বলে। একে <strong>True Vector</strong>-ও বলা হয়।</span>
+                        <span class="en">A vector that has a <strong>definite starting/application point</strong> and represents a <strong>linear effect</strong> is called a <strong>Polar Vector</strong>. Also known as a <strong>True Vector</strong>.</span>
+                    </p>
+                </div>
+                <div class="example-box">
+                    <div class="label">
+                        <span class="bn">💡 উদাহরণ</span>
+                        <span class="en">💡 Example</span>
+                    </div>
+                    <p>
+                        <span class="bn"><strong>সরণ (r⃗)</strong>, <strong>বেগ (v⃗)</strong>, <strong>ত্বরণ (a⃗)</strong>, <strong>বল (F⃗)</strong>, <strong>রৈখিক ভরবেগ (p⃗)</strong> — এগুলো সব পোলার ভেক্টর।</span>
+                        <span class="en"><strong>Displacement (r⃗)</strong>, <strong>velocity (v⃗)</strong>, <strong>acceleration (a⃗)</strong>, <strong>force (F⃗)</strong>, <strong>linear momentum (p⃗)</strong> — all are polar vectors.</span>
+                    </p>
+                </div>
+                <div class="key-point">
+                    <div class="label">
+                        <span class="bn">🧠 মনে রাখো</span>
+                        <span class="en">🧠 Remember</span>
+                    </div>
+                    <p>
+                        <span class="bn">
+                        ✦ <strong>সরলরৈখিক গতি</strong> সংক্রান্ত ভেক্টর = পোলার ভেক্টর।<br>
+                        ✦ <strong>ঘূর্ণন</strong> সংক্রান্ত ভেক্টর = অক্ষীয় ভেক্টর।<br>
+                        ✦ পোলার ভেক্টর = "আসল" ভেক্টর, অক্ষীয় ভেক্টর = "ছদ্ম" ভেক্টর।
+                        </span>
+                        <span class="en">
+                        ✦ <strong>Linear motion</strong> vectors = Polar Vectors.<br>
+                        ✦ <strong>Rotational</strong> vectors = Axial Vectors.<br>
+                        ✦ Polar = "true" vector, Axial = "pseudo" vector.
+                        </span>
+                    </p>
+                </div>
+                <div class="animation-container" id="anim-polar">
+                    <canvas id="canvas-polar" width="500" height="250"></canvas>
+                    <button class="play-btn" onclick="restartAnim('polar')" title="Replay">▶</button>
+                    <div class="anim-label">
+                        <span class="bn">▲ বল, বেগ, সরণ — সরলরৈখিক ভেক্টর = পোলার ভেক্টর</span>
+                        <span class="en">▲ Force, velocity, displacement — linear vectors = Polar Vectors</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--    MEMORY TIPS                                -->
+<!-- ============================================ -->
+<section class="memory-tips">
+    <div class="category-header">
+        <div class="category-icon" style="background:rgba(236,72,153,0.15); color:var(--accent7);">💡</div>
+        <div>
+            <h2>
+                <span class="bn">মনে রাখার কৌশল</span>
+                <span class="en">Memory Tips</span>
+            </h2>
+        </div>
+    </div>
+
+    <div class="tip-card">
+        <h4>
+            <span class="bn">🔗 জোড়ায় জোড়ায় মনে রাখো</span>
+            <span class="en">🔗 Remember in Pairs</span>
+        </h4>
+        <p>
+            <span class="bn">
+            <strong>স্বাধীন ↔ সীমাবদ্ধ</strong> (পাদবিন্দু ইচ্ছেমতো ↔ নির্দিষ্ট)<br>
+            <strong>সদৃশ ↔ বিসদৃশ</strong> (একই দিক ↔ বিপরীত দিক)<br>
+            <strong>সমান ↔ ঋণাত্মক</strong> (সমান মান+দিক ↔ সমান মান+উল্টো দিক)<br>
+            <strong>সঠিক ↔ নাল</strong> (মান ≠ 0 ↔ মান = 0)<br>
+            <strong>অক্ষীয় ↔ পোলার</strong> (ঘূর্ণন ↔ সরলরৈখিক)
+            </span>
+            <span class="en">
+            <strong>Free ↔ Localized</strong> (tail anywhere ↔ fixed tail)<br>
+            <strong>Like ↔ Unlike</strong> (same direction ↔ opposite direction)<br>
+            <strong>Equal ↔ Negative</strong> (same mag+dir ↔ same mag+opposite dir)<br>
+            <strong>Proper ↔ Null</strong> (mag ≠ 0 ↔ mag = 0)<br>
+            <strong>Axial ↔ Polar</strong> (rotational ↔ linear)
+            </span>
+        </p>
+    </div>
+
+    <div class="tip-card">
+        <h4>
+            <span class="bn">🎯 সমান ভেক্টরের ২টি শর্ত</span>
+            <span class="en">🎯 2 Conditions for Equal Vectors</span>
+        </h4>
+        <p>
+            <span class="bn">
+            <strong>"ম-দি"</strong> মনে রাখো:<br>
+            ✦ <strong>ম</strong>ান সমান<br>
+            ✦ <strong>দি</strong>ক একই<br>
+            দুটোই থাকতে হবে! শুধু একটি হলে সমান ভেক্টর নয়।
+            </span>
+            <span class="en">
+            <strong>"M-D"</strong> rule:<br>
+            ✦ <strong>M</strong>agnitude equal<br>
+            ✦ <strong>D</strong>irection same<br>
+            Both must be satisfied!
+            </span>
+        </p>
+    </div>
+
+    <div class="tip-card">
+        <h4>
+            <span class="bn">🧮 একক ভেক্টরের সূত্র</span>
+            <span class="en">🧮 Unit Vector Formula</span>
+        </h4>
+        <p>
+            <span class="bn">
+            <strong>"ভেক্টর ÷ মান = হ্যাট"</strong><br>
+            â = A⃗ / |A⃗|<br>
+            অর্থাৎ A⃗ = |A⃗| × â → <strong>যেকোনো ভেক্টর = মান × একক ভেক্টর</strong>
+            </span>
+            <span class="en">
+            <strong>"Vector ÷ Magnitude = Hat"</strong><br>
+            â = A⃗ / |A⃗|<br>
+            So A⃗ = |A⃗| × â → <strong>Any vector = magnitude × unit vector</strong>
+            </span>
+        </p>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--    MEGA CHART                                 -->
+<!-- ============================================ -->
+<section class="mega-chart">
+    <h2>
+        <span class="bn">📊 সব ভেক্টর এক নজরে</span>
+        <span class="en">📊 All Vectors at a Glance</span>
+    </h2>
+
+    <div class="chart-grid" id="chartGrid">
+        <!-- Filled by JS -->
+    </div>
+</section>
+
+<footer>
+    <p>
+        <span class="bn">HSC পদার্থবিজ্ঞান — ভেক্টর নোটস — অধ্যায় ২ (পর্ব ২.৪)</span>
+        <span class="en">HSC Physics — Vector Notes — Chapter 2 (Section 2.4)</span>
+    </p>
+</footer>
+
+<script>
+// ============================
+// LANGUAGE TOGGLE
+// ============================
+function setLang(lang) {
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    if (lang === 'en') {
+        document.body.classList.add('english');
+        document.querySelectorAll('.lang-btn')[1].classList.add('active');
+    } else {
+        document.body.classList.remove('english');
+        document.querySelectorAll('.lang-btn')[0].classList.add('active');
+    }
+}
+
+// ============================
+// CARD TOGGLE
+// ============================
+function toggleCard(id) {
+    document.getElementById(id).classList.toggle('open');
+}
+
+// ============================
+// SCROLL TO TOP
+// ============================
+window.addEventListener('scroll', () => {
+    const btn = document.getElementById('scrollTopBtn');
+    btn.classList.toggle('show', window.scrollY > 400);
+});
+
+// ============================
+// CHART DATA
+// ============================
+const chartData = [
+    { n: '১', ne: '1', bn: 'স্বাধীন ভেক্টর', en: 'Free Vector', defBn: 'পাদবিন্দু ইচ্ছেমতো বসানো যায়', defEn: 'Tail can be placed anywhere', color: '#3b82f6' },
+    { n: '২', ne: '2', bn: 'সীমাবদ্ধ ভেক্টর', en: 'Localized Vector', defBn: 'পাদবিন্দু নির্দিষ্ট', defEn: 'Tail is fixed at a specific point', color: '#8b5cf6' },
+    { n: '৩', ne: '3', bn: 'সদৃশ ভেক্টর', en: 'Like Vectors', defBn: 'একই দিকে ক্রিয়াশীল', defEn: 'Act in the same direction', color: '#10b981' },
+    { n: '৪', ne: '4', bn: 'বিসদৃশ ভেক্টর', en: 'Unlike Vectors', defBn: 'বিপরীত দিকে ক্রিয়াশীল', defEn: 'Act in opposite directions', color: '#ef4444' },
+    { n: '৫', ne: '5', bn: 'সমান ভেক্টর', en: 'Equal Vectors', defBn: 'মান সমান + দিক একই', defEn: 'Same magnitude + same direction', color: '#3b82f6', sym: 'A⃗ = B⃗' },
+    { n: '৬', ne: '6', bn: 'ঋণাত্মক ভেক্টর', en: 'Negative Vector', defBn: 'সমান মান, বিপরীত দিক', defEn: 'Same magnitude, opposite direction', color: '#ef4444', sym: 'QP⃗ = −PQ⃗' },
+    { n: '৭', ne: '7', bn: 'সমরেখ ভেক্টর', en: 'Collinear Vectors', defBn: 'একই রেখায় বা সমান্তরালে', defEn: 'Along same line or parallel', color: '#06b6d4' },
+    { n: '৮', ne: '8', bn: 'সমতলীয় ভেক্টর', en: 'Coplanar Vectors', defBn: 'একই সমতলে অবস্থিত', defEn: 'Lie on the same plane', color: '#f59e0b' },
+    { n: '৯', ne: '9', bn: 'সঠিক ভেক্টর', en: 'Proper Vector', defBn: 'মান ≠ ০', defEn: 'Magnitude ≠ 0', color: '#10b981' },
+    { n: '১০', ne: '10', bn: 'নাল ভেক্টর', en: 'Null Vector', defBn: 'মান = ০, দিক অনির্দিষ্ট', defEn: 'Magnitude = 0, no definite direction', color: '#6b7280', sym: '0⃗' },
+    { n: '১১', ne: '11', bn: 'একক ভেক্টর', en: 'Unit Vector', defBn: 'মান = ১, শুধু দিক নির্দেশ করে', defEn: 'Magnitude = 1, indicates direction only', color: '#f59e0b', sym: 'â = A⃗/|A⃗|' },
+    { n: '১২', ne: '12', bn: 'অবস্থান ভেক্টর', en: 'Position Vector', defBn: 'মূলবিন্দু থেকে কোনো বিন্দু পর্যন্ত', defEn: 'From origin to a point', color: '#ef4444', sym: 'r⃗ = OP⃗' },
+    { n: '১৩', ne: '13', bn: 'সরণ ভেক্টর', en: 'Displacement Vector', defBn: 'অবস্থান ভেক্টরের পরিবর্তন', defEn: 'Change in position vector', color: '#8b5cf6', sym: 'Δr⃗ = r⃗f − r⃗i' },
+    { n: '১৪', ne: '14', bn: 'বিপ্রতীপ ভেক্টর', en: 'Reciprocal Vector', defBn: 'মানের গুণফল = ১, একই দিক', defEn: 'Product of magnitudes = 1, same direction', color: '#ec4899' },
+    { n: '১৫', ne: '15', bn: 'অক্ষীয় ভেক্টর', en: 'Axial Vector', defBn: 'ঘূর্ণন অক্ষ বরাবর, ডান-হাত নিয়ম', defEn: 'Along rotation axis, right-hand rule', color: '#06b6d4', sym: 'ω⃗, τ⃗, L⃗' },
+    { n: '১৬', ne: '16', bn: 'পোলার ভেক্টর', en: 'Polar Vector', defBn: 'সরলরৈখিক প্রভাব নির্দেশক', defEn: 'Represents linear effect', color: '#f59e0b', sym: 'F⃗, v⃗, p⃗' },
+];
+
+function buildChart() {
+    const grid = document.getElementById('chartGrid');
+    const isEn = document.body.classList.contains('english');
+    grid.innerHTML = '';
+    chartData.forEach(d => {
+        const item = document.createElement('div');
+        item.className = 'chart-item';
+        item.innerHTML = `
+            <div class="ci-num" style="background:${d.color}">${d.n}</div>
+            <div class="ci-title">
+                <span class="bn">${d.bn}</span>
+                <span class="en">${d.en}</span>
+            </div>
+            <div class="ci-def">
+                <span class="bn">${d.defBn}</span>
+                <span class="en">${d.defEn}</span>
+            </div>
+            ${d.sym ? `<div class="ci-symbol">${d.sym}</div>` : ''}
+        `;
+        grid.appendChild(item);
+    });
+}
+buildChart();
+
+// ============================
+// ANIMATION ENGINE
+// ============================
+const DPR = window.devicePixelRatio || 1;
+const animations = {};
+
+function setupCanvas(id) {
+    const canvas = document.getElementById('canvas-' + id);
+    if (!canvas) return null;
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = canvas.getAttribute('width') * DPR;
+    canvas.height = canvas.getAttribute('height') * DPR;
+    canvas.style.width = canvas.getAttribute('width') + 'px';
+    canvas.style.height = canvas.getAttribute('height') + 'px';
+    const ctx = canvas.getContext('2d');
+    ctx.scale(DPR, DPR);
+    return ctx;
+}
+
+function drawArrow(ctx, x1, y1, x2, y2, color, lineWidth = 2.5, headLen = 12) {
+    const angle = Math.atan2(y2 - y1, x2 - x1);
+    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+    ctx.lineWidth = lineWidth;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+    // arrowhead
+    ctx.beginPath();
+    ctx.moveTo(x2, y2);
+    ctx.lineTo(x2 - headLen * Math.cos(angle - Math.PI / 6), y2 - headLen * Math.sin(angle - Math.PI / 6));
+    ctx.lineTo(x2 - headLen * Math.cos(angle + Math.PI / 6), y2 - headLen * Math.sin(angle + Math.PI / 6));
+    ctx.closePath();
+    ctx.fill();
+}
+
+function drawLabel(ctx, text, x, y, color = '#94a3b8', size = 14, align = 'center') {
+    ctx.fillStyle = color;
+    ctx.font = `600 ${size}px Inter, Noto Sans Bengali, sans-serif`;
+    ctx.textAlign = align;
+    ctx.textBaseline = 'middle';
+    ctx.fillText(text, x, y);
+}
+
+function drawDot(ctx, x, y, r, color) {
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+}
+
+function clearCanvas(ctx, w, h) {
+    ctx.clearRect(0, 0, w, h);
+}
+
+// === ANIMATION: Free Vector ===
+function animFree(ctx, progress) {
+    const W = 500, H = 250;
+    clearCanvas(ctx, W, H);
+    const p = Math.min(progress, 1);
+    const len = 150 * p;
+
+    // Top arrow
+    drawArrow(ctx, 80, 80, 80 + len, 80, '#3b82f6');
+    if (p > 0.3) drawLabel(ctx, 'A⃗', 80 + len / 2, 60, '#3b82f6', 16);
+
+    // Bottom arrow - different position, same direction & length
+    drawArrow(ctx, 200, 170, 200 + len, 170, '#10b981');
+    if (p > 0.3) drawLabel(ctx, 'B⃗', 200 + len / 2, 150, '#10b981', 16);
+
+    // Tail dots
+    drawDot(ctx, 80, 80, 5, '#3b82f6');
+    drawDot(ctx, 200, 170, 5, '#10b981');
+
+    if (p > 0.6) {
+        drawLabel(ctx, 'A⃗ = B⃗', 400, 125, '#f59e0b', 18);
+        drawLabel(ctx, '(same magnitude, same direction)', 400, 150, '#94a3b8', 11);
+    }
+
+    // dashed lines showing parallel
+    if (p > 0.5) {
+        ctx.setLineDash([4, 4]);
+        ctx.strokeStyle = 'rgba(148,163,184,0.3)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(80, 80);
+        ctx.lineTo(200, 170);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(80 + len, 80);
+        ctx.lineTo(200 + len, 170);
+        ctx.stroke();
+        ctx.setLineDash([]);
+    }
+}
+
+// === ANIMATION: Localized Vector ===
+function animLocalized(ctx, progress) {
+    const W = 500, H = 280;
+    clearCanvas(ctx, W, H);
+    const p = Math.min(progress, 1);
+
+    // Axes
+    ctx.strokeStyle = 'rgba(148,163,184,0.3)';
+    ctx.lineWidth = 1.5;
+    // Y axis
+    ctx.beginPath(); ctx.moveTo(80, 30); ctx.lineTo(80, 240); ctx.stroke();
+    drawArrow(ctx, 80, 240, 80, 30, 'rgba(148,163,184,0.5)', 1.5, 8);
+    // X axis
+    ctx.beginPath(); ctx.moveTo(30, 200); ctx.lineTo(430, 200); ctx.stroke();
+    drawArrow(ctx, 30, 200, 430, 200, 'rgba(148,163,184,0.5)', 1.5, 8);
+
+    drawLabel(ctx, 'O', 68, 212, '#94a3b8', 14);
+    drawLabel(ctx, 'X', 440, 200, '#94a3b8', 14);
+    drawLabel(ctx, 'Y', 80, 18, '#94a3b8', 14);
+
+    // Origin dot
+    drawDot(ctx, 80, 200, 5, '#ef4444');
+
+    // Position vector
+    const endX = 80 + 250 * p;
+    const endY = 200 - 130 * p;
+    drawArrow(ctx, 80, 200, endX, endY, '#ef4444', 3);
+
+    if (p > 0.4) {
+        drawLabel(ctx, 'r⃗', (80 + endX) / 2 - 15, (200 + endY) / 2, '#ef4444', 18);
+        drawDot(ctx, endX, endY, 5, '#f59e0b');
+        drawLabel(ctx, 'P', endX + 15, endY - 10, '#f59e0b', 15);
+    }
+
+    // Lock icon near origin
+    if (p > 0.7) {
+        drawLabel(ctx, '🔒', 60, 215, '#ef4444', 16);
+        drawLabel(ctx, 'Fixed at O', 160, 240, '#94a3b8', 12);
+    }
+}
+
+// === ANIMATION: Like Vectors ===
+function animLike(ctx, progress) {
+    const W = 500, H = 200;
+    clearCanvas(ctx, W, H);
+    const p = Math.min(progress, 1);
+
+    const len1 = 200 * p;
+    const len2 = 130 * p;
+
+    drawArrow(ctx, 60, 60, 60 + len1, 60, '#3b82f6', 3);
+    drawArrow(ctx, 60, 130, 60 + len2, 130, '#10b981', 3);
+
+    if (p > 0.3) {
+        drawLabel(ctx, 'A⃗', 60 + len1 / 2, 40, '#3b82f6', 16);
+        drawLabel(ctx, 'B⃗', 60 + len2 / 2, 110, '#10b981', 16);
+    }
+
+    if (p > 0.7) {
+        drawLabel(ctx, '→ Same direction', 400, 95, '#f59e0b', 13);
+        drawLabel(ctx, '→ Different magnitude', 400, 115, '#94a3b8', 11);
+    }
+}
+
+// === ANIMATION: Unlike Vectors ===
+function animUnlike(ctx, progress) {
+    const W = 500, H = 200;
+    clearCanvas(ctx, W, H);
+    const p = Math.min(progress, 1);
+
+    const len1 = 180 * p;
+    const len2 = 150 * p;
+
+    // A pointing right
+    drawArrow(ctx, 60, 60, 60 + len1, 60, '#3b82f6', 3);
+    // B pointing left
+    drawArrow(ctx, 340, 130, 340 - len2, 130, '#ef4444', 3);
+
+    if (p > 0.3) {
+        drawLabel(ctx, 'A⃗', 60 + len1 / 2, 40, '#3b82f6', 16);
+        drawLabel(ctx, 'B⃗', 340 - len2 / 2, 110, '#ef4444', 16);
+    }
+
+    if (p > 0.7) {
+        drawLabel(ctx, '← Opposite directions →', 250, 170, '#f59e0b', 13);
+    }
+}
+
+// === ANIMATION: Equal Vectors ===
+function animEqual(ctx, progress) {
+    const W = 500, H = 200;
+    clearCanvas(ctx, W, H);
+    const p = Math.min(progress, 1);
+
+    const len = 160 * p;
+
+    drawArrow(ctx, 50, 60, 50 + len, 60, '#3b82f6', 3);
+    drawArrow(ctx, 180, 140, 180 + len, 140, '#10b981', 3);
+
+    drawDot(ctx, 50, 60, 4, '#3b82f6');
+    drawDot(ctx, 180, 140, 4, '#10b981');
+
+    if (p > 0.3) {
+        drawLabel(ctx, 'A⃗', 50 + len / 2, 40, '#3b82f6', 16);
+        drawLabel(ctx, 'B⃗', 180 + len / 2, 120, '#10b981', 16);
+    }
+
+    if (p > 0.6) {
+        // Show equal sign
+        drawLabel(ctx, 'A⃗ = B⃗', 420, 70, '#f59e0b', 18);
+        drawLabel(ctx, '✓ Same length', 420, 95, '#10b981', 12);
+        drawLabel(ctx, '✓ Same direction', 420, 115, '#10b981', 12);
+        drawLabel(ctx, '✗ Tail position irrelevant', 420, 140, '#94a3b8', 11);
+    }
+}
+
+// === ANIMATION: Negative Vector ===
+function animNegative(ctx, progress) {
+    const W = 500, H = 200;
+    clearCanvas(ctx, W, H);
+    const p = Math.min(progress, 1);
+
+    const len = 160 * p;
+
+    // P and Q dots
+    const px = 100, py = 100, qx = 100 + 160, qy = 100;
+    drawDot(ctx, px, py, 5, '#94a3b8');
+    drawDot(ctx, qx, qy, 5, '#94a3b8');
+    drawLabel(ctx, 'P', px, py + 25, '#94a3b8', 14);
+    drawLabel(ctx, 'Q', qx, qy + 25, '#94a3b8', 14);
+
+    // A vector P→Q (top)
+    drawArrow(ctx, px, py - 20, px + len, py - 20, '#3b82f6', 3);
+    if (p > 0.3) drawLabel(ctx, 'A⃗ = PQ⃗', px + len / 2, py - 45, '#3b82f6', 15);
+
+    // -A vector Q→P (bottom, appears later)
+    if (p > 0.5) {
+        const negP = (p - 0.5) * 2;
+        const negLen = 160 * Math.min(negP, 1);
+        drawArrow(ctx, qx, qy + 30, qx - negLen, qy + 30, '#ef4444', 3);
+        if (negP > 0.3) drawLabel(ctx, '−A⃗ = QP⃗', qx - negLen / 2, qy + 60, '#ef4444', 15);
+    }
+}
+
+// === ANIMATION: Null Vector ===
+function animNull(ctx, progress) {
+    const W = 500, H = 200;
+    clearCanvas(ctx, W, H);
+    const p = Math.min(progress, 1);
+
+    const cx = 250, cy = 100;
+
+    if (p < 0.4) {
+        // Show A vector
+        const len = 150 * (p / 0.4);
+        drawArrow(ctx, cx - 75, cy, cx - 75 + len, cy, '#3b82f6', 3);
+        drawLabel(ctx, 'A⃗', cx, cy - 25, '#3b82f6', 16);
+    } else if (p < 0.7) {
+        // Show A and -A
+        drawArrow(ctx, cx - 75, cy - 20, cx + 75, cy - 20, '#3b82f6', 3);
+        drawLabel(ctx, 'A⃗', cx, cy - 45, '#3b82f6', 16);
+
+        const negP = (p - 0.4) / 0.3;
+        const negLen = 150 * negP;
+        drawArrow(ctx, cx + 75, cy + 20, cx + 75 - negLen, cy + 20, '#ef4444', 3);
+        drawLabel(ctx, '−A⃗', cx, cy + 45, '#ef4444', 16);
+    } else {
+        // Collapse to dot
+        const collapseP = (p - 0.7) / 0.3;
+        const shrink = 150 * (1 - collapseP);
+
+        if (shrink > 2) {
+            drawArrow(ctx, cx - shrink / 2, cy - 15, cx + shrink / 2, cy - 15, '#3b82f6', 3);
+            drawArrow(ctx, cx + shrink / 2, cy + 15, cx - shrink / 2, cy + 15, '#ef4444', 3);
+        }
+
+        if (collapseP > 0.8) {
+            // Show dot
+            drawDot(ctx, cx, cy, 8 * Math.min((collapseP - 0.8) * 5, 1), '#f59e0b');
+            drawLabel(ctx, '0⃗', cx, cy - 30, '#f59e0b', 20);
+            drawLabel(ctx, 'A⃗ + (−A⃗) = 0⃗', cx, cy + 50, '#94a3b8', 14);
+        }
+    }
+}
+
+// === ANIMATION: Unit Vector ===
+function animUnit(ctx, progress) {
+    const W = 500, H = 250;
+    clearCanvas(ctx, W, H);
+    const p = Math.min(progress, 1);
+
+    const startX = 60, startY = 200;
+    const angle = -Math.PI / 4; // 45 deg up
+    const fullLen = 200;
+    const unitLen = fullLen / 5;
+
+    // Draw full vector
+    const vecLen = fullLen * p;
+    const endX = startX + vecLen * Math.cos(angle);
+    const endY = startY + vecLen * Math.sin(angle);
+    drawArrow(ctx, startX, startY, endX, endY, '#3b82f6', 3);
+
+    if (p > 0.3) {
+        drawLabel(ctx, 'A⃗ = 5â', endX + 20, endY - 10, '#3b82f6', 16);
+    }
+
+    // Draw tick marks on the vector
+    if (p > 0.5) {
+        for (let i = 1; i <= 5; i++) {
+            const tx = startX + (unitLen * i) * Math.cos(angle);
+            const ty = startY + (unitLen * i) * Math.sin(angle);
+            const perpX = 6 * Math.cos(angle + Math.PI / 2);
+            const perpY = 6 * Math.sin(angle + Math.PI / 2);
+            ctx.strokeStyle = 'rgba(148,163,184,0.6)';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(tx - perpX, ty - perpY);
+            ctx.lineTo(tx + perpX, ty + perpY);
+            ctx.stroke();
+        }
+    }
+
+    // Draw unit vector
+    if (p > 0.7) {
+        const uEndX = startX + unitLen * Math.cos(angle);
+        const uEndY = startY + unitLen * Math.sin(angle);
+        drawArrow(ctx, startX, startY + 40, startX + unitLen * Math.cos(angle), startY + 40 + unitLen * Math.sin(angle), '#f59e0b', 3);
+        drawLabel(ctx, 'â', startX + unitLen * Math.cos(angle) / 2 + 20, startY + 40 + unitLen * Math.sin(angle) / 2 + 15, '#f59e0b', 16);
+        drawLabel(ctx, '|â| = 1', startX + 140, startY + 20, '#f59e0b', 13);
+    }
+}
+
+// === ANIMATION: Collinear ===
+function animCollinear(ctx, progress) {
+    const W = 500, H = 220;
+    clearCanvas(ctx, W, H);
+    const p = Math.min(progress, 1);
+
+    // Three arrows on parallel lines
+    const len1 = 180 * p, len2 = 120 * p, len3 = 150 * p;
+
+    drawArrow(ctx, 50, 50, 50 + len1, 50, '#3b82f6', 3);
+    drawArrow(ctx, 80, 110, 80 + len2, 110, '#10b981', 3);
+    drawArrow(ctx, 30, 170, 30 + len3, 170, '#8b5cf6', 3);
+
+    if (p > 0.3) {
+        drawLabel(ctx, 'A⃗', 50 + len1 / 2, 30, '#3b82f6', 16);
+        drawLabel(ctx, 'B⃗', 80 + len2 / 2, 90, '#10b981', 16);
+        drawLabel(ctx, 'C⃗', 30 + len3 / 2, 150, '#8b5cf6', 16);
+    }
+
+    if (p > 0.6) {
+        // Show parallel indicator lines
+        ctx.setLineDash([3, 3]);
+        ctx.strokeStyle = 'rgba(148,163,184,0.2)';
+        ctx.lineWidth = 1;
+        for (let x = 50; x < 300; x += 30) {
+            ctx.beginPath();
+            ctx.moveTo(x, 40);
+            ctx.lineTo(x, 180);
+            ctx.stroke();
+        }
+        ctx.setLineDash([]);
+        drawLabel(ctx, '∥ Parallel / Same line', 400, 110, '#f59e0b', 12);
+    }
+}
+
+// === ANIMATION: Coplanar ===
+function animCoplanar(ctx, progress) {
+    const W = 500, H = 250;
+    clearCanvas(ctx, W, H);
+    const p = Math.min(progress, 1);
+
+    // Draw a parallelogram representing a plane
+    ctx.fillStyle = 'rgba(59,130,246,0.05)';
+    ctx.strokeStyle = 'rgba(59,130,246,0.15)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(50, 200);
+    ctx.lineTo(200, 30);
+    ctx.lineTo(450, 30);
+    ctx.lineTo(300, 200);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+
+    // Three vectors from different points within the plane
+    const cx = 220, cy = 120;
+
+    if (p > 0.1) {
+        const l = 80 * Math.min(p / 0.4, 1);
+        drawArrow(ctx, cx - 60, cy + 30, cx - 60 + l * Math.cos(-0.3), cy + 30 + l * Math.sin(-0.3), '#3b82f6', 3);
+        drawLabel(ctx, 'A⃗', cx - 60 + l * Math.cos(-0.3) + 10, cy + 30 + l * Math.sin(-0.3) - 15, '#3b82f6', 15);
+    }
+    if (p > 0.35) {
+        const l = 100 * Math.min((p - 0.2) / 0.4, 1);
+        drawArrow(ctx, cx + 20, cy - 10, cx + 20 + l * Math.cos(0.5), cy - 10 + l * Math.sin(0.5), '#10b981', 3);
+        drawLabel(ctx, 'B⃗', cx + 20 + l * Math.cos(0.5) + 10, cy - 10 + l * Math.sin(0.5) - 15, '#10b981', 15);
+    }
+    if (p > 0.55) {
+        const l = 70 * Math.min((p - 0.4) / 0.4, 1);
+        drawArrow(ctx, cx - 20, cy - 50, cx - 20 + l * Math.cos(-1.2), cy - 50 + l * Math.sin(-1.2), '#8b5cf6', 3);
+        drawLabel(ctx, 'C⃗', cx - 20 + l * Math.cos(-1.2) + 10, cy - 50 + l * Math.sin(-1.2) - 10, '#8b5cf6', 15);
+    }
+
+    if (p > 0.8) {
+        drawLabel(ctx, 'Same Plane', 380, 210, '#f59e0b', 14);
+    }
+}
+
+// === ANIMATION: Position Vector ===
+function animPosition(ctx, progress) {
+    const W = 500, H = 300;
+    clearCanvas(ctx, W, H);
+    const p = Math.min(progress, 1);
+
+    const ox = 80, oy = 250;
+
+    // Axes
+    drawArrow(ctx, 30, oy, 460, oy, 'rgba(148,163,184,0.4)', 1.5, 8);
+    drawArrow(ctx, ox, 280, ox, 20, 'rgba(148,163,184,0.4)', 1.5, 8);
+    drawLabel(ctx, 'X', 465, oy, '#94a3b8', 14);
+    drawLabel(ctx, 'Y', ox, 12, '#94a3b8', 14);
+    drawLabel(ctx, 'O', ox - 15, oy + 15, '#94a3b8', 14);
+    drawDot(ctx, ox, oy, 5, '#f59e0b');
+
+    // Point P position
+    const px = 350, py = 70;
+    const cpx = ox + (px - ox) * p;
+    const cpy = oy + (py - oy) * p;
+
+    drawArrow(ctx, ox, oy, cpx, cpy, '#ef4444', 3);
+    drawDot(ctx, cpx, cpy, 5, '#ef4444');
+
+    if (p > 0.4) {
+        drawLabel(ctx, 'P', cpx + 15, cpy - 10, '#f59e0b', 16);
+        drawLabel(ctx, 'r⃗', (ox + cpx) / 2 - 20, (oy + cpy) / 2, '#ef4444', 20);
+    }
+
+    // Dashed projection lines
+    if (p > 0.7) {
+        ctx.setLineDash([4, 4]);
+        ctx.strokeStyle = 'rgba(148,163,184,0.3)';
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(cpx, cpy); ctx.lineTo(cpx, oy); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(cpx, cpy); ctx.lineTo(ox, cpy); ctx.stroke();
+        ctx.setLineDash([]);
+        drawLabel(ctx, 'x', cpx, oy + 15, '#3b82f6', 12);
+        drawLabel(ctx, 'y', ox - 20, cpy, '#10b981', 12);
+    }
+}
+
+// === ANIMATION: Displacement Vector ===
+function animDisplacement(ctx, progress) {
+    const W = 500, H = 300;
+    clearCanvas(ctx, W, H);
+    const p = Math.min(progress, 1);
+
+    const ox = 80, oy = 250;
+
+    // Axes
+    drawArrow(ctx, 30, oy, 460, oy, 'rgba(148,163,184,0.4)', 1.5, 8);
+    drawArrow(ctx, ox, 280, ox, 20, 'rgba(148,163,184,0.4)', 1.5, 8);
+    drawLabel(ctx, 'O', ox - 15, oy + 15, '#94a3b8', 14);
+    drawDot(ctx, ox, oy, 4, '#94a3b8');
+
+    // ri - initial position
+    const p1x = 200, p1y = 180;
+    if (p > 0.05) {
+        const pp = Math.min(p / 0.35, 1);
+        const ex = ox + (p1x - ox) * pp;
+        const ey = oy + (p1y - oy) * pp;
+        drawArrow(ctx, ox, oy, ex, ey, '#3b82f6', 2.5);
+        if (pp > 0.5) {
+            drawLabel(ctx, 'r⃗ᵢ', (ox + p1x) / 2 - 15, (oy + p1y) / 2 + 15, '#3b82f6', 15);
+            drawDot(ctx, p1x, p1y, 5, '#3b82f6');
+        }
+    }
+
+    // rf - final position
+    const p2x = 380, p2y = 80;
+    if (p > 0.35) {
+        const pp = Math.min((p - 0.35) / 0.3, 1);
+        const ex = ox + (p2x - ox) * pp;
+        const ey = oy + (p2y - oy) * pp;
+        drawArrow(ctx, ox, oy, ex, ey, '#10b981', 2.5);
+        if (pp > 0.5) {
+            drawLabel(ctx, 'r⃗f', (ox + p2x) / 2 + 15, (oy + p2y) / 2 - 5, '#10b981', 15);
+            drawDot(ctx, p2x, p2y, 5, '#10b981');
+        }
+    }
+
+    // Δr - displacement
+    if (p > 0.65) {
+        const pp = Math.min((p - 0.65) / 0.35, 1);
+        const dx = p1x + (p2x - p1x) * pp;
+        const dy = p1y + (p2y - p1y) * pp;
+        drawArrow(ctx, p1x, p1y, dx, dy, '#f59e0b', 3);
+        if (pp > 0.4) {
+            drawLabel(ctx, 'Δr⃗', (p1x + p2x) / 2 + 20, (p1y + p2y) / 2, '#f59e0b', 18);
+        }
+        if (pp > 0.8) {
+            drawLabel(ctx, 'Δr⃗ = r⃗f − r⃗ᵢ', 350, 260, '#f59e0b', 14);
+        }
+    }
+}
+
+// === ANIMATION: Axial Vector ===
+function animAxial(ctx, progress) {
+    const W = 500, H = 280;
+    clearCanvas(ctx, W, H);
+    const p = Math.min(progress, 1);
+
+    const cx = 200, cy = 160;
+
+    // Draw rotation circle (ellipse)
+    ctx.strokeStyle = 'rgba(6,182,212,0.3)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, 80, 30, 0, 0, Math.PI * 2 * Math.min(p * 1.5, 1));
+    ctx.stroke();
+
+    // Rotation arrow indicators
+    if (p > 0.3) {
+        const rotAngle = p * Math.PI * 4;
+        const rx = cx + 80 * Math.cos(rotAngle);
+        const ry = cy + 30 * Math.sin(rotAngle);
+        drawDot(ctx, rx, ry, 4, '#06b6d4');
+
+        // Small tangent arrow
+        const tx = -80 * Math.sin(rotAngle) * 0.15;
+        const ty = 30 * Math.cos(rotAngle) * 0.15;
+        drawArrow(ctx, rx, ry, rx + tx, ry + ty, '#06b6d4', 2, 6);
+    }
+
+    // Axial vector (upward from center)
+    if (p > 0.4) {
+        const vp = Math.min((p - 0.4) / 0.4, 1);
+        const vecLen = 100 * vp;
+        drawArrow(ctx, cx, cy, cx, cy - vecLen, '#ef4444', 3);
+        if (vp > 0.5) {
+            drawLabel(ctx, 'ω⃗', cx + 20, cy - vecLen / 2, '#ef4444', 20);
+        }
+    }
+
+    // Labels
+    if (p > 0.7) {
+        drawLabel(ctx, 'Rotation axis', cx + 130, cy - 80, '#94a3b8', 12);
+        drawLabel(ctx, '↻ Rotation', cx + 130, cy, '#06b6d4', 12);
+        drawLabel(ctx, 'Right-hand rule', cx + 130, cy + 25, '#f59e0b', 12);
+
+        // Draw right hand hint
+        drawLabel(ctx, '👆', cx + 130, cy - 50, '#f59e0b', 20);
+    }
+
+    // Dashed axis line
+    ctx.setLineDash([4, 4]);
+    ctx.strokeStyle = 'rgba(148,163,184,0.2)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy + 50);
+    ctx.lineTo(cx, cy - 120);
+    ctx.stroke();
+    ctx.setLineDash([]);
+}
+
+// === ANIMATION: Polar Vector ===
+function animPolar(ctx, progress) {
+    const W = 500, H = 250;
+    clearCanvas(ctx, W, H);
+    const p = Math.min(progress, 1);
+
+    // Object (ball)
+    const ballX = 80, ballY = 130;
+    drawDot(ctx, ballX, ballY, 12, 'rgba(148,163,184,0.3)');
+    drawDot(ctx, ballX, ballY, 8, 'rgba(148,163,184,0.5)');
+
+    // Force vector
+    if (p > 0.1) {
+        const fl = 120 * Math.min(p / 0.4, 1);
+        drawArrow(ctx, ballX + 15, ballY, ballX + 15 + fl, ballY, '#ef4444', 3);
+        if (p > 0.25) drawLabel(ctx, 'F⃗', ballX + 15 + fl / 2, ballY - 20, '#ef4444', 16);
+    }
+
+    // Velocity vector
+    if (p > 0.35) {
+        const vl = 100 * Math.min((p - 0.3) / 0.35, 1);
+        drawArrow(ctx, ballX + 15, ballY + 30, ballX + 15 + vl, ballY + 30, '#3b82f6', 3);
+        if (p > 0.5) drawLabel(ctx, 'v⃗', ballX + 15 + vl / 2, ballY + 55, '#3b82f6', 16);
+    }
+
+    // Displacement vector
+    if (p > 0.6) {
+        const dl = 150 * Math.min((p - 0.55) / 0.35, 1);
+        drawArrow(ctx, ballX + 15, ballY - 30, ballX + 15 + dl, ballY - 30, '#10b981', 3);
+        if (p > 0.7) drawLabel(ctx, 'r⃗', ballX + 15 + dl / 2, ballY - 55, '#10b981', 16);
+    }
+
+    if (p > 0.85) {
+        drawLabel(ctx, 'Linear effects = Polar Vectors', 360, 200, '#f59e0b', 13);
+        drawLabel(ctx, '(True Vectors)', 360, 220, '#94a3b8', 11);
+    }
+}
+
+// ============================
+// ANIMATION CONTROLLER
+// ============================
+const animFunctions = {
+    'free': animFree,
+    'localized': animLocalized,
+    'like': animLike,
+    'unlike': animUnlike,
+    'equal': animEqual,
+    'negative': animNegative,
+    'null': animNull,
+    'unit': animUnit,
+    'collinear': animCollinear,
+    'coplanar': animCoplanar,
+    'position': animPosition,
+    'displacement': animDisplacement,
+    'axial': animAxial,
+    'polar': animPolar
+};
+
+function startAnim(id) {
+    const ctx = setupCanvas(id);
+    if (!ctx) return;
+    const fn = animFunctions[id];
+    if (!fn) return;
+
+    if (animations[id]) cancelAnimationFrame(animations[id].raf);
+
+    const duration = 2500;
+    const startTime = performance.now();
+
+    function tick(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        fn(ctx, progress);
+        if (progress < 1) {
+            animations[id] = { raf: requestAnimationFrame(tick) };
+        }
+    }
+    animations[id] = { raf: requestAnimationFrame(tick) };
+}
+
+function restartAnim(id) {
+    startAnim(id);
+}
+
+// ============================
+// INTERSECTION OBSERVER - auto-play animations when visible
+// ============================
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const id = entry.target.id.replace('anim-', '');
+            startAnim(id);
+            observer.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.3 });
+
+document.querySelectorAll('.animation-container').forEach(el => {
+    observer.observe(el);
+});
+
+// ============================
+// Auto-open first card
+// ============================
+document.getElementById('card1').classList.add('open');
+</script>
+
+</body>
+</html>
